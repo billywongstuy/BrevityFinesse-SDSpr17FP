@@ -1,0 +1,5 @@
+# Use sms gateway provided by mobile carrier:
+# at&t:     number@mms.att.net
+# t-mobile: number@tmomail.net
+# verizon:  number@vtext.com
+# sprint:   number@page.nextel.com
