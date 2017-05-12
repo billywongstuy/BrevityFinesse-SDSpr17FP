@@ -1,5 +1,8 @@
-firstL -- TIMESTAMP
+firstL -- TIMESTAMP (YYYY-MM-DD HH:MM  - military hours)
 message
 
-chenY -- 
+yukiC -- 2017-05-10 --:--
   - Change project idea to ticketing system
+
+julianA, yukiC, billyW, henryZ -- 2017-05-11 --:--
+  - Worked on design doc
