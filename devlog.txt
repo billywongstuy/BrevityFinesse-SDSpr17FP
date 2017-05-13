@@ -1,8 +1,24 @@
 firstL -- TIMESTAMP (YYYY-MM-DD HH:MM  - military hours)
 message
 
-yukiC -- 2017-05-10 --:--
+yukiC -- 2017-05-10 18:00
   - Change project idea to ticketing system
 
-julianA, yukiC, billyW, henryZ -- 2017-05-11 --:--
+julianA, yukiC, billyW, henryZ -- 2017-05-11 23:21
   - Worked on design doc
+
+yukiC -- 2017-05-12 --:--
+  - Meeting with clients, some modifications needed:
+    1. Intead of having teacher accounts, have a "guest" account (no need of password) that allows teachers to send a request. 
+       Reason: Teachers might be too lazy to keep an account, and having to type in password all the time.
+    2. Have dropdown menu for teachers to choose what kind of problem they encounter, for example smartboard, laptop, electricity, etc. And have a "comment" section in which teachers can specify the issue if they want to.
+       Reason: Teachers might not be able to describe the problem accurately, so it's better to give them options to choose from.
+    3. Have a super-admin, which can do everything the admin can, plus the power to change account priviledge.
+       Reason: Last resort to go to if everything broke down.
+    4. COMMUNICATION is the most important component of this project! Visual aesthetic should not be the priority. Allow the website to send text message to tech's phone will be most preferable, if not sending email could be the second choice. Consider using Google Voice to send text message to tech. In later stage of development, allowing tech to reply to teachers for update on the request should also be considered.
+    5. Admin and super-admin should be able to turn on and off the guest session.
+       Reason: Since guest doesn't need password, anyone can send request. In case any students decide to mess around with this website, admin and super-admin should have the power to disable guest account.
+  
+  - Aiming for MVP: first work out admin, guest, and tech account. Teacher and super-admin account could be added on afterward easily once we have the basic structure finished.
+  - Client Joe's email: Jhidalgo@schools.nyc.gov
+  
