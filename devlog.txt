@@ -7,7 +7,7 @@ yukiC -- 2017-05-10 18:00
 julianA, yukiC, billyW, henryZ -- 2017-05-11 23:21
   - Worked on design doc
 
-yukiC -- 2017-05-12 --:--
+yukiC -- 2017-05-12 23:00
   - Meeting with clients, some modifications needed:
     1. Intead of having teacher accounts, have a "guest" account (no need of password) that allows teachers to send a request. 
        Reason: Teachers might be too lazy to keep an account, and having to type in password all the time.
