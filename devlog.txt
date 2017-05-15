@@ -20,5 +20,4 @@ yukiC -- 2017-05-12 --:--
        Reason: Since guest doesn't need password, anyone can send request. In case any students decide to mess around with this website, admin and super-admin should have the power to disable guest account.
   
   - Aiming for MVP: first work out admin, guest, and tech account. Teacher and super-admin account could be added on afterward easily once we have the basic structure finished.
-  - Client Joe's email: Jhidalgo@schools.nyc.gov
   
