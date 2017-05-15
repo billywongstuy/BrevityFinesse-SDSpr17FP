@@ -21,3 +21,5 @@ yukiC -- 2017-05-12 23:00
   
   - Aiming for MVP: first work out admin, guest, and tech account. Teacher and super-admin account could be added on afterward easily once we have the basic structure finished.
   
+julianA -- 2017-05-15 14:05
+Added jQuery & Bootstrap files in /static
