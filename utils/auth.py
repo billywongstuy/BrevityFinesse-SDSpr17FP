@@ -3,23 +3,23 @@ from hashlib import sha1
 from os import urandom
 import random,string
 
-f = "data/roomres.db"
+f = "data/tix.db"
 
-def login(email, password):
+def login(username, password):
     db = connect(f)
     c = db.cursor()
 
     try:
         c.execute("SELECT * FROM USERS")
     except:
-        c.execute("CREATE TABLE users (userID INT, email TEXT, osis INT, salt TEXT, password TEXT, club TEXT)")
+        c.execute("CREATE TABLE users (primary_key INT PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
 
-    query = ("SELECT * FROM users WHERE email=?")
-    info = c.execute(query,(email,))
+    query = ("SELECT * FROM users WHERE username=?")
+    info = c.execute(query,(username,))
 
     for record in info:
-        password = sha1(password+record[3]).hexdigest() #record[3] is the salt
-        if (password==record[4]):
+        password = sha1(password+record[4]).hexdigest() #record[4] is the salt
+        if (password==record[3]): #record[3] is password
             return ""#no error message
         else:
             return "User login has failed. Invalid password"#error message
@@ -39,7 +39,7 @@ def getSize():
     db.close()
     return size
 
-def register(club, osis, email, password, pw2):#register helper
+def register(username,email,password,pw2,account_type,phone_num):#register helper
     if password != pw2:
         return "Passwords not the same."
     
@@ -48,10 +48,9 @@ def register(club, osis, email, password, pw2):#register helper
     reg = errorMsg(email, password)
     if reg == "": 
         salt = urandom(10).encode('hex')
-        query = ("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)")
+        query = ("INSERT INTO users (username,email,password,salt,type,phone_num) VALUES (?, ?, ?, ?, ?, ?)")
         password = sha1(password + salt).hexdigest()
-        userID = getSize()+1
-        c.execute(query, (userID, email, int(osis), salt, password, club))
+        c.execute(query, (username, email, password, salt, account_type, phone_num))
         db.commit()
         db.close()
         return "Account created!"
@@ -66,12 +65,12 @@ def errorMsg(email, password):
         return "User account already exists"
     if " " in email or " " in password:
         return "Spaces not allowed in email or password"
-    if len(password) < 8:
-        return "Passwords must be greater than 8 characters"
+    if len(password) <= 8:
+        return "Passwords must be at least 8 characters"
     return ""
 
 
-def changepwd(email,old,new,new2):
+def changepwd(username,old,new,new2):
     if new != new2:
         return "New passwords are not identical"
     if len(new) < 8:
@@ -80,17 +79,17 @@ def changepwd(email,old,new,new2):
         return "Old and new passwords are the same"
     db = connect(f)
     c = db.cursor()
-    query = ("SELECT * FROM users WHERE email=?")
-    sel = c.execute(query, (email,))
+    query = ("SELECT * FROM users WHERE username=?")
+    sel = c.execute(query, (username,))
     for record in sel:
         print record
-        oldP = sha1(old+record[3]).hexdigest() #record[3] is the salt
-        if record[4] == oldP:
+        oldP = sha1(old+record[4]).hexdigest() #record[4] is the salt
+        if record[3] == oldP:#record[3] is password
             salt = urandom(10).encode('hex')
             password = sha1(new + salt).hexdigest()
             
-            query = ("UPDATE users SET password=?, salt=? WHERE email=?")
-            c.execute(query, (password,salt,email))
+            query = ("UPDATE users SET password=?, salt=? WHERE username=?")
+            c.execute(query, (password,salt,username))
             db.commit()
             db.close()
             return "Password successfully changed"
