@@ -25,4 +25,7 @@ julianA -- 2017-05-15 14:05
 Added jQuery & Bootstrap files in /static
 
 billyW -- 2017-05-15 2:05
-Stsrted building flask app
+Started building flask app
+
+billyW -- 2017-05-16 13:53
+Started working on prelim functions for app routes

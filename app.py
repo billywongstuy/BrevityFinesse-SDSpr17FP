@@ -11,7 +11,19 @@ app.secret_key = os.urandom(32)
 
 @app.route("/", methods=['POST','GET'])
 def home():
-    return render_template('index.html')
+    if 'user' not in session:
+        return render_template('index.html')
+    elif session['type'] == 'teacher':
+        return
+    elif session['type'] == 'tech':
+        return
+    elif session['type'] == 'admin':
+        return
+    elif session['type'] == 'superadmin':
+        return
+    else
+        return 'You broke the page!'
+    
 
 
 #-----------------
@@ -21,8 +33,15 @@ def home():
 @app.route("/super_login", methods=['POST','GET'])
 def superadmin_login():
     if method == 'GET':
-        return
-    return
+        return #render_template
+    user = request.form['user']
+    pw = request.form['pw']
+    login_ok = auth.login(user,pw)
+    if login_ok == '':
+        session['user'] = user
+        session['type'] = 'superadmin'
+        return redirect('/')
+    return #render_template
 
 @app.route("/admin_login", methods=['POST','GET'])
 def admin_login():
@@ -70,23 +89,21 @@ def old_requests_teacher():
 # TECH FUNCTIONS
 #-------------------------
 
-
-
 @app.route("/new_requests", methods=['POST','GET'])
 def new_requests():
-    if not 'username' in session:
+    if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
     return
 
 @app.route("/pending_requests_tech", methods=['POST','GET'])
 def pending_requests_tech():
-    if not 'username' in session:
+    if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
     return
 
 @app.route("/old_requests_tech", methods=['POST','GET'])
 def old_requests_tech():
-    if not 'username' in session:
+    if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
     return
 
@@ -123,3 +140,13 @@ def admin_promote():
     if not 'username' in session or session['type'] != 'superadmin' :
         return redirect("/")
     return
+
+
+#------------------
+# ERROR HANDLERS
+#------------------
+
+@app.errorhandler(404):
+def page_not_found(e):
+    #return render_template('404.html'), 404
+    return 'Page not found'
