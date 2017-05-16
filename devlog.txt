@@ -23,3 +23,6 @@ yukiC -- 2017-05-12 23:00
   
 julianA -- 2017-05-15 14:05
 Added jQuery & Bootstrap files in /static
+
+billyW -- 2017-05-15 2:05
+Stsrted building flask app
