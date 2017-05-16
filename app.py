@@ -11,7 +11,19 @@ app.secret_key = os.urandom(32)
 
 @app.route("/", methods=['POST','GET'])
 def home():
-    return render_template('index.html')
+    if 'user' not in session:
+        return render_template('index.html')
+    elif session['type'] == 'teacher':
+        return
+    elif session['type'] == 'tech':
+        return
+    elif session['type'] == 'admin':
+        return
+    elif session['type'] == 'superadmin':
+        return
+    else:
+        return 'You broke the page!'
+    
 
 
 #-----------------
@@ -21,25 +33,20 @@ def home():
 @app.route("/super_login", methods=['POST','GET'])
 def superadmin_login():
     if method == 'GET':
-        return
-    return
+        return #render_template
+    user = request.form['user']
+    pw = request.form['pw']
+    login_ok = auth.login(user,pw)
+    if login_ok == '':
+        session['user'] = user
+        session['type'] = 'superadmin'
+        return redirect('/')
+    return #render_template
 
-@app.route("/admin_login", methods=['POST','GET'])
-def admin_login():
+@app.route("/login", methods=['POST','GET'])
+def login():
     if method == 'GET':
-        return
-    return
-
-@app.route("/tech_login", methods=['POST','GET'])
-def tech_login():
-    if method == 'GET':
-        return
-    return
-
-@app.route("/teacher_login", methods=['POST','GET'])
-def teacher_login():
-    if method == 'GET':
-        return
+        return render_template('login.html')
     return
 
 
@@ -70,23 +77,21 @@ def old_requests_teacher():
 # TECH FUNCTIONS
 #-------------------------
 
-
-
 @app.route("/new_requests", methods=['POST','GET'])
 def new_requests():
-    if not 'username' in session:
+    if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
     return
 
 @app.route("/pending_requests_tech", methods=['POST','GET'])
 def pending_requests_tech():
-    if not 'username' in session:
+    if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
     return
 
 @app.route("/old_requests_tech", methods=['POST','GET'])
 def old_requests_tech():
-    if not 'username' in session:
+    if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
     return
 
@@ -99,19 +104,19 @@ admin_access = ['admin','superadmin']
 @app.route("/all_requests", methods=['POST','GET'])
 def all_requests():
     if not 'username' in session or not session['type'] in admin_access:
-        return redirect("/")
+        return redirect('/')
     return
 
 @app.route("/create_account", methods=['POST','GET'])
 def create_account():
     if not 'username' in session or not session['type'] in admin_access:
-        return redirect("/")
-    return
+        return redirect('/')
+    return render_template('register.html')
 
 @app.route("/guest_toggle", methods=['POST','GET'])
 def guest_toggle():
     if not 'username' in session or not session['type'] in admin_access:
-        return redirect("/")
+        return redirect('/')
     return
 
 #-------------------------
@@ -121,5 +126,15 @@ def guest_toggle():
 @app.route("admin_promote", methods=['POST','GET'])
 def admin_promote():
     if not 'username' in session or session['type'] != 'superadmin' :
-        return redirect("/")
+        return redirect('/')
     return
+
+
+#------------------
+# ERROR HANDLERS
+#------------------
+
+@app.errorhandler(404)
+def page_not_found(e):
+    #return render_template('404.html'), 404
+    return 'Page not found'
