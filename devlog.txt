@@ -37,3 +37,5 @@ Added bare index.html and register.html
 billyW -- 2017-05-16 13:53
 Started working on prelim functions for app routes
 
+yukiC -- 2017-05-16 14:05
+auth.py uploaded
