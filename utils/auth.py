@@ -8,11 +8,11 @@ f = "data/tix.db"
 def login(username, password):
     db = connect(f)
     c = db.cursor()
-
+    #create table users if doesn't exist
     try:
         c.execute("SELECT * FROM USERS")
     except:
-        c.execute("CREATE TABLE users (primary_key INT PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
 
     query = ("SELECT * FROM users WHERE username=?")
     info = c.execute(query,(username,))
@@ -45,12 +45,23 @@ def register(username,email,password,pw2,account_type,phone_num):#register helpe
     
     db = connect(f, timeout=10)
     c = db.cursor()
+    #create table users if doesn't exist
+    try:
+        c.execute("SELECT * FROM USERS")
+        print ("table exist")
+    except:
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
+        print ("table created")
+    
     reg = errorMsg(email, password)
     if reg == "": 
         salt = urandom(10).encode('hex')
         query = ("INSERT INTO users (username,email,password,salt,type,phone_num) VALUES (?, ?, ?, ?, ?, ?)")
         password = sha1(password + salt).hexdigest()
         c.execute(query, (username, email, password, salt, account_type, phone_num))
+
+        c.execute('SELECT * from users')
+        print c.fetchall()
         db.commit()
         db.close()
         return "Account created!"
@@ -97,11 +108,11 @@ def changepwd(username,old,new,new2):
         return "Incorrect old password"
     return "unexpected error"
 
-def duplicate(email):#checks if username already exists
+def duplicate(username):#checks if username already exists
     db = connect(f)
     c = db.cursor()
-    query = ("SELECT * FROM users WHERE email=?")
-    sel = c.execute(query, (email,))
+    query = ("SELECT * FROM users WHERE username=?")
+    sel = c.execute(query, (username,))
     value = False
     for record in sel:
         value = True
@@ -109,11 +120,11 @@ def duplicate(email):#checks if username already exists
     db.close()
     return value
 
-
+#NOT IN USE AT THE MOMENT
 def admin_resetpwd(email):
     db = connect(f)
     c = db.cursor()
-    query = ("SELECT * FROM users WHERE email=?")
+    query = ("SELECT * FROM users WHERE username=?")
     sel = c.execute(query, (email,))
     for record in sel:
 
@@ -130,3 +141,5 @@ def admin_resetpwd(email):
         return new
     
     return "Email does not exist in database!"
+
+print (register("user1","123@stuy.edu","password123","password123","admin","1234567890"))
