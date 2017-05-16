@@ -30,3 +30,6 @@ Added jQuery & Bootstrap files in /static
 
 billyW -- 2017-05-15 2:05
 Stsrted building flask app
+
+julianA -- 2017-05-16 13:52
+Added bare index.html and register.html
