@@ -21,7 +21,7 @@ def home():
         return
     elif session['type'] == 'superadmin':
         return
-    else
+    else:
         return 'You broke the page!'
     
 
@@ -43,22 +43,10 @@ def superadmin_login():
         return redirect('/')
     return #render_template
 
-@app.route("/admin_login", methods=['POST','GET'])
-def admin_login():
+@app.route("/login", methods=['POST','GET'])
+def login():
     if method == 'GET':
-        return
-    return
-
-@app.route("/tech_login", methods=['POST','GET'])
-def tech_login():
-    if method == 'GET':
-        return
-    return
-
-@app.route("/teacher_login", methods=['POST','GET'])
-def teacher_login():
-    if method == 'GET':
-        return
+        return render_template('login.html')
     return
 
 
@@ -116,19 +104,19 @@ admin_access = ['admin','superadmin']
 @app.route("/all_requests", methods=['POST','GET'])
 def all_requests():
     if not 'username' in session or not session['type'] in admin_access:
-        return redirect("/")
+        return redirect('/')
     return
 
 @app.route("/create_account", methods=['POST','GET'])
 def create_account():
     if not 'username' in session or not session['type'] in admin_access:
-        return redirect("/")
-    return
+        return redirect('/')
+    return render_template('register.html')
 
 @app.route("/guest_toggle", methods=['POST','GET'])
 def guest_toggle():
     if not 'username' in session or not session['type'] in admin_access:
-        return redirect("/")
+        return redirect('/')
     return
 
 #-------------------------
@@ -138,7 +126,7 @@ def guest_toggle():
 @app.route("admin_promote", methods=['POST','GET'])
 def admin_promote():
     if not 'username' in session or session['type'] != 'superadmin' :
-        return redirect("/")
+        return redirect('/')
     return
 
 
@@ -146,7 +134,7 @@ def admin_promote():
 # ERROR HANDLERS
 #------------------
 
-@app.errorhandler(404):
+@app.errorhandler(404)
 def page_not_found(e):
     #return render_template('404.html'), 404
     return 'Page not found'
