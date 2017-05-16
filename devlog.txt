@@ -1,3 +1,7 @@
+BrevityFinesse
+
+Team Members: Julian Atkin, Yuxuan "Yuki" Chen, Billy Wong, Henry Zhang
+
 firstL -- TIMESTAMP (YYYY-MM-DD HH:MM  - military hours)
 message
 
@@ -24,8 +28,12 @@ yukiC -- 2017-05-12 23:00
 julianA -- 2017-05-15 14:05
 Added jQuery & Bootstrap files in /static
 
-billyW -- 2017-05-15 2:05
+billyW -- 2017-05-15 14:05
 Started building flask app
+
+julianA -- 2017-05-16 13:52
+Added bare index.html and register.html
 
 billyW -- 2017-05-16 13:53
 Started working on prelim functions for app routes
+
