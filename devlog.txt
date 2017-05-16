@@ -1,3 +1,7 @@
+BrevityFinesse
+
+Team Members: Julian Atkin, Yuxuan "Yuki" Chen, Billy Wong, Henry Zhang
+
 firstL -- TIMESTAMP (YYYY-MM-DD HH:MM  - military hours)
 message
 
