@@ -26,16 +26,19 @@ yukiC -- 2017-05-12 23:00
   - Aiming for MVP: first work out admin, guest, and tech account. Teacher and super-admin account could be added on afterward easily once we have the basic structure finished.
   
 julianA -- 2017-05-15 14:05
-Added jQuery & Bootstrap files in /static
+  - Added jQuery & Bootstrap files in /static
 
 billyW -- 2017-05-15 14:05
-Started building flask app
+  - Started building flask app
 
 julianA -- 2017-05-16 13:52
-Added bare index.html and register.html
+  - Added bare index.html and register.html
 
 billyW -- 2017-05-16 13:53
-Started working on prelim functions for app routes
+  - Started working on prelim functions for app routes
 
 yukiC -- 2017-05-16 14:05
-auth.py uploaded
+  - finish login function
+  - comment auth.py
+  - TEST ACCOUNT : username = user1
+                   pw = password123
