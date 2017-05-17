@@ -45,3 +45,10 @@ yukiC -- 2017-05-16 14:05
 
 julianA -- 2017-05-17 13:40
 Added submit.html
+
+yukiC -- 2017-05-17 14:00
+  - Change account type in session to session['level']: 0 == superadmin
+                                                        1 == admin
+                                                        2 == tech
+                                                        3 == teacher
+                                                        4 == guest
