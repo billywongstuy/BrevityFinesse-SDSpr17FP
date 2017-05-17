@@ -56,6 +56,10 @@ def login():
     
     #loginMessage = "" if login is valid --> go to index page
     if loginMessage == "":
+        #session username
+        session["username"] = username
+        #get account type
+        session['type'] = auth.account_type(username)
         return redirect("/")
 
     #return error message for invalid login

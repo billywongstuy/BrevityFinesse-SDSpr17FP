@@ -35,6 +35,21 @@ def login(username, password):
         
     return "Username does not exist"#error message
 
+#---------------------
+# Get account type
+#---------------------
+def account_type(username):
+    db = connect(f)
+    c = db.cursor()
+
+    #find account with given username
+    query = ("SELECT * FROM users WHERE username=?")
+    account = c.execute(query,(username,))
+
+    #return account type
+    for record in account:
+        return record[5] #record[5] is type
+
 #------------------------
 # NOT IN USE
 #------------------------
