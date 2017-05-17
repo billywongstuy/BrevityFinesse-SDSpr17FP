@@ -42,3 +42,6 @@ yukiC -- 2017-05-16 14:05
   - comment auth.py
   - TEST ACCOUNT : username = user1
                    pw = password123
+
+julianA -- 2017-05-17 13:40
+Added submit.html
