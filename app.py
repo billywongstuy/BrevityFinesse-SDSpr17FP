@@ -45,9 +45,21 @@ def superadmin_login():
 
 @app.route("/login", methods=['POST','GET'])
 def login():
-    if method == 'GET':
+    #render login page
+    if request.method == 'GET':
         return render_template('login.html')
-    return
+
+    #validate login
+    username = request.form["user"]
+    password = request.form["pass"]
+    loginMessage = auth.login(username,password)
+    
+    #loginMessage = "" if login is valid --> go to index page
+    if loginMessage == "":
+        return redirect("/")
+
+    #return error message for invalid login
+    return loginMessage
 
 
 #-------------------------
@@ -123,7 +135,7 @@ def guest_toggle():
 # SUPERADMIN FUNCTIONS
 #-------------------------
 
-@app.route("admin_promote", methods=['POST','GET'])
+@app.route("/admin_promote", methods=['POST','GET'])
 def admin_promote():
     if not 'username' in session or session['type'] != 'superadmin' :
         return redirect('/')
@@ -138,3 +150,11 @@ def admin_promote():
 def page_not_found(e):
     #return render_template('404.html'), 404
     return 'Page not found'
+
+
+#--------------
+# Start
+#-------------
+if __name__ == "__main__":
+    app.debug = True
+    app.run()

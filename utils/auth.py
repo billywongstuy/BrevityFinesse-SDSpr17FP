@@ -5,29 +5,39 @@ import random,string
 
 f = "data/tix.db"
 
+
+#-------------------------
+# Login
+#-------------------------
 def login(username, password):
     db = connect(f)
     c = db.cursor()
-    #create table users if doesn't exist
+
+    #select table users, create table users if doesn't exist
     try:
         c.execute("SELECT * FROM USERS")
     except:
         c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
 
+    #find account with given username
     query = ("SELECT * FROM users WHERE username=?")
     info = c.execute(query,(username,))
 
+    #check password
     for record in info:
         password = sha1(password+record[4]).hexdigest() #record[4] is the salt
         if (password==record[3]): #record[3] is password
-            return ""#no error message
+            return ""#login success,no error message
         else:
             return "User login has failed. Invalid password"#error message
         db.commit()
         db.close()
+        
     return "Username does not exist"#error message
 
-
+#------------------------
+# NOT IN USE
+#------------------------
 def getSize():
     db = connect(f)
     c = db.cursor()
@@ -39,36 +49,46 @@ def getSize():
     db.close()
     return size
 
-def register(username,email,password,pw2,account_type,phone_num):#register helper
+#----------------------
+# Register
+#---------------------
+def register(username,email,password,pw2,account_type,phone_num):
+
+    #confirm password
     if password != pw2:
         return "Passwords not the same."
     
     db = connect(f, timeout=10)
     c = db.cursor()
-    #create table users if doesn't exist
+    
+    #select table users, create table users if doesn't exist
     try:
         c.execute("SELECT * FROM USERS")
         print ("table exist")
     except:
         c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
-        print ("table created")
-    
+
+    #check if email is valid, reg = "" if valid
     reg = errorMsg(email, password)
-    if reg == "": 
+    if reg == "":
+        #Create account with given info
         salt = urandom(10).encode('hex')
         query = ("INSERT INTO users (username,email,password,salt,type,phone_num) VALUES (?, ?, ?, ?, ?, ?)")
         password = sha1(password + salt).hexdigest()
         c.execute(query, (username, email, password, salt, account_type, phone_num))
-
         c.execute('SELECT * from users')
-        print c.fetchall()
         db.commit()
         db.close()
         return "Account created!"
+
+    #Return error message for invalid email
     db.commit()
     db.close()
     return reg
 
+#-------------------------------
+# Validate email address
+#-------------------------------
 def errorMsg(email, password):      
     if '@' not in email:
         return "Please enter a valid email."
@@ -80,35 +100,44 @@ def errorMsg(email, password):
         return "Passwords must be at least 8 characters"
     return ""
 
-
+#------------------------------
+# Change password
+#------------------------------
 def changepwd(username,old,new,new2):
+    #error messages for invalid new password
     if new != new2:
         return "New passwords are not identical"
     if len(new) < 8:
         return "Passwords must be greater than 8 characters"
     if old == new:
         return "Old and new passwords are the same"
+
     db = connect(f)
     c = db.cursor()
+
+    #find account with given username
     query = ("SELECT * FROM users WHERE username=?")
-    sel = c.execute(query, (username,))
-    for record in sel:
-        print record
+    account = c.execute(query, (username,))
+    for record in account:
+        #validate old password
         oldP = sha1(old+record[4]).hexdigest() #record[4] is the salt
         if record[3] == oldP:#record[3] is password
+            #old password is correct, change to new password
             salt = urandom(10).encode('hex')
             password = sha1(new + salt).hexdigest()
-            
             query = ("UPDATE users SET password=?, salt=? WHERE username=?")
             c.execute(query, (password,salt,username))
             db.commit()
             db.close()
             return "Password successfully changed"
-        
+        #error message for incorrect old password
         return "Incorrect old password"
     return "unexpected error"
 
-def duplicate(username):#checks if username already exists
+#-------------------------------------
+# Checks if username already exists
+#-------------------------------------
+def duplicate(username):
     db = connect(f)
     c = db.cursor()
     query = ("SELECT * FROM users WHERE username=?")
@@ -120,7 +149,9 @@ def duplicate(username):#checks if username already exists
     db.close()
     return value
 
-#NOT IN USE AT THE MOMENT
+#-------------------------------
+# NOT IN USE AT THE MOMENT
+#-------------------------------
 def admin_resetpwd(email):
     db = connect(f)
     c = db.cursor()
@@ -142,4 +173,3 @@ def admin_resetpwd(email):
     
     return "Email does not exist in database!"
 
-print (register("user1","123@stuy.edu","password123","password123","admin","1234567890"))
