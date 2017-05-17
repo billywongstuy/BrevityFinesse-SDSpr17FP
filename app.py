@@ -24,7 +24,9 @@ def home():
     else:
         return 'You broke the page!'
     
-
+@app.route("/ticket/<tid>")
+def ticket(tid):
+    return tid
 
 #-----------------
 # LOGINS
@@ -70,20 +72,28 @@ def login():
 # TEACHER FUNCTIONS
 #-------------------------
 
-@app.route("/make_request", methods=['POST','GET'])
-def make_request():
-    if not 'username' in session:
-        return redirect("/")
-    return
+@app.route("/submit", methods=['POST','GET'])
+def submit():
+    #if not 'username' in session:
+    #    return redirect("/")
+    return render_template("submit.html", isLogged=('username' in session))
 
-@app.route("/pending_requests_teacher", methods=['POST','GET'])
-def pending_requests_teacher():
-    if not 'username' in session:
-        return redirect("/")
-    return
+#Functions to receive pending requests and old requests should be endpoints returning raw JSON data which will be displayed on a central profile page using JavaScript
+#	- Julian
 
-@app.route("/old_requests_teacher", methods=['POST','GET'])
-def old_requests_teacher():
+# @app.route("/pending_requests_teacher", methods=['POST','GET'])
+# def pending_requests_teacher():
+#     if not 'username' in session:
+#         return redirect("/")
+#     return
+
+# @app.route("/old_requests_teacher", methods=['POST','GET'])
+# def old_requests_teacher():
+#     if not 'username' in session:
+#         return redirect("/")
+#     return
+
+def profile():
     if not 'username' in session:
         return redirect("/")
     return
@@ -153,7 +163,7 @@ def admin_promote():
 @app.errorhandler(404)
 def page_not_found(e):
     #return render_template('404.html'), 404
-    return 'Page not found'
+    return render_template("notfound.html")
 
 
 #--------------

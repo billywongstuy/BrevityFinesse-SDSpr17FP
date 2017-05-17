@@ -6,7 +6,7 @@
   <body>
     <script type="text/javascript" src="../static/js/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="../static/js/bootstrap.js"></script>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-static-top">
       <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -16,7 +16,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">StuyTix</a>
+      <a class="navbar-brand" href="/">StuyTix</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -25,13 +25,34 @@
         <li><a href="#">Link</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Logout</a></li>
+        <li><a href="/login">Log In</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
     <div class="container">
-     
+      <div class="row">
+	<div class="col-4-md col-3-sm col-1-xs"></div>
+	<div class="col-4-md col-6-sm col-10-xs">
+	  <!--<div class="jumbotron">
+	    <form action="/submit" method="POST">
+	      <div class="form-group">
+		<label for="ticketSubject">Subject</label>
+		<input type="textarea" class="form-control" id="ticketSubject" placeholder="Briefly outline your problem" name="subject">
+	      </div>
+	      <div class="form-group">
+		<label for="ticketDesc">Description</label>
+		<!--<input type="password" class="form-control" id="passInput" placeholder="Enter password" name="pass">
+		<textarea class="form-control" id="ticketDesc" placeholder="Describe your problem (max. 1000 chars)" maxlength="1000" rows="5" name="desc"></textarea>
+	      </div>
+	      <button type="submit" class="btn btn-primary">Submit</button>
+	    </form>
+	  </div>-->
+		<h1>StuyTix</h1>
+		<h3>Stuyvesant High School Issue Tracking System</h3>
+	</div>
+	<div class="col-4-md col-3-sm col-1-xs"></div>
+      </div>
     </div>
   </body>
 </html>
