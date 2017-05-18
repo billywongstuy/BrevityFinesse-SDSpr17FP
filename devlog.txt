@@ -74,3 +74,8 @@ yukiC -- 2017-05-18
       4. Get pending/unaccepted/done tickets by username (teacher)
       5. Get ALL tickets
       6. Add username column to tickets table (in front after primary_key)
+
+billyW -- 2017-05-18 15:18
+    - Fixed submit route
+    - Added base.html for jinja
+    - Worked on funcs for routes

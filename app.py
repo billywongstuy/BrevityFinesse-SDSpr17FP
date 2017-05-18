@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from utils import auth, ticket_manager as tix
+from utils import auth, tickets_manager as tix
 import calendar, datetime, json, os
 from time import gmtime,strftime
 
@@ -13,18 +13,28 @@ app.secret_key = os.urandom(32)
 @app.route("/", methods=['POST','GET'])
 def home():
     if 'username' not in session:
+        #get all guest tickets
         return render_template('index.html')
-    #level 0 = superadmin
-    elif session['level'] == 0:
+
+    elif session['level'] == 0: #superadmin
+        #get all unresponded tickets
+        #get all pending tckets
+        #get all done tickets
         return 'superadmin<br><a href=\"logout\">Logout</a>'
-    #level 1 = admin
-    elif session['level'] == 1:
+    elif session['level'] == 1: #admin
+        #get all unresponded tickets
+        #get all pending tckets
+        #get all done tickets
         return 'admin<br><a href=\"logout\">Logout</a>'
-    #level 2 = tech
-    elif session['level'] == 2:
+    elif session['level'] == 2: #tech
+        #get all unresponded tickets
+        #get all pending tckets
+        #get all done tickets
         return 'tech<br><a href=\"logout\">Logout</a>'
-    #level 3 = teacher/guest
-    elif session['level'] == 3:
+    elif session['level'] == 3: #teacher
+        #get teach unresp tickets
+        #get tech pending tickets
+        #get teach done tickets
         return 'teacher<br><a href=\"logout\">Logout</a>'
     else:
         return 'You broke the page!'
@@ -74,19 +84,27 @@ guest_allow = True
 def submit():
     if request.method == 'GET':
         return render_template("submit.html", isLogged=('username' in session))
+
+    if 'username' not in session and not guest_allow:
+        return render_template('unallowed.html')
+    
+    room = int(request.form['room'])
+    if room <= 100 or room >= 1050:
+        return render_template('submit.html', isLogged=('username' in session), error='Invalid room number')
+    
     subj = request.form['subject']
     desc = request.form['desc']
-    room = int(request.form['room'])
     hour = int(strftime("%H",gmtime()))-4
-    date = strftime("%Y-%m-%d a:%M:%S", gmtime())
-    date.replace('a',str(hour))
+    date = str(datetime.datetime.now())
+    date = date[0:date.find('.')]
     
     if 'username' not in session:
-        name = request.form['name']
+        name = request.form['guestName']
     else:
         name = session['username']
-        
-    tix.add_request(name,date,room,subj,body)
+
+    tix.add_ticket(name,date,room,subj,desc)
+    return redirect("/")
     
 #Functions to receive pending requests and old requests should be endpoints returning raw JSON data which will be displayed on a central profile page using JavaScript
 #	- Julian
@@ -125,7 +143,7 @@ def pending_tickets_tech():
         return redirect("/")
     return
 
-@app.route("/old_ticketts_tech", methods=['POST','GET'])
+@app.route("/old_tickets_tech", methods=['POST','GET'])
 def old_tickets_tech():
     if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
