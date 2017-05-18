@@ -40,14 +40,25 @@
 	    <form action="/submit" method="POST">
 	      <div class="form-group">
 		<label for="ticketSubject">Subject</label>
-		<input type="textarea" class="form-control" id="ticketSubject" placeholder="Briefly outline your problem" name="subject">
+		<!--<input type="textarea" class="form-control" id="ticketSubject" placeholder="Briefly outline your problem" name="subject">-->
+		<select class="form-control" id="ticketSubject" name="subject">
+		  <option value="" disabled selected>Brief outline of your problem</option>
+		  <option value="sound">No Volume</option>
+		  <option value="cpu_off">Computer Won't Turn On</option>
+		  <option value="smart_off">SmartBoard Won't Turn On</option>
+		  <option value=""></option>
+		</select>
 	      </div>
 	      {% if not isLogged %}
 	      <div class="form-group">
 		<label for="ticketSubject">Name</label>
-		<input type="textarea" class="form-control" id="ticketGuestName" placeholder="Enter your name" name="guestName">
+		<input type="number" class="form-control" id="roomNumber" name="room" min="100" max="1099">
 	      </div>
 	      {% endif %}
+	      <div class="form-group">
+		<label for="ticketSubject">Name</label>
+		<input type="textarea" class="form-control" id="ticketGuestName" placeholder="Enter your name" name="guestName">
+	      </div>
 	      <div class="form-group">
 		<label for="ticketDesc">Description</label>
 		<!--<input type="password" class="form-control" id="passInput" placeholder="Enter password" name="pass">-->

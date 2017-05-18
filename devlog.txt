@@ -56,3 +56,8 @@ yukiC -- 2017-05-17 14:00
 julianA -- 2017-05-17 14:03
 Added name field in /submit if not logged in, reworked some routes & added others
 Fixed text & formatting in some HTML pages
+
+billyW -- 2017-05-17 19:24
+    - Fixed root logged in checkers
+    - Basic 404 page
+    - Some prelim input handling
