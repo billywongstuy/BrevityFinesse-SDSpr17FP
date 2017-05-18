@@ -51,7 +51,9 @@ yukiC -- 2017-05-17 20:58
     Change account type in session to session['level']: 0 == superadmin
                                                         1 == admin
                                                         2 == tech
-                                                        3 == teacher&guest
+                                                        3 == teacher
+                                                        4 == guest
+                                                        5 == disabled guest
   - Change terminology, request(s) --> ticket(s)
   - Finish methods for managing tickets database
 
@@ -63,3 +65,12 @@ billyW -- 2017-05-17 19:24
     - Fixed root logged in checkers
     - Basic 404 page
     - Some prelim input handling
+
+yukiC -- 2017-05-18
+  - Task:
+      1. Change account level
+      2. Turn off guest
+      3. Get all pending/unaccepted/done tickets
+      4. Get pending/unaccepted/done tickets by username (teacher)
+      5. Get ALL tickets
+      6. Add username column to tickets table (in front after primary_key)
