@@ -13,13 +13,17 @@ app.secret_key = os.urandom(32)
 def home():
     if 'user' not in session:
         return render_template('index.html')
-    elif session['type'] == 'teacher':
+    #level 0 = superadmin
+    elif session['level'] == 0:
         return
-    elif session['type'] == 'tech':
+    #level 1 = admin
+    elif session['level'] == 1:
         return
-    elif session['type'] == 'admin':
+    #level 2 = tech
+    elif session['level'] == 2:
         return
-    elif session['type'] == 'superadmin':
+    #level 3 = teacher/guest
+    elif session['level'] == 3:
         return
     else:
         return 'You broke the page!'

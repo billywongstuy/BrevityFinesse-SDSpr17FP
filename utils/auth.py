@@ -72,6 +72,10 @@ def register(username,email,password,pw2,account_type,phone_num):
     #confirm password
     if password != pw2:
         return "Passwords not the same."
+
+    #check whether username exists already
+    if duplicate(username):
+        return "Username already exists"
     
     db = connect(f, timeout=10)
     c = db.cursor()
