@@ -44,14 +44,16 @@ yukiC -- 2017-05-16 14:05
                    pw = password123
 
 julianA -- 2017-05-17 13:40
-Added submit.html
+  - Added submit.html
 
-yukiC -- 2017-05-17 14:00
+yukiC -- 2017-05-17 20:58
   - Change account_type in database to INT instead of TEXT
     Change account type in session to session['level']: 0 == superadmin
                                                         1 == admin
                                                         2 == tech
                                                         3 == teacher&guest
+  - Change terminology, request(s) --> ticket(s)
+  - Finish methods for managing tickets database
 
 julianA -- 2017-05-17 14:03
 Added name field in /submit if not logged in, reworked some routes & added others
