@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from utils import auth, request_manager as reqs
+from utils import auth, ticket_manager as tix
 import calendar, datetime, json, os
 from time import gmtime,strftime
 
@@ -86,7 +86,7 @@ def submit():
     else:
         name = session['username']
         
-    reqs.add_request(name,date,room,subj,body)
+    tix.add_request(name,date,room,subj,body)
     
 #Functions to receive pending requests and old requests should be endpoints returning raw JSON data which will be displayed on a central profile page using JavaScript
 #	- Julian
