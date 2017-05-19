@@ -88,3 +88,8 @@ billyW -- 2017-05-18 21:54
 
 julianA -- 2017-05-19 14:56
 Added tentative first/last fields to guest submit ticket page
+
+billyW -- 2017-05-19 15:36
+    - Added templates (empty) for admin/superadmin
+    - Reformatted the ticket search functions
+    - More prelim routes

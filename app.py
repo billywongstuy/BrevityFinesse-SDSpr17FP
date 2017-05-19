@@ -6,55 +6,48 @@ from time import gmtime,strftime
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
+'''
+Statuses
+
+Pending
+In Progress
+    - Will Come Today At
+    - Deferred Until
+Done
+'''
+
 #---------------------------
-# ROOT AND GUEST FUNCTION
+# ROOT (INDEX)
 #---------------------------
 
 @app.route("/", methods=['POST','GET'])
 def home():
     if 'username' not in session:
-        #get all guest tickets
         return render_template('index.html')
     
-    #when getting tickets, store in list of dictionaries
-
-    print 'BBBBBBBBBB ',session['level']
-    print type(session['level'])
-    
     if session['level'] == 0: #superadmin
-        #get all unresponded tickets
-        #get all pending tckets
-        #get all done tickets
-        return 'superadmin<br><a href=\"logout\">Logout</a>'
+        return render_template('superadmindashboard.html')#'superadmin<br><a href=\"logout\">Logout</a>' #DASHBOARD
+    
     elif session['level'] == 1: #admin
-        #get all unresponded tickets
-        #get all pending tckets
-        #get all done tickets
-        return 'admin<br><a href=\"logout\">Logout</a>'
+        return render_template('admindashboard.html')
+
     elif session['level'] == 2: #tech
-        #get all unresponded tickets
-        #get all pending tckets
-        #get all done tickets
+        pending = tix.all_tickets_with('Pending')
+        progress = tix.all_tickets_with('In Progress')
+        done = tix.all_tickets_with('Done')
         return 'tech<br><a href=\"logout\">Logout</a>'
+
     elif session['level'] == 3: #teacher
-        #get teach unresp tickets
-        #get tech pending tickets
-        #get teach done tickets
+        pending = tix.all_tickets_from(session['username'],'Pending')
+        progress = tix.all_tickets_from(session['username'],'In Progress')
+        done = tix.all_tickets_from(session['username'],'In Progress')
         return 'teacher<br><a href=\"logout\">Logout</a>'
+
     else:
         return 'You broke the page!'
-    
-@app.route("/ticket/<tid>")
-def ticket(tid):
-    if request.method == 'GET':
-        info = get_ticket(tid)
-        if info == 'Ticket doesn\'t exist':
-            return 'Ticket doesn\'t exist'
-        return render_template('ticket.html',techAccess= (session['type'] == 'tech'),ticketInfo=info)
-    return tid
 
-#-----------------
-# LOGINS
+    #-----------------
+# LOGIN / LOGOUT
 #-----------------
 
 @app.route("/login/", methods=['POST','GET'])
@@ -83,19 +76,8 @@ def logout():
     session.pop('level')
     return redirect('/') #render_template('index.html')
 
-
-#-------------------------
-# GUEST TICKET VIEWING
-#-------------------------
-
-@app.route('/guest_tickets', methods=['GET','POST'])
-def guest_tickets():
-    #get all the guest tickets
-    return 'guest tickets templates'
-
-
 #------------------------------------------------
-# TEACHER FUNCTIONS (EVERYONE INCLUDING GUEST)
+# TICKET CREATION
 #------------------------------------------------
 
 guest_allow = True
@@ -131,61 +113,58 @@ def submit():
 #Functions to receive pending requests and old requests should be endpoints returning raw JSON data which will be displayed on a central profile page using JavaScript
 #	- Julian
 
-# @app.route("/pending_requests_teacher", methods=['POST','GET'])
-# def pending_requests_teacher():
-#     if not 'username' in session:
-#         return redirect("/")
-#     return
-
-# @app.route("/old_requests_teacher", methods=['POST','GET'])
-# def old_requests_teacher():
-#     if not 'username' in session:
-#         return redirect("/")
-#     return
-
-def profile():
-    if not 'username' in session:
-        return redirect("/")
-    return
-
 
 #-------------------------
-# TECH FUNCTIONS
+# GUEST TICKET VIEWING
 #-------------------------
 
-@app.route("/new_tickets", methods=['POST','GET'])
-def new_tickets():
-    if not 'username' in session or session['type'] != 'tech':
-        return redirect("/")
-    return
+@app.route('/guest_tickets', methods=['GET','POST'])
+def guest_tickets():
+    #get all the guest tickets
+    pending = tix.all_tickets_from('guest','Pending')
+    progress = tix.all_tickets_from('guest','In Progress')
+    done = tix.all_tickets_from('guest','In Progress')
+    return render_template('guesttickets.html',pending=pending,progress=progress,done=done)
 
-@app.route("/pending_tickets_tech", methods=['POST','GET'])
-def pending_tickets_tech():
-    if not 'username' in session or session['type'] != 'tech':
-        return redirect("/")
-    return
 
-@app.route("/old_tickets_tech", methods=['POST','GET'])
-def old_tickets_tech():
-    if not 'username' in session or session['type'] != 'tech':
-        return redirect("/")
-    return
+#-----------------------------
+# INDIVIDUAL TICKET PAGES
+#-----------------------------
+
+@app.route("/ticket/<tid>")
+def ticket(tid):
+    info = get_ticket(tid)
+    if request.method == 'GET':
+        if info == 'Ticket doesn\'t exist':
+            return 'Ticket doesn\'t exist'
+        return render_template('ticket.html',techAccess=(session['level'] == 2),ticketInfo=info,message=None) #differentiates between being able to edit the ticket
+    
+    #tech = request.form['techName']  #auto-filled to tech name if present
+    #status = request.form['status']
+    #urgency = request.form['urgency']
+    
+    # update the ticket
+    #tix.accept_ticket(tid,tech,urgency,status)
+    
+    return render_template('ticket.html',techAccess=(session['level'] == 2),ticketInfo=info,message='Ticket updated!')
+
+
 
 #--------------------------
 # ADMIN FUNCTIONS
 #--------------------------
 
-admin_access = ['admin','superadmin']
+admin_access = [0,1]
 
 @app.route("/all_tickets", methods=['POST','GET'])
 def all_tickets():
-    if not 'username' in session or not session['type'] in admin_access:
+    if not 'username' in session or not session['level'] in admin_access:
         return redirect('/')
     return
 
 @app.route("/create_account", methods=['POST','GET'])
 def create_account():
-    if not 'username' in session or not session['type'] in admin_access:
+    if not 'username' in session or not session['level'] in admin_access:
         return redirect('/')
     
     if request.method == 'GET':

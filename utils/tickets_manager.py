@@ -24,14 +24,14 @@ def add_ticket(username,teacher,date,room,subject,body=None):
     db.close()
     return "Ticket created!"
 
-#---------------------------
-# Tech accepts ticket
-#---------------------------
-def accept_ticket(key,tech,urgency):
+#------------------------------
+# Tech accepts/updates ticket
+#------------------------------
+def update_ticket(key,tech,urgency,status):
     db = connect(f)
     c = db.cursor()
     query = ("UPDATE tickets SET tech_name=?, urgency=?, status=? WHERE primary_key=?")
-    c.execute(query,(tech,urgency,1,key,))
+    c.execute(query,(tech,urgency,status,key,))
     db.commit()
     db.close()
     return "Ticket accepted!"
@@ -106,7 +106,11 @@ def all_tickets_with(status):
     c = db.cursor()
 
     #find all tickets with given status
-    query = ("SELECT * FROM tickets WHERE status=?")
+
+    if status == 'In Progress':
+        query = ("SELECT * FROM tickets WHERE username=? AND status!=\'Pending\' AND status!=\'Done\'")
+    else:
+        query = ("SELECT * FROM tickets WHERE status=?")
     tickets = c.execute(query,(status,))
 
     #create list of dictionaries with ticket info
@@ -129,14 +133,18 @@ def all_tickets_with(status):
 
 #-----------------------------------------------------------------------------
 # Get tickets of given status from given username,return list of dictionaries
-# 0:pending; 1:in progress; 2:Done
+# Pending; Different (In Progress); Done
 #-----------------------------------------------------------------------------
 def all_tickets_from(username,status):
     db = connect(f)
     c = db.cursor()
-
+    
     #find all tickets with given status from given username
-    query = ("SELECT * FROM tickets WHERE username=? AND status=?")
+
+    if status == 'In Progress':
+        query = ("SELECT * FROM tickets WHERE username=? AND status!=\'Pending\' AND status!=\'Done\'")
+    else:
+        query = ("SELECT * FROM tickets WHERE username=? AND status=?")
     tickets = c.execute(query,(username,status,))
 
     #create list of dictionaries with ticket info
