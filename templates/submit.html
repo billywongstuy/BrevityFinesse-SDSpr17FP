@@ -37,8 +37,16 @@
 	  
 	  {% if not teacherAcc %} <!-- admins need to put teacher name -->
 	  <div class="form-group">
-	    <label for="ticketSubject">Name</label>
-	    <input type="textarea" class="form-control" id="ticketGuestName" placeholder="Enter your name" name="guestName">
+	    <!--<div class="row">
+	      <div class="col-6-xs">-->
+		<label for="ticketGuestFirstName">First Name</label>
+		<input type="textarea" class="form-control" id="ticketGuestFirstName" placeholder="First Name" name="guestFirstName">
+	      <!--</div>
+	      <div class="col-6-xs">-->
+		<label for="ticketGuestLastName">Last Name</label>
+		<input type="textarea" class="form-control" id="ticketGuestLastName" placeholder="Last Name" name="guestLastName">
+	      <!--</div>
+	    </div>-->
 	  </div>
 	  {% endif %}
 	  
