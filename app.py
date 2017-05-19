@@ -73,7 +73,6 @@ def login():
     if loginMessage == "":
         session['username'] = username    #session username
         session['level'] = int(auth.account_level(username))  #get account type
-        print 'AAAAAAAAAAAAA ',session['level']
         return redirect('/')
 
     return loginMessage   #return error message for invalid login
