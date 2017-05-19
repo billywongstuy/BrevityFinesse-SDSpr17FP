@@ -46,9 +46,7 @@ def ticket(tid):
         info = get_ticket(tid)
         if info == 'Ticket doesn\'t exist':
             return 'Ticket doesn\'t exist'
-        #check if tech logged in
-        #check if the teacher of the ticket logged in
-        return render_template('ticket.html',techAccess= (session['type'] == 'tech'))
+        return render_template('ticket.html',techAccess= (session['type'] == 'tech'),ticketInfo=info)
     return tid
 
 #-----------------
@@ -117,11 +115,13 @@ def submit():
     date = date[0:date.find('.')]
     
     if 'username' not in session:
-        name = request.form['guestName']
+        t_name = request.form['guestName']
+        u_name = 'guest'
     else:
-        name = session['username']
-
-    tix.add_ticket(name,date,room,subj,desc)
+        t_name = session['username'] # ths should use get teacher name by acc
+        u_name = session['username']
+        
+    tix.add_ticket(u_name,t_name,date,room,subj,desc)
     return redirect("/")
     
 #Functions to receive pending requests and old requests should be endpoints returning raw JSON data which will be displayed on a central profile page using JavaScript

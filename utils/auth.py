@@ -258,7 +258,7 @@ def admin_resetpwd(email):
 #----------------------------
 # Drop table users(debug)
 #---------------------------
-def drop()
+def drop_users():
     db = connect(f)
     c = db.cursor()
 
@@ -272,7 +272,7 @@ def drop()
 # Testing area
 #-----------------------
 '''
-drop()
+drop_users()
 register("user1","email@stuy.edu","password123","password123",0,"1234567890")
 register("guest","guest@stuy.edu","guestpassword","guestpassword",4,"1234567890")
 print account_level("user1")
