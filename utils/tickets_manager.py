@@ -1,3 +1,5 @@
+
+
 from sqlite3 import connect
 from hashlib import sha1
 from os import urandom
@@ -8,18 +10,18 @@ f = "data/tix.db"
 #-----------------------------
 # Teacher create request
 #-----------------------------
-def add_ticket(teacher,date,room,subject,body=None):
+def add_ticket(username,teacher,date,room,subject,body=None):
     db = connect(f)
     c = db.cursor()
     #select table tickets, create table tickets if doesn't exist
     try:
         c.execute("SELECT * FROM tickets")
     except:
-        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject TEXT, tix_body TEXT, tech_name TEXT, urgency INT, status INT)")
+        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject TEXT, tix_body TEXT, tech_name TEXT, urgency INT, status INT)")
 
     #create ticket entry with given info
-    query = ("INSERT INTO tickets (teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status) VALUES (?,?,?,?,?,?)")
-    c.execute(query,(teacher,date,room,subject,body,0,))
+    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status) VALUES (?,?,?,?,?,?,?)")
+    c.execute(query,(username,teacher,date,room,subject,body,0,))
     db.commit()
     db.close()
     return "Ticket created!"
@@ -30,21 +32,12 @@ def add_ticket(teacher,date,room,subject,body=None):
 def accept_ticket(key,tech,urgency):
     db = connect(f)
     c = db.cursor()
+    query = ("UPDATE tickets SET tech_name=?, urgency=?, status=? WHERE primary_key=?")
+    c.execute(query,(tech,urgency,1,key,))
+    db.commit()
+    db.close()
+    return "Ticket accepted!"
 
-    #find ticket with given primary key
-    query = ("SELECT * FROM tickets WHERE primary_key=?")
-    ticket = c.execute(query,(key,))
-
-    #update ticket with tech side info
-    for record in ticket:
-        query = ("UPDATE tickets SET tech_name=?, urgency=?, status=?")
-        c.execute(query,(tech,urgency,1,))
-        db.commit()
-        db.close()
-        return "Ticket accepted!"
-
-    #return error message if ticket entry doesn't exist
-    return "Ticket doesn't exist."
 
 #------------------------------------------------------
 # Get ticket with given primary_key, return dictionary
@@ -60,14 +53,16 @@ def get_ticket(key):
     #create dictionary with ticket information
     ticket_info = {}
     for record in ticket:
-        ticket_info['teacher_name'] = record[1]
-        ticket_info['date_of_ticket'] = record[2]
-        ticket_info['room_num'] = record[3]
-        ticket_info['tix_subject'] = record[4]
-        ticket_info['tix_body'] = record[5]
-        ticket_info['tech_name'] = record[6]
-        ticket_info['urgency'] = record[7]
-        ticket_info['status'] = record[8]
+        ticket_info['primary_key'] = record[0]
+        ticket_info['username'] = record[1]
+        ticket_info['teacher_name'] = record[2]
+        ticket_info['date_of_ticket'] = record[3]
+        ticket_info['room_num'] = record[4]
+        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_body'] = record[6]
+        ticket_info['tech_name'] = record[7]
+        ticket_info['urgency'] = record[8]
+        ticket_info['status'] = record[9]
         db.commit()
         db.close()
         return ticket_info
@@ -75,26 +70,107 @@ def get_ticket(key):
     db.close()
     return "Ticket doesn't exist"
 
+#----------------------------------
+# Get ALL tickets
+#---------------------------------
+def all_tickets():
+    db = connect(f)
+    c = db.cursor()
+
+    #find all tickets
+    query = ("SELECT * FROM tickets")
+    tickets = c.execute(query)
+
+    #create list of dictionaries with ticket info
+    ticket_list = []
+    for record in tickets:
+        ticket_info = {}
+        ticket_info['primary_key'] = record[0]
+        ticket_info['username'] = record[1]
+        ticket_info['teacher_name'] = record[2]
+        ticket_info['date_of_ticket'] = record[3]
+        ticket_info['room_num'] = record[4]
+        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_body'] = record[6]
+        ticket_info['tech_name'] = record[7]
+        ticket_info['urgency'] = record[8]
+        ticket_info['status'] = record[9]
+        ticket_list.append(ticket_info)
+    return ticket_list
+
+
+#------------------------------------------------------------
+# Get tickets of given status,return list of dictionaries
+# 0:pending; 1:in progress; 2:Done
+#------------------------------------------------------------
+def all_tickets_with(status):
+    db = connect(f)
+    c = db.cursor()
+
+    #find all tickets with given status
+    query = ("SELECT * FROM tickets WHERE status=?")
+    tickets = c.execute(query,(status,))
+
+    #create list of dictionaries with ticket info
+    ticket_list = []
+    for record in tickets:
+        ticket_info = {}
+        ticket_info['primary_key'] = record[0]
+        ticket_info['username'] = record[1]
+        ticket_info['teacher_name'] = record[2]
+        ticket_info['date_of_ticket'] = record[3]
+        ticket_info['room_num'] = record[4]
+        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_body'] = record[6]
+        ticket_info['tech_name'] = record[7]
+        ticket_info['urgency'] = record[8]
+        ticket_info['status'] = record[9]
+        ticket_list.append(ticket_info)
+    return ticket_list
+
+
+#-----------------------------------------------------------------------------
+# Get tickets of given status from given username,return list of dictionaries
+# 0:pending; 1:in progress; 2:Done
+#-----------------------------------------------------------------------------
+def all_tickets_from(username,status):
+    db = connect(f)
+    c = db.cursor()
+
+    #find all tickets with given status from given username
+    query = ("SELECT * FROM tickets WHERE username=? AND status=?")
+    tickets = c.execute(query,(username,status,))
+
+    #create list of dictionaries with ticket info
+    ticket_list = []
+    for record in tickets:
+        ticket_info = {}
+        ticket_info['primary_key'] = record[0]
+        ticket_info['username'] = record[1]
+        ticket_info['teacher_name'] = record[2]
+        ticket_info['date_of_ticket'] = record[3]
+        ticket_info['room_num'] = record[4]
+        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_body'] = record[6]
+        ticket_info['tech_name'] = record[7]
+        ticket_info['urgency'] = record[8]
+        ticket_info['status'] = record[9]
+        ticket_list.append(ticket_info)
+    return ticket_list
+    
+
 #------------------------
 # Tech closes ticket
 #------------------------
 def close_ticket(key):
     db = connect(f)
     c = db.cursor()
-
-    #find ticket with given key
-    query = ("SELECT * FROM tickets WHERE primary_key=?")
-    ticket = c.execute(query,(key,))
-
     #change status of ticket
-    for record in ticket:
-        query = ("UPDATE tickets SET status=?")
-        c.execute(query,(2,))
-        db.commit()
-        db.close()
-        return "Ticket closed!"
-    return "Ticket doesn't exist"
-
+    query = ("UPDATE tickets SET status=? WHERE primary_key=?")
+    c.execute(query,(2,key,))
+    db.commit()
+    db.close()
+    return "Ticket closed!"
 
 #----------------------
 # Drop table(debug use)
@@ -111,11 +187,16 @@ def drop():
 # Testing area
 #--------------------
 '''
-print drop()
-print add_ticket("teacher2","05/17/17","110","electronic")
-print get_ticket(1)
+drop()
+print add_ticket("guest","teacher2","05/17/17","110","electronic")
+print add_ticket("guest","teacher2","05/17/17","111","electronic")
+print add_ticket("guest","teacher2","05/17/17","112","electronic")
+print add_ticket("user1","teacher1","05/17/17","113","electronic")
 print accept_ticket(1,"tech2","4")
-print get_ticket(1)
-print close_ticket(1)
-print get_ticket(1)
+print all_tickets_with(0)
+print
+print all_tickets_from("user1",1)
+print
+print all_tickets()
+
 '''
