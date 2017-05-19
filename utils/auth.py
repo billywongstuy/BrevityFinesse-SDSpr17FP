@@ -67,16 +67,17 @@ def getSize():
 #----------------------
 # Register
 #---------------------
-def register(username,email,password,pw2,account_type,phone_num=None):
+def register(username,email,password,pw2,account_level,phone_num=None):
     db = connect(f, timeout=10)
     c = db.cursor()
+
+    account_level = int(account_level)
     
     #select table users, create table users if doesn't exist
     try:
         c.execute("SELECT * FROM USERS")
-        print ("table exist")
     except:
-        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, level TEXT, phone_num TEXT)")
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, level INTEGER, phone_num TEXT)")
         
     #confirm password
     if password != pw2:
@@ -91,6 +92,7 @@ def register(username,email,password,pw2,account_type,phone_num=None):
     if reg == "":
         #Create account with given info
         salt = urandom(10).encode('hex')
+        
         query = ("INSERT INTO users (username,email,password,salt,level,phone_num) VALUES (?, ?, ?, ?, ?, ?)")
         password = sha1(password + salt).hexdigest()
         c.execute(query, (username, email, password, salt, account_level, phone_num))

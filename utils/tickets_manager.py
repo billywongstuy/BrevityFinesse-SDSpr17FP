@@ -1,5 +1,3 @@
-
-
 from sqlite3 import connect
 from hashlib import sha1
 from os import urandom
@@ -101,7 +99,7 @@ def all_tickets():
 
 #------------------------------------------------------------
 # Get tickets of given status,return list of dictionaries
-# 0:pending; 1:in progress; 2:Done
+# 0:pending; 1: != pending and != Done (in progress); 2:Done
 #------------------------------------------------------------
 def all_tickets_with(status):
     db = connect(f)

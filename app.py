@@ -42,7 +42,13 @@ def home():
     
 @app.route("/ticket/<tid>")
 def ticket(tid):
-    #get all ticket info into a dictionary
+    if request.method == 'GET':
+        info = get_ticket(tid)
+        if info == 'Ticket doesn\'t exist':
+            return 'Ticket doesn\'t exist'
+        #check if tech logged in
+        #check if the teacher of the ticket logged in
+        return render_template('ticket.html',techAccess= (session['type'] == 'tech'))
     return tid
 
 #-----------------
