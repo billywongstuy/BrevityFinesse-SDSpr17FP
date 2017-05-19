@@ -168,6 +168,12 @@ def duplicate(username):
     db.close()
     return value
 
+#--------------------------
+# Change account level
+#-------------------------
+def change_level(key):
+    db = connect(f)
+
 #-------------------------------
 # NOT IN USE AT THE MOMENT
 #-------------------------------
@@ -192,3 +198,15 @@ def admin_resetpwd(email):
     
     return "Email does not exist in database!"
 
+
+#----------------------------
+# Drop table users(debug)
+#---------------------------
+def drop()
+    db = connect(f)
+    c = db.cursor()
+
+    c.execute("DROP TABLE users")
+    db.commit()
+    db.close()
+    return "users db dropped"
