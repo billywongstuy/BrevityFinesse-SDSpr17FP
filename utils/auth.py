@@ -17,7 +17,7 @@ def login(username, password):
     try:
         c.execute("SELECT * FROM USERS")
     except:
-        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, level TEXT, phone_num TEXT)")
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, last_name TEXT, first_name TEXT, email TEXT, password TEXT, salt TEXT, level TEXT, phone_num TEXT)")
 
     #find account with given username
     query = ("SELECT * FROM users WHERE username=?")
@@ -25,8 +25,8 @@ def login(username, password):
 
     #check password
     for record in info:
-        password = sha1(password+record[4]).hexdigest() #record[4] is the salt
-        if (password==record[3]): #record[3] is password
+        password = sha1(password+record[6]).hexdigest() #record[6] is the salt
+        if (password==record[5]): #record[5] is password
             return ""#login success,no error message
         else:
             return "User login has failed. Invalid password"#error message
@@ -48,7 +48,7 @@ def account_level(username):
 
     #return account type
     for record in account:
-        return record[5] #record[5] is level
+        return record[7] #record[7] is level
 
 #------------------------
 # NOT IN USE
@@ -67,7 +67,7 @@ def getSize():
 #----------------------
 # Register
 #---------------------
-def register(username,email,password,pw2,account_level,phone_num=None):
+def register(username,last,first,email,password,pw2,account_level,phone_num=None):
     db = connect(f, timeout=10)
     c = db.cursor()
 
@@ -77,7 +77,7 @@ def register(username,email,password,pw2,account_level,phone_num=None):
     try:
         c.execute("SELECT * FROM USERS")
     except:
-        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, level INTEGER, phone_num TEXT)")
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, last_name TEXT, first_name TEXT, email TEXT, password TEXT, salt TEXT, level INTEGER, phone_num TEXT)")
         
     #confirm password
     if password != pw2:
@@ -93,9 +93,9 @@ def register(username,email,password,pw2,account_level,phone_num=None):
         #Create account with given info
         salt = urandom(10).encode('hex')
         
-        query = ("INSERT INTO users (username,email,password,salt,level,phone_num) VALUES (?, ?, ?, ?, ?, ?)")
+        query = ("INSERT INTO users (username,last_name,first_name,email,password,salt,level,phone_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         password = sha1(password + salt).hexdigest()
-        c.execute(query, (username, email, password, salt, account_level, phone_num))
+        c.execute(query, (username, last, first, email, password, salt, account_level, phone_num))
         c.execute('SELECT * from users')
         db.commit()
         db.close()
@@ -140,8 +140,8 @@ def changepwd(username,old,new,new2):
     account = c.execute(query, (username,))
     for record in account:
         #validate old password
-        oldP = sha1(old+record[4]).hexdigest() #record[4] is the salt
-        if record[3] == oldP:#record[3] is password
+        oldP = sha1(old+record[6]).hexdigest() #record[6] is the salt
+        if record[5] == oldP:#record[5] is password
             #old password is correct, change to new password
             salt = urandom(10).encode('hex')
             password = sha1(new + salt).hexdigest()
@@ -219,6 +219,23 @@ def guest_on():
     return "No guest account."
 
 
+#-------------------------------
+# Get teacher name (last, first)
+#-------------------------------
+def get_teacher_name(username):
+    db = connect(f)
+    c = db.cursor()
+
+    #get account with given username
+    query = ("SELECT * FROM users WHERE username=?")
+    account = (query,(username,))
+
+    #return a string of last, first name
+    last_first_name = ""
+    for record in account:
+        last_first_name = record[2] + ", " + record[3]
+        return last_first_name
+    return "username doesn't exist"
 
 #----------------------
 # Drop table(debug use)
@@ -271,10 +288,10 @@ def drop_users():
 #-----------------------
 # Testing area
 #-----------------------
-'''
+
 drop_users()
-register("user1","email@stuy.edu","password123","password123",0,"1234567890")
-register("guest","guest@stuy.edu","guestpassword","guestpassword",4,"1234567890")
+register("user1","last","first","email@stuy.edu","password123","password123",0,"1234567890")
+register("guest","","","test@test.com","password123","password123",4,"")
 print account_level("user1")
 print account_level("guest")
 
@@ -282,4 +299,7 @@ guest_off()
 print account_level("guest")
 guest_on()
 print account_level("guest")
-'''
+
+print get_teacher_name("user1")
+print get_teacher_name("guest")
+
