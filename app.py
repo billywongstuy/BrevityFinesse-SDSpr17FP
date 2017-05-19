@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from utils import auth, ticket_manager as tix
+from utils import auth, tickets_manager as tix
 import calendar, datetime, json, os
 from time import gmtime,strftime
 
@@ -13,24 +13,42 @@ app.secret_key = os.urandom(32)
 @app.route("/", methods=['POST','GET'])
 def home():
     if 'username' not in session:
+        #get all guest tickets
         return render_template('index.html')
-    #level 0 = superadmin
-    elif session['level'] == 0:
+    
+    #when getting tickets, store in list of dictionaries
+    elif session['type'] == 'superadmin': #['level'] == 0: #superadmin
+        #get all unresponded tickets
+        #get all pending tckets
+        #get all done tickets
         return 'superadmin<br><a href=\"logout\">Logout</a>'
-    #level 1 = admin
-    elif session['level'] == 1:
+    elif session['type'] == 'admin': #['level'] == 1: #admin
+        #get all unresponded tickets
+        #get all pending tckets
+        #get all done tickets
         return 'admin<br><a href=\"logout\">Logout</a>'
-    #level 2 = tech
-    elif session['level'] == 2:
+    elif session['type'] == 'tech': #['level'] == 2: #tech
+        #get all unresponded tickets
+        #get all pending tckets
+        #get all done tickets
         return 'tech<br><a href=\"logout\">Logout</a>'
-    #level 3 = teacher/guest
-    elif session['level'] == 3:
+    elif session['type'] == 'teacher': #['level'] == 3: #teacher
+        #get teach unresp tickets
+        #get tech pending tickets
+        #get teach done tickets
         return 'teacher<br><a href=\"logout\">Logout</a>'
     else:
         return 'You broke the page!'
     
 @app.route("/ticket/<tid>")
 def ticket(tid):
+    if request.method == 'GET':
+        info = get_ticket(tid)
+        if info == 'Ticket doesn\'t exist':
+            return 'Ticket doesn\'t exist'
+        #check if tech logged in
+        #check if the teacher of the ticket logged in
+        return render_template('ticket.html',techAccess= (session['type'] == 'tech'))
     return tid
 
 #-----------------
@@ -38,6 +56,7 @@ def ticket(tid):
 #-----------------
 
 @app.route("/login", methods=['POST','GET'])
+@app.route("/login/", methods=['POST','GET'])
 def login():
     #render login page
     if request.method == 'GET':
@@ -57,36 +76,53 @@ def login():
     return loginMessage   #return error message for invalid login
 
 @app.route("/logout", methods=['GET','POST'])
+@app.route("/logout/", methods=['GET','POST'])
 def logout():
     session.pop('username')
     session.pop('type')
-    return redirect('/')
-#nder_template('index.html')
+    return redirect('/') #render_template('index.html')
 
 
 #-------------------------
-# TEACHER FUNCTIONS
+# GUEST TICKET VIEWING
 #-------------------------
+
+@app.route('/guest_tickets', methods=['GET','POST'])
+def guest_tickets():
+    #get all the guest tickets
+    return 'guest tickets templates'
+
+
+#------------------------------------------------
+# TEACHER FUNCTIONS (EVERYONE INCLUDING GUEST)
+#------------------------------------------------
 
 guest_allow = True
 
 @app.route("/submit", methods=['POST','GET'])
 def submit():
     if request.method == 'GET':
-        return render_template("submit.html", isLogged=('username' in session))
+        return render_template("submit.html", teacherAcc=('username' in session and session['type'] == 'teacher'))
+
+    if 'username' not in session and not guest_allow:
+        return render_template('guestunavail.html')
+    
+    room = int(request.form['room'])
+    if room <= 100 or room >= 1050:
+        return render_template('submit.html', isLogged=('username' in session), error='Invalid room number')
+    
     subj = request.form['subject']
     desc = request.form['desc']
-    room = int(request.form['room'])
-    hour = int(strftime("%H",gmtime()))-4
-    date = strftime("%Y-%m-%d a:%M:%S", gmtime())
-    date.replace('a',str(hour))
+    date = str(datetime.datetime.now())
+    date = date[0:date.find('.')]
     
     if 'username' not in session:
-        name = request.form['name']
+        name = request.form['guestName']
     else:
         name = session['username']
-        
-    tix.add_request(name,date,room,subj,body)
+
+    tix.add_ticket(name,date,room,subj,desc)
+    return redirect("/")
     
 #Functions to receive pending requests and old requests should be endpoints returning raw JSON data which will be displayed on a central profile page using JavaScript
 #	- Julian
@@ -125,7 +161,7 @@ def pending_tickets_tech():
         return redirect("/")
     return
 
-@app.route("/old_ticketts_tech", methods=['POST','GET'])
+@app.route("/old_tickets_tech", methods=['POST','GET'])
 def old_tickets_tech():
     if not 'username' in session or session['type'] != 'tech':
         return redirect("/")
@@ -137,7 +173,7 @@ def old_tickets_tech():
 
 admin_access = ['admin','superadmin']
 
-@app.route("/all_tickets", methods=['POST','GET'])
+@app.route("/a", methods=['POST','GET'])
 def all_tickets():
     if not 'username' in session or not session['type'] in admin_access:
         return redirect('/')
@@ -147,24 +183,35 @@ def all_tickets():
 def create_account():
     if not 'username' in session or not session['type'] in admin_access:
         return redirect('/')
-    return render_template('register.html')
+    
+    if request.method == 'GET':
+        return render_template('register.html',message=None)
+    
+    user = request.form['user']
+    email = request.form['email']
+    email2 = request.form['emailconf']
+    
+    if email != email2:
+        return render_template('register.html')
+    
+    passw = request.form['pass']
+    pass2 = request.form['passconf']
+    account = request.form['account']
+    phone = request.form['phone']
+    
+    msg = auth.register(user,email,passw,pass2,account,phone)
 
-@app.route("/guest_toggle", methods=['POST','GET'])
-def guest_toggle():
-    if not 'username' in session or not session['type'] in admin_access:
-        return redirect('/')
-    return
-
+    return render_template('register.html',message=msg)
+    
 #-------------------------
 # SUPERADMIN FUNCTIONS
 #-------------------------
 
 @app.route("/admin_promote", methods=['POST','GET'])
 def admin_promote():
-    if not 'username' in session or session['type'] != 'superadmin' :
+    if not 'username' in session or session['type'] != 'superadmin':
         return redirect('/')
     return
-
 
 #------------------
 # ERROR HANDLERS

@@ -1,75 +1,57 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
-  </head>
-  <body>
-    <script type="text/javascript" src="../static/js/jquery-3.2.1.js"></script>
-    <script type="text/javascript" src="../static/js/bootstrap.js"></script>
-    <nav class="navbar navbar-inverse navbar-static-top">
-      <div class="container-fluid">
-	<!-- Brand and toggle get grouped for better mobile display -->
-	<div class="navbar-header">
-	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-	  </button>
-	  <a class="navbar-brand" href="/">StuyTix</a>
-	</div>
+{% extends "base.html" %}
 
-	<!-- Collect the nav links, forms, and other content for toggling -->
-	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	  <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Link</a></li>
-	  </ul>
-	  <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Logout</a></li>
-	  </ul>
-	</div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-    <div class="container">
-      <h1>Submit Ticket</h1><br>
-      <div class="row">
-	<div class="col-3-md col-3-sm"></div>
-	<div class="col-6-md col-6-sm col-12-xs">
-	  <div class="jumbotron">
-	    <form action="/submit" method="POST">
-	      <div class="form-group">
-		<label for="ticketSubject">Subject</label>
-		<!--<input type="textarea" class="form-control" id="ticketSubject" placeholder="Briefly outline your problem" name="subject">-->
-		<select class="form-control" id="ticketSubject" name="subject">
-		  <option value="" disabled selected>Brief outline of your problem</option>
-		  <option value="sound">No Volume</option>
-		  <option value="cpu_off">Computer Won't Turn On</option>
-		  <option value="smart_off">SmartBoard Won't Turn On</option>
-		  <option value=""></option>
-		</select>
-	      </div>
-	      {% if not isLogged %}
-	      <div class="form-group">
-		<label for="ticketSubject">Name</label>
-		<input type="number" class="form-control" id="roomNumber" name="room" min="100" max="1099">
-	      </div>
-	      {% endif %}
-	      <div class="form-group">
-		<label for="ticketSubject">Name</label>
-		<input type="textarea" class="form-control" id="ticketGuestName" placeholder="Enter your name" name="guestName">
-	      </div>
-	      <div class="form-group">
-		<label for="ticketDesc">Description</label>
-		<!--<input type="password" class="form-control" id="passInput" placeholder="Enter password" name="pass">-->
-		<textarea class="form-control" id="ticketDesc" placeholder="Describe your problem (max. 1000 chars)" maxlength="1000" rows="5" name="desc"></textarea>
-	      </div>
-	      <button type="submit" class="btn btn-primary">Submit</button>
-	    </form>
+<!-- VERIFY INPUTS WITH AJAX -->
+
+<title>Create Ticket</title>
+
+{% block nav %}
+{{super()}}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h1>Submit Ticket</h1><br>
+  <div class="row">
+    <div class="col-3-md col-3-sm"></div>
+    <div class="col-6-md col-6-sm col-12-xs">
+      <div class="jumbotron">
+	<form action="/submit" method="POST">
+	  <div class="form-group">
+	    <label for="ticketSubject">Subject</label>
+	    <!--<input type="textarea" class="form-control" id="ticketSubject" placeholder="Briefly outline your problem" name="subject">-->
+	    <select class="form-control" id="ticketSubject" name="subject">
+	      <option value="" disabled selected>Brief outline of your problem</option>
+	      <option value="sound">No Volume</option>
+	      <option value="cpu_off">Computer Won't Turn On</option>
+	      <option value="smart">SmartBoard Issue</option>
+	      <option value="printer">Printer Issue</option>
+	      <option value="elec">Electricity Issue</option>
+	      <option value="other">Other (use description)</option>
+	      <option value=""></option>
+	    </select>
+	  </div>	  
+	  <div class="form-group">
+	    <label for="ticketSubject">Room</label>
+	    <input type="number" class="form-control" id="roomNumber" name="room" min="100" max="1099">
 	  </div>
-	</div>
-	<div class="col-3-md col-3-sm"></div>
+	  
+	  {% if not teacherAcc %} <!-- admins need to put teacher name -->
+	  <div class="form-group">
+	    <label for="ticketSubject">Name</label>
+	    <input type="textarea" class="form-control" id="ticketGuestName" placeholder="Enter your name" name="guestName">
+	  </div>
+	  {% endif %}
+	  
+	  <div class="form-group">
+	    <label for="ticketDesc">Description</label>
+	    <!--<input type="password" class="form-control" id="passInput" placeholder="Enter password" name="pass">-->
+	    <textarea class="form-control" id="ticketDesc" placeholder="Describe your problem (max. 1000 chars)" maxlength="1000" rows="5" name="desc"></textarea>
+	  </div>
+	  <button type="submit" class="btn btn-primary">Submit</button>
+	</form>
       </div>
     </div>
-  </body>
-</html>
+    <div class="col-3-md col-3-sm"></div>
+  </div>
+</div>
+{% endblock %}

@@ -17,7 +17,7 @@ def login(username, password):
     try:
         c.execute("SELECT * FROM USERS")
     except:
-        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, level TEXT, phone_num TEXT)")
 
     #find account with given username
     query = ("SELECT * FROM users WHERE username=?")
@@ -36,9 +36,9 @@ def login(username, password):
     return "Username does not exist"#error message
 
 #---------------------
-# Get account type
+# Get account level
 #---------------------
-def account_type(username):
+def account_level(username):
     db = connect(f)
     c = db.cursor()
 
@@ -48,7 +48,7 @@ def account_type(username):
 
     #return account type
     for record in account:
-        return record[5] #record[5] is type
+        return record[5] #record[5] is level
 
 #------------------------
 # NOT IN USE
@@ -67,8 +67,18 @@ def getSize():
 #----------------------
 # Register
 #---------------------
-def register(username,email,password,pw2,account_type,phone_num):
+def register(username,email,password,pw2,account_level,phone_num=None):
+    db = connect(f, timeout=10)
+    c = db.cursor()
 
+    account_level = int(account_level)
+    
+    #select table users, create table users if doesn't exist
+    try:
+        c.execute("SELECT * FROM USERS")
+    except:
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, level INTEGER, phone_num TEXT)")
+        
     #confirm password
     if password != pw2:
         return "Passwords not the same."
@@ -77,24 +87,15 @@ def register(username,email,password,pw2,account_type,phone_num):
     if duplicate(username):
         return "Username already exists"
     
-    db = connect(f, timeout=10)
-    c = db.cursor()
-    
-    #select table users, create table users if doesn't exist
-    try:
-        c.execute("SELECT * FROM USERS")
-        print ("table exist")
-    except:
-        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT, salt TEXT, type TEXT, phone_num TEXT)")
-
     #check if email is valid, reg = "" if valid
     reg = errorMsg(email, password)
     if reg == "":
         #Create account with given info
         salt = urandom(10).encode('hex')
-        query = ("INSERT INTO users (username,email,password,salt,type,phone_num) VALUES (?, ?, ?, ?, ?, ?)")
+        
+        query = ("INSERT INTO users (username,email,password,salt,level,phone_num) VALUES (?, ?, ?, ?, ?, ?)")
         password = sha1(password + salt).hexdigest()
-        c.execute(query, (username, email, password, salt, account_type, phone_num))
+        c.execute(query, (username, email, password, salt, account_level, phone_num))
         c.execute('SELECT * from users')
         db.commit()
         db.close()
@@ -168,11 +169,67 @@ def duplicate(username):
     db.close()
     return value
 
-#--------------------------
+#-----------------------
 # Change account level
-#-------------------------
-def change_level(key):
+#-----------------------
+def change_level(key,new_level):
     db = connect(f)
+    c = db.cursor()
+
+    #change account level
+    query = ("UPDATE users SET level=? WHERE primary_key=?")
+    c.execute(query,(new_level,key,))
+    db.commit()
+    db.close()
+    return "Account level changed."
+
+
+#----------------------
+# Turn off guest
+#----------------------
+def guest_off():
+    db = connect(f)
+    c = db.cursor()
+
+    #get guest account
+    query = ("SELECT * FROM users WHERE username='guest'")
+    guest = c.execute(query)
+    
+    #change level to 5(disabled guest)
+    for record in guest:
+        key = record[0]
+        return change_level(key,5)
+    return "No guest account."
+
+#---------------------
+# Turn on guest
+#---------------------
+def guest_on():
+    db = connect(f)
+    c = db.cursor()
+
+    #get guest account
+    query = ("SELECT * FROM users WHERE username='guest'")
+    guest = c.execute(query)
+    
+    #change level to 4(guest)
+    for record in guest:
+        key = record[0]
+        return change_level(key,4)
+    return "No guest account."
+
+
+
+#----------------------
+# Drop table(debug use)
+#----------------------
+def drop():
+    db = connect(f)
+    c = db.cursor()
+    c.execute("DROP TABLE users")
+    db.commit()
+    db.close()
+    return "Table users dropped"
 
 #-------------------------------
 # NOT IN USE AT THE MOMENT
@@ -198,7 +255,6 @@ def admin_resetpwd(email):
     
     return "Email does not exist in database!"
 
-
 #----------------------------
 # Drop table users(debug)
 #---------------------------
@@ -210,3 +266,20 @@ def drop()
     db.commit()
     db.close()
     return "users db dropped"
+
+
+#-----------------------
+# Testing area
+#-----------------------
+'''
+drop()
+register("user1","email@stuy.edu","password123","password123",0,"1234567890")
+register("guest","guest@stuy.edu","guestpassword","guestpassword",4,"1234567890")
+print account_level("user1")
+print account_level("guest")
+
+guest_off()
+print account_level("guest")
+guest_on()
+print account_level("guest")
+'''
