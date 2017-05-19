@@ -17,22 +17,26 @@ def home():
         return render_template('index.html')
     
     #when getting tickets, store in list of dictionaries
-    elif session['type'] == 'superadmin': #['level'] == 0: #superadmin
+
+    print 'BBBBBBBBBB ',session['level']
+    print type(session['level'])
+    
+    if session['level'] == 0: #superadmin
         #get all unresponded tickets
         #get all pending tckets
         #get all done tickets
         return 'superadmin<br><a href=\"logout\">Logout</a>'
-    elif session['type'] == 'admin': #['level'] == 1: #admin
+    elif session['level'] == 1: #admin
         #get all unresponded tickets
         #get all pending tckets
         #get all done tickets
         return 'admin<br><a href=\"logout\">Logout</a>'
-    elif session['type'] == 'tech': #['level'] == 2: #tech
+    elif session['level'] == 2: #tech
         #get all unresponded tickets
         #get all pending tckets
         #get all done tickets
         return 'tech<br><a href=\"logout\">Logout</a>'
-    elif session['type'] == 'teacher': #['level'] == 3: #teacher
+    elif session['level'] == 3: #teacher
         #get teach unresp tickets
         #get tech pending tickets
         #get teach done tickets
@@ -53,8 +57,8 @@ def ticket(tid):
 # LOGINS
 #-----------------
 
-@app.route("/login", methods=['POST','GET'])
 @app.route("/login/", methods=['POST','GET'])
+@app.route("/login", methods=['POST','GET'])
 def login():
     #render login page
     if request.method == 'GET':
@@ -68,16 +72,15 @@ def login():
     #loginMessage = "" if login is valid --> go to index page
     if loginMessage == "":
         session['username'] = username    #session username
-        session['type'] = auth.account_type(username)  #get account type
+        session['level'] = int(auth.account_level(username))  #get account type
         return redirect('/')
 
     return loginMessage   #return error message for invalid login
 
 @app.route("/logout", methods=['GET','POST'])
-@app.route("/logout/", methods=['GET','POST'])
 def logout():
     session.pop('username')
-    session.pop('type')
+    session.pop('level')
     return redirect('/') #render_template('index.html')
 
 
@@ -115,11 +118,12 @@ def submit():
     date = date[0:date.find('.')]
     
     if 'username' not in session:
-        t_name = request.form['guestName']
         u_name = 'guest'
+        l_name = request.form['guestLastName']
+        f_name = request.form['guestFirstName']
     else:
-        t_name = session['username'] # ths should use get teacher name by acc
         u_name = session['username']
+        t_name = auth.get_teacher_name(u_name)
         
     tix.add_ticket(u_name,t_name,date,room,subj,desc)
     return redirect("/")
@@ -173,7 +177,7 @@ def old_tickets_tech():
 
 admin_access = ['admin','superadmin']
 
-@app.route("/a", methods=['POST','GET'])
+@app.route("/all_tickets", methods=['POST','GET'])
 def all_tickets():
     if not 'username' in session or not session['type'] in admin_access:
         return redirect('/')
@@ -198,6 +202,7 @@ def create_account():
     pass2 = request.form['passconf']
     account = request.form['account']
     phone = request.form['phone']
+    #f_name = request.form['first']
     
     msg = auth.register(user,email,passw,pass2,account,phone)
 
