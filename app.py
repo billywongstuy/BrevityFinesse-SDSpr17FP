@@ -54,7 +54,6 @@ def ticket(tid):
 #-----------------
 
 @app.route("/login", methods=['POST','GET'])
-@app.route("/login/", methods=['POST','GET'])
 def login():
     #render login page
     if request.method == 'GET':
@@ -74,7 +73,6 @@ def login():
     return loginMessage   #return error message for invalid login
 
 @app.route("/logout", methods=['GET','POST'])
-@app.route("/logout/", methods=['GET','POST'])
 def logout():
     session.pop('username')
     session.pop('type')
