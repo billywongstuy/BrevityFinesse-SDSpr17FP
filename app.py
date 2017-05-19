@@ -71,7 +71,12 @@ def logout():
     session.pop('username')
     session.pop('type')
     return redirect('/')
-#nder_template('index.html')
+#render_template('index.html')
+
+@app.route('/guest_tickets', methods=['GET','POST'])
+def guest_tickets():
+    #get all the guest tickets
+    return 'guest tickets templates'
 
 
 #-------------------------
