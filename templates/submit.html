@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+<!-- VERIFY INPUTS WITH AJAX -->
+
 <title>Create Ticket</title>
 
 {% block nav %}
@@ -27,17 +29,19 @@
 	      <option value="other">Other (use description)</option>
 	      <option value=""></option>
 	    </select>
-	  </div>
-	  {% if not isLogged %}
+	  </div>	  
 	  <div class="form-group">
 	    <label for="ticketSubject">Room</label>
 	    <input type="number" class="form-control" id="roomNumber" name="room" min="100" max="1099">
 	  </div>
-	  {% endif %}
+	  
+	  {% if not teacherAcc %} <!-- admins need to put teacher name -->
 	  <div class="form-group">
 	    <label for="ticketSubject">Name</label>
 	    <input type="textarea" class="form-control" id="ticketGuestName" placeholder="Enter your name" name="guestName">
 	  </div>
+	  {% endif %}
+	  
 	  <div class="form-group">
 	    <label for="ticketDesc">Description</label>
 	    <!--<input type="password" class="form-control" id="passInput" placeholder="Enter password" name="pass">-->

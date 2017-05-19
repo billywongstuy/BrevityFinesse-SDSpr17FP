@@ -67,7 +67,7 @@ def getSize():
 #----------------------
 # Register
 #---------------------
-def register(username,email,password,pw2,account_type,phone_num):
+def register(username,email,password,pw2,account_type,phone_num=None):
 
     #confirm password
     if password != pw2:
