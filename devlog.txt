@@ -66,15 +66,16 @@ billyW -- 2017-05-17 19:24
     - Basic 404 page
     - Some prelim input handling
 
-yukiC -- 2017-05-18
-  - Task:
+yukiC -- 2017-05-18 22:42
+  - Tasks:
       1. Change account level
       2. Turn off guest
       3. Get all pending/unaccepted/done tickets
       4. Get pending/unaccepted/done tickets by username (teacher)
       5. Get ALL tickets
       6. Add username column to tickets table (in front after primary_key)
-
+  - Fixed bug with updating database
+  
 billyW -- 2017-05-18 15:18
     - Fixed submit route
     - Added base.html for jinja
