@@ -148,9 +148,11 @@ def ticket(tid):
     #tech = request.form['techName']  #auto-filled to tech name if present
     #status = request.form['status']
     #urgency = request.form['urgency']
+    #time_until = request.form['timeUntil'] #convert this to epoch
+    #time_until = epoch(time_until)
     
     # update the ticket
-    #tix.accept_ticket(tid,tech,urgency,status)
+    #tix.accept_ticket(tid,tech,urgency,status,time_until)
     
     return render_template('ticket.html',techAccess=(session['level'] == 2),ticketInfo=info,message='Ticket updated!')
 

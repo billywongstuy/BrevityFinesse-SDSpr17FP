@@ -1,9 +1,10 @@
 from sqlite3 import connect
 from hashlib import sha1
 from os import urandom
-import random,string
+import random,string,time
 
 f = "data/tix.db"
+statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 
 #-----------------------------
 # Teacher create request
@@ -60,7 +61,12 @@ def get_ticket(key):
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
-        ticket_info['status'] = record[9]
+        ticket_info['status'] = statuses[record[9]]
+
+        if record[9] >= 2:
+            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
+            ticket_info['status'] += until
+            
         db.commit()
         db.close()
         return ticket_info
@@ -92,8 +98,12 @@ def all_tickets():
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
-        ticket_info['status'] = record[9]
-        ticket_info['time_until'] = record[10]
+        ticket_info['status'] = statuses[record[9]]
+
+        if record[9] >= 2:
+            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
+            ticket_info['status'] += until
+        
         ticket_list.append(ticket_info)
     return ticket_list
 
@@ -128,8 +138,12 @@ def all_tickets_with(status):
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
-        ticket_info['status'] = record[9]
-        ticket_info['time_until'] = record[10]
+        ticket_info['status'] = statuses[record[9]]
+
+        if record[9] >= 2:
+            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
+            ticket_info['status'] += until
+            
         ticket_list.append(ticket_info)
     return ticket_list
 
@@ -164,8 +178,12 @@ def all_tickets_from(username,status):
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
-        ticket_info['status'] = record[9]
-        ticket_info['time_until'] = record[10]
+        ticket_info['status'] = statuses[record[9]]
+
+        if record[9] >= 2:
+            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
+            ticket_info['status'] += until
+            
         ticket_list.append(ticket_info)
     return ticket_list
     
