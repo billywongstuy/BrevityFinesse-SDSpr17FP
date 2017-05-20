@@ -220,15 +220,15 @@ def guest_on():
 
 
 #-------------------------------
-# Get teacher name (last, first)
+# Get name (last, first)
 #-------------------------------
-def get_teacher_name(username):
+def get_name(username):
     db = connect(f)
     c = db.cursor()
 
     #get account with given username
     query = ("SELECT * FROM users WHERE username=?")
-    account = (query,(username,))
+    account = c.execute(query,(username,)).fetchall()
 
     #return a string of last, first name
     last_first_name = ""
@@ -236,6 +236,24 @@ def get_teacher_name(username):
         last_first_name = record[2] + ", " + record[3]
         return last_first_name
     return "username doesn't exist"
+
+
+#----------------------------
+# get level
+#----------------------------
+
+def get_level(username):
+    db = connect(f)
+    c = db.cursor()
+
+    #get account with given username
+    query = ("SELECT * FROM users WHERE username=?")
+    account = c.execute(query,(username,)).fetchall()
+
+    for record in account:
+        return record[7]
+    return "username doesn't exist"
+
 
 #----------------------
 # Drop table(debug use)
@@ -289,17 +307,17 @@ def drop_users():
 # Testing area
 #-----------------------
 
-drop_users()
+#drop_users()
 register("user1","last","first","email@stuy.edu","password123","password123",0,"1234567890")
 register("guest","","","test@test.com","password123","password123",4,"")
-print account_level("user1")
-print account_level("guest")
+#print account_level("user1")
+#print account_level("guest")
 
 guest_off()
-print account_level("guest")
+#print account_level("guest")
 guest_on()
-print account_level("guest")
+#print account_level("guest")
 
-print get_teacher_name("user1")
-print get_teacher_name("guest")
+#print get_teacher_name("user1")
+#print get_teacher_name("guest")
 

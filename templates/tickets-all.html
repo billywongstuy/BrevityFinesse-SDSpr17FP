@@ -1,0 +1,34 @@
+{% extends "base2.html" %}
+
+{% block nav %}
+{{super()}}
+{% endblock %}
+
+
+{% block body %}
+
+<h1>All Tickets</h1>
+
+<!-- The categories should be drop down menus -->
+
+<div>
+  <h2>In Progress</h2>
+  {% for ticket in progress %}
+  {{ticket}}
+  {% endfor %}
+</div>
+
+<div>
+  <h2>Pending</h2>
+  {% for ticket in pending %}
+  {{ticket}}
+  {% endfor %}
+</div>
+
+<div>
+  <h2>Past</h2>
+  {% for ticket in done %}
+  {{ticket}}
+  {% endfor %}
+</div>
+{% endblock %}

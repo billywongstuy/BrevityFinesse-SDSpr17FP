@@ -108,10 +108,11 @@ def all_tickets_with(status):
     #find all tickets with given status
 
     if status == 'In Progress':
-        query = ("SELECT * FROM tickets WHERE username=? AND status!=\'Pending\' AND status!=\'Done\'")
+        query = ("SELECT * FROM tickets WHERE status!=\'Pending\' AND status!=\'Done\'")
+        tickets = c.execute(query)
     else:
         query = ("SELECT * FROM tickets WHERE status=?")
-    tickets = c.execute(query,(status,))
+        tickets = c.execute(query,(status,))
 
     #create list of dictionaries with ticket info
     ticket_list = []
@@ -143,9 +144,10 @@ def all_tickets_from(username,status):
 
     if status == 'In Progress':
         query = ("SELECT * FROM tickets WHERE username=? AND status!=\'Pending\' AND status!=\'Done\'")
+        tickets = c.execute(query,(username,))
     else:
         query = ("SELECT * FROM tickets WHERE username=? AND status=?")
-    tickets = c.execute(query,(username,status,))
+        tickets = c.execute(query,(username,status,))
 
     #create list of dictionaries with ticket info
     ticket_list = []

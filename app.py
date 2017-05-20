@@ -26,27 +26,27 @@ def home():
         return render_template('index.html')
     
     if session['level'] == 0: #superadmin
-        return render_template('superadmindashboard.html')#'superadmin<br><a href=\"logout\">Logout</a>' #DASHBOARD
+        return render_template('superadmin-dashboard.html')#'superadmin<br><a href=\"logout\">Logout</a>' #DASHBOARD
     
     elif session['level'] == 1: #admin
-        return render_template('admindashboard.html')
+        return render_template('admin-dashboard.html')
 
     elif session['level'] == 2: #tech
         pending = tix.all_tickets_with('Pending')
         progress = tix.all_tickets_with('In Progress')
         done = tix.all_tickets_with('Done')
-        return 'tech<br><a href=\"logout\">Logout</a>'
+        return render_template('index-tech.html',pending=pending,progress=progress,done=done)
 
     elif session['level'] == 3: #teacher
         pending = tix.all_tickets_from(session['username'],'Pending')
         progress = tix.all_tickets_from(session['username'],'In Progress')
         done = tix.all_tickets_from(session['username'],'In Progress')
-        return 'teacher<br><a href=\"logout\">Logout</a>'
+        return render_template('index-teacher.html',pending=pending,progress=progress,done=done)
 
     else:
         return 'You broke the page!'
 
-    #-----------------
+#-----------------
 # LOGIN / LOGOUT
 #-----------------
 
@@ -72,23 +72,25 @@ def login():
 
 @app.route("/logout", methods=['GET','POST'])
 def logout():
-    session.pop('username')
-    session.pop('level')
+    if 'username' in session:
+        session.pop('username')
+        session.pop('level')
     return redirect('/') #render_template('index.html')
 
 #------------------------------------------------
 # TICKET CREATION
 #------------------------------------------------
 
-guest_allow = True
 
 @app.route("/submit", methods=['POST','GET'])
 def submit():
-    if request.method == 'GET':
-        return render_template("submit.html", teacherAcc=('username' in session and session['type'] == 'teacher'))
-
+    guest_allow = (auth.get_level('guest') == 4)
+    
     if 'username' not in session and not guest_allow:
-        return render_template('guestunavail.html')
+        return 'no' #render_template('guestunavail.html')
+    
+    if request.method == 'GET':
+        return render_template("submit.html", teacherAcc=('username' in session and session['level'] == 3))
     
     room = int(request.form['room'])
     if room <= 100 or room >= 1050:
@@ -105,7 +107,7 @@ def submit():
         f_name = request.form['guestFirstName']
     else:
         u_name = session['username']
-        t_name = auth.get_teacher_name(u_name)
+        t_name = auth.get_name(u_name)
         
     tix.add_ticket(u_name,t_name,date,room,subj,desc)
     return redirect("/")
@@ -123,8 +125,9 @@ def guest_tickets():
     #get all the guest tickets
     pending = tix.all_tickets_from('guest','Pending')
     progress = tix.all_tickets_from('guest','In Progress')
-    done = tix.all_tickets_from('guest','In Progress')
-    return render_template('guesttickets.html',pending=pending,progress=progress,done=done)
+    done = tix.all_tickets_from('guest','Done')
+    
+    return render_template('tickets-guest.html',pending=pending,progress=progress,done=done)
 
 
 #-----------------------------
@@ -160,7 +163,10 @@ admin_access = [0,1]
 def all_tickets():
     if not 'username' in session or not session['level'] in admin_access:
         return redirect('/')
-    return
+    pending = tix.all_tickets_with('Pending')
+    progress = tix.all_tickets_with('In Progress')
+    done = tix.all_tickets_with('Done')
+    return render_template('tickets-all.html',pending=pending,progress=progress,done=done)
 
 @app.route("/create_account", methods=['POST','GET'])
 def create_account():
@@ -181,21 +187,29 @@ def create_account():
     pass2 = request.form['passconf']
     account = request.form['account']
     phone = request.form['phone']
-    #f_name = request.form['first']
+    f_name = request.form['firstName']
+    l_name = request.form['lastName']
     
-    msg = auth.register(user,email,passw,pass2,account,phone)
+    msg = auth.register(user,l_name,f_name,email,passw,pass2,account,phone)
 
     return render_template('register.html',message=msg)
-    
+
+@app.route("/guest_toggle", methods=['POST'])
+def guest_toggle():
+    #do toggling stuff here
+    return redirect('/')
+
 #-------------------------
 # SUPERADMIN FUNCTIONS
 #-------------------------
 
 @app.route("/admin_promote", methods=['POST','GET'])
 def admin_promote():
-    if not 'username' in session or session['type'] != 'superadmin':
+    if not 'username' in session or session['level'] != 0:
         return redirect('/')
+
     return
+
 
 #------------------
 # ERROR HANDLERS
@@ -203,7 +217,6 @@ def admin_promote():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    #return render_template('404.html'), 404
     return render_template("404.html")
 
 
