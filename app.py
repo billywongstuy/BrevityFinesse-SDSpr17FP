@@ -40,7 +40,7 @@ def home():
     elif session['level'] == 3: #teacher
         pending = tix.all_tickets_from(session['username'],'Pending')
         progress = tix.all_tickets_from(session['username'],'In Progress')
-        done = tix.all_tickets_from(session['username'],'In Progress')
+        done = tix.all_tickets_from(session['username'],'Done')
         return render_template('index-teacher.html',pending=pending,progress=progress,done=done)
 
     else:
