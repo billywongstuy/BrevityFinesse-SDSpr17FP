@@ -16,6 +16,8 @@ In Progress
 Done
 '''
 
+statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
+
 #---------------------------
 # ROOT (INDEX)
 #---------------------------
@@ -32,15 +34,15 @@ def home():
         return render_template('admin-dashboard.html')
 
     elif session['level'] == 2: #tech
-        pending = tix.all_tickets_with('Pending')
-        progress = tix.all_tickets_with('In Progress')
-        done = tix.all_tickets_with('Done')
+        pending = tix.all_tickets_with(0)
+        done = tix.all_tickets_with(1)
+        progress = tix.all_tickets_with(2)
         return render_template('index-tech.html',pending=pending,progress=progress,done=done)
 
     elif session['level'] == 3: #teacher
-        pending = tix.all_tickets_from(session['username'],'Pending')
-        progress = tix.all_tickets_from(session['username'],'In Progress')
-        done = tix.all_tickets_from(session['username'],'Done')
+        pending = tix.all_tickets_from(session['username'],0)
+        progress = tix.all_tickets_from(session['username'],2)
+        done = tix.all_tickets_from(session['username'],1)
         return render_template('index-teacher.html',pending=pending,progress=progress,done=done)
 
     else:
@@ -105,6 +107,7 @@ def submit():
         u_name = 'guest'
         l_name = request.form['guestLastName']
         f_name = request.form['guestFirstName']
+        t_name = l_name + ', ' + f_name
     else:
         u_name = session['username']
         t_name = auth.get_name(u_name)
@@ -123,9 +126,9 @@ def submit():
 @app.route('/guest_tickets', methods=['GET','POST'])
 def guest_tickets():
     #get all the guest tickets
-    pending = tix.all_tickets_from('guest','Pending')
-    progress = tix.all_tickets_from('guest','In Progress')
-    done = tix.all_tickets_from('guest','Done')
+    pending = tix.all_tickets_from('guest',0)
+    progress = tix.all_tickets_from('guest',2)
+    done = tix.all_tickets_from('guest',1)
     
     return render_template('tickets-guest.html',pending=pending,progress=progress,done=done)
 
@@ -163,9 +166,9 @@ admin_access = [0,1]
 def all_tickets():
     if not 'username' in session or not session['level'] in admin_access:
         return redirect('/')
-    pending = tix.all_tickets_with('Pending')
-    progress = tix.all_tickets_with('In Progress')
-    done = tix.all_tickets_with('Done')
+    pending = tix.all_tickets_with(0)
+    progress = tix.all_tickets_with(2)
+    done = tix.all_tickets_with(1)
     return render_template('tickets-all.html',pending=pending,progress=progress,done=done)
 
 @app.route("/create_account", methods=['POST','GET'])

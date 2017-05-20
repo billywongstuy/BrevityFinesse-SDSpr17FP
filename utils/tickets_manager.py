@@ -15,11 +15,11 @@ def add_ticket(username,teacher,date,room,subject,body=None):
     try:
         c.execute("SELECT * FROM tickets")
     except:
-        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject TEXT, tix_body TEXT, tech_name TEXT, urgency INT, status INT)")
+        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject TEXT, tix_body TEXT, tech_name TEXT, urgency INT, status INT, time_until INT)")
 
     #create ticket entry with given info
-    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status) VALUES (?,?,?,?,?,?,?)")
-    c.execute(query,(username,teacher,date,room,subject,body,0,))
+    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status,time_until) VALUES (?,?,?,?,?,?,?,?)")
+    c.execute(query,(username,teacher,date,room,subject,body,0,None,))
     db.commit()
     db.close()
     return "Ticket created!"
@@ -27,11 +27,11 @@ def add_ticket(username,teacher,date,room,subject,body=None):
 #------------------------------
 # Tech accepts/updates ticket
 #------------------------------
-def update_ticket(key,tech,urgency,status):
+def update_ticket(key,tech,urgency,status,time_until):
     db = connect(f)
     c = db.cursor()
-    query = ("UPDATE tickets SET tech_name=?, urgency=?, status=? WHERE primary_key=?")
-    c.execute(query,(tech,urgency,status,key,))
+    query = ("UPDATE tickets SET tech_name=?, urgency=?, status=?, time_until=? WHERE primary_key=?")
+    c.execute(query,(tech,urgency,status,time_until,key,))
     db.commit()
     db.close()
     return "Ticket accepted!"
@@ -93,13 +93,14 @@ def all_tickets():
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = record[9]
+        ticket_info['time_until'] = record[10]
         ticket_list.append(ticket_info)
     return ticket_list
 
 
 #------------------------------------------------------------
 # Get tickets of given status,return list of dictionaries
-# 0:pending; 1: != pending and != Done (in progress); 2:Done
+# 0:pending; 1: resolved, 2+: in progress 
 #------------------------------------------------------------
 def all_tickets_with(status):
     db = connect(f)
@@ -107,8 +108,8 @@ def all_tickets_with(status):
 
     #find all tickets with given status
 
-    if status == 'In Progress':
-        query = ("SELECT * FROM tickets WHERE status!=\'Pending\' AND status!=\'Done\'")
+    if status == 2:
+        query = ("SELECT * FROM tickets WHERE status >= 2")
         tickets = c.execute(query)
     else:
         query = ("SELECT * FROM tickets WHERE status=?")
@@ -128,13 +129,14 @@ def all_tickets_with(status):
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = record[9]
+        ticket_info['time_until'] = record[10]
         ticket_list.append(ticket_info)
     return ticket_list
 
 
 #-----------------------------------------------------------------------------
 # Get tickets of given status from given username,return list of dictionaries
-# Pending; Different (In Progress); Done
+# 0: pending, 1: resolved, 2+: in progress
 #-----------------------------------------------------------------------------
 def all_tickets_from(username,status):
     db = connect(f)
@@ -142,8 +144,8 @@ def all_tickets_from(username,status):
     
     #find all tickets with given status from given username
 
-    if status == 'In Progress':
-        query = ("SELECT * FROM tickets WHERE username=? AND status!=\'Pending\' AND status!=\'Done\'")
+    if status == 2:
+        query = ("SELECT * FROM tickets WHERE username=? AND status >= 2")
         tickets = c.execute(query,(username,))
     else:
         query = ("SELECT * FROM tickets WHERE username=? AND status=?")
@@ -163,6 +165,7 @@ def all_tickets_from(username,status):
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = record[9]
+        ticket_info['time_until'] = record[10]
         ticket_list.append(ticket_info)
     return ticket_list
     
