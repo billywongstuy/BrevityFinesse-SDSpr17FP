@@ -4,7 +4,9 @@ from os import urandom
 import random,string,time
 
 f = "data/tix.db"
-statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
+statuses = {0:'Pending', 1:'Resolved', 2:'Coming at', 3: 'Deferred to'}
+
+time_pattern = '%Y-%m-%dT%H:%M'
 
 #-----------------------------
 # Teacher create request
@@ -28,11 +30,11 @@ def add_ticket(username,teacher,date,room,subject,body=None):
 #------------------------------
 # Tech accepts/updates ticket
 #------------------------------
-def update_ticket(key,tech,urgency,status,time_until):
+def update_ticket(key,tech,urgency,status,when):
     db = connect(f)
     c = db.cursor()
     query = ("UPDATE tickets SET tech_name=?, urgency=?, status=?, time_until=? WHERE primary_key=?")
-    c.execute(query,(tech,urgency,status,time_until,key,))
+    c.execute(query,(tech,urgency,status,when,key,))
     db.commit()
     db.close()
     return "Ticket accepted!"
@@ -62,10 +64,11 @@ def get_ticket(key):
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
-
+        ticket_info['when'] = None
+        
         if record[9] >= 2:
-            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
-            ticket_info['status'] += until
+            until = time.strftime(time_pattern, time.localtime(record[10]))
+            ticket_info['when'] = str(until)
             
         db.commit()
         db.close()
@@ -99,10 +102,11 @@ def all_tickets():
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
-
+        ticket_info['when'] = None
+        
         if record[9] >= 2:
-            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
-            ticket_info['status'] += until
+            until = time.strftime(time_pattern, time.localtime(record[10]))
+            ticket_info['when'] = str(until)
         
         ticket_list.append(ticket_info)
     return ticket_list
@@ -139,10 +143,11 @@ def all_tickets_with(status):
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
-
+        ticket_info['when'] = None
+        
         if record[9] >= 2:
-            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
-            ticket_info['status'] += until
+            until = time.strftime(time_pattern, time.localtime(record[10]))
+            ticket_info['when'] = str(until)
             
         ticket_list.append(ticket_info)
     return ticket_list
@@ -179,10 +184,11 @@ def all_tickets_from(username,status):
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
-
+        ticket_info['when'] = None
+        
         if record[9] >= 2:
-            until = time.strftime(' %Y-%m-%d %H:%M', time.localtime(record[10]))
-            ticket_info['status'] += until
+            until = time.strftime(time_pattern, time.localtime(record[10]))
+            ticket_info['when'] = str(until)
             
         ticket_list.append(ticket_info)
     return ticket_list

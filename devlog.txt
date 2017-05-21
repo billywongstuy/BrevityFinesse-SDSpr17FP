@@ -96,5 +96,10 @@ billyW -- 2017-05-19 15:36, 20:25
     - Default templates to test routes
     - Made teacher and tech sample account
 
-billyW -- 2017-05-21 22:59
+billyW -- 2017-05-20 22:59
     - More prelim routes (waiting for templates...)
+
+billyW -- 2017-05-21 14:50
+    - Made prelim ticket template and linked it to functional ticket route
+    - Modified get ticket(s) functions to accodomate for ticket template
+    

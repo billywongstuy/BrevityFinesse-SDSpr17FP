@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from utils import auth, tickets_manager as tix
 import calendar, datetime, json, os
-from time import gmtime,strftime
+from time import gmtime,strftime,mktime,strptime,sleep
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -37,7 +37,8 @@ def home():
         pending = tix.all_tickets_with(0)
         done = tix.all_tickets_with(1)
         progress = tix.all_tickets_with(2)
-        return render_template('index-tech.html',pending=pending,progress=progress,done=done)
+        return render_template('tickets-all.html',pending=pending,progress=progress,done=done)
+        #return render_template('index-tech.html',pending=pending,progress=progress,done=done)
 
     elif session['level'] == 3: #teacher
         pending = tix.all_tickets_from(session['username'],0)
@@ -55,6 +56,10 @@ def home():
 @app.route("/login/", methods=['POST','GET'])
 @app.route("/login", methods=['POST','GET'])
 def login():
+    #redirect in logged in
+    if 'username' in session:
+        return redirect('/')
+    
     #render login page
     if request.method == 'GET':
         return render_template('login.html')
@@ -77,7 +82,7 @@ def logout():
     if 'username' in session:
         session.pop('username')
         session.pop('level')
-    return redirect('/') #render_template('index.html')
+    return redirect('/') 
 
 #------------------------------------------------
 # TICKET CREATION
@@ -128,8 +133,7 @@ def guest_tickets():
     #get all the guest tickets
     pending = tix.all_tickets_from('guest',0)
     progress = tix.all_tickets_from('guest',2)
-    done = tix.all_tickets_from('guest',1)
-    
+    done = tix.all_tickets_from('guest',1)   
     return render_template('tickets-guest.html',pending=pending,progress=progress,done=done)
 
 
@@ -137,26 +141,50 @@ def guest_tickets():
 # INDIVIDUAL TICKET PAGES
 #-----------------------------
 
-@app.route("/ticket/<tid>")
+tixUpdateMsg = ""
+
+@app.route("/ticket/<tid>", methods=["GET","POST"])
 def ticket(tid):
-    info = tix.get_ticket(tid)
+    global tixUpdateMsg
+    
     if request.method == 'GET':
+        info = tix.get_ticket(tid)
         if info == 'Ticket doesn\'t exist':
             return 'Ticket doesn\'t exist'
-        return render_template('ticket.html',techAccess=('username' in session and session['level'] == 2),ticketInfo=info,message=None) #differentiates between being able to edit the ticket
+        
+        ta = 'username' in session and session['level'] <= 2
+        loggedIn = 'username' in session
+        msg = str(tixUpdateMsg)
+        tixUpdateMsg = ""
+        
+        return render_template('ticket.html',techAccess=ta,info=info,message=msg, loggedIn=loggedIn) 
+
+    # changing a ticket
+    tech = auth.get_name(session['username']) 
+    status = int(request.form['status'])
+    urgency = int(request.form['urgency'])
+
+    if status >= 2:
+        when = request.form['when'] #convert this to epoch     
+        pattern = '%Y-%m-%dT%H:%M'
+        when = int(mktime(strptime(when,pattern)))
+    else:
+        when = None
+
+    tix.update_ticket(tid,tech,urgency,status,when) # update the ticket
+
+    tixUpdateMsg = 'Ticket updated!'
     
-    #tech = request.form['techName']  #auto-filled to tech name if present
-    #status = request.form['status']
-    #urgency = request.form['urgency']
-    #time_until = request.form['timeUntil'] #convert this to epoch
-    #time_until = epoch(time_until)
-    
-    # update the ticket
-    #tix.accept_ticket(tid,tech,urgency,status,time_until)
-    
-    return render_template('ticket.html',techAccess=(session['level'] == 2),ticketInfo=info,message='Ticket updated!')
+    return redirect('/ticket_reload/%d' % (int(tid)))
 
 
+#-----------------------
+# TICKET RELOAD PASS
+#------------------------
+
+@app.route('/ticket_reload/<tid>', methods=['GET'])
+def ticket_reload(tid):
+    return redirect('/ticket/%d' % (int(tid)))
 
 #--------------------------
 # ADMIN FUNCTIONS

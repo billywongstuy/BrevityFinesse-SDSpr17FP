@@ -29,7 +29,8 @@
 <div>
   <h2>Pending</h2>
   <table border="1px">
-  {% for ticket in pending %}
+    {% for ticket in pending %}
+    <td><a href="/ticket/{{ticket.primary_key}}">link</a></td>
   <tr>
     {% for key,value in ticket.items() %}
     <td>

@@ -1,0 +1,59 @@
+{% if loggedIn %}
+{% extends "base2.html" %}
+{% else %}
+{% extends "base.html" %}
+{% endif %}
+
+<!-- TEMPORARY JINJA FORMATTING FOR DEMO PURPOSES-->
+
+{% block nav %}
+{{super()}}
+{% endblock %}
+
+
+{% block body %}
+
+{% if message != "" %}
+<div class="alert alert-success">{{message}}</div>
+{% endif %}
+
+Submitted by {{info.teacher_name}} </br>
+on {{info.date_of_ticket}} </br>
+Room {{info.room_num}} </br>
+Problem: {{info.tix_subject}} </br>
+Additional Information/Comments: {{info.tix_body}} </br>
+Respondent (Tech): {{info.tech_name}} </br>
+
+{% if not techAccess %}
+
+Urgency (1-10): {{info.urgency}} </br>
+Status: {{info.status}} {{info.when}}</br>
+
+{% else %}
+
+Respondent (Tech): {{info.tech_name}} </br>
+
+<form method="POST">
+  Urgency (1-10):
+  <input type="number" name="urgency" min="1" max="10" {% if info.urgency != none %}value="{{info.urgency}}"{% endif %}>
+Status:
+<select name="status">
+  <option value="0" {% if info.status=="Pending" %} selected="selected"{% endif %}>Pending</option>
+  <option value="1" {% if info.status=="Resolved" %} selected="selected"{% endif %}>Resolved</option>
+  <option value="2" {% if info.status=="Coming at" %} selected="selected"{% endif %}>Coming at</option>
+  <option value="3" {% if info.status=="Deferred to" %} selected="selected"{% endif %}>Deferred to</option>
+</select>
+</br>
+Time (use to indicated when coming or deferred to):
+
+<input type="datetime-local" name="when" {% if info.when != none %}value="{{info.when}}"{% endif %}>
+
+</br>
+<input type="submit" value="Accept/Update">
+
+</form>
+
+{% endif %}
+
+
+{% endblock %}
