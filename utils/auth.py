@@ -308,14 +308,14 @@ def drop_users():
 #-----------------------
 
 #drop_users()
-register("user1","last","first","email@stuy.edu","password123","password123",0,"1234567890")
-register("guest","","","test@test.com","password123","password123",4,"")
+#register("user1","last","first","email@stuy.edu","password123","password123",0,"1234567890")
+#register("guest","","","test@test.com","password123","password123",4,"")
 #print account_level("user1")
 #print account_level("guest")
 
-guest_off()
+#guest_off()
 #print account_level("guest")
-guest_on()
+#guest_on()
 #print account_level("guest")
 
 #print get_teacher_name("user1")

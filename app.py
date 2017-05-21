@@ -120,7 +120,6 @@ def submit():
     key = tix.add_ticket(u_name,t_name,date,room,subj,desc)
     return redirect("/ticket/%d" % (int(key)))
     
-
 #-------------------------
 # GUEST TICKET VIEWING
 #-------------------------
@@ -226,7 +225,7 @@ def create_account():
 
 @app.route("/guest_toggle", methods=['POST'])
 def guest_toggle():
-    #do toggling stuff here
+    #do toggling stuff here guest_on() guest_off()
     return redirect('/')
 
 #-------------------------
