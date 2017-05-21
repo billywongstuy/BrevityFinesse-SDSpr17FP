@@ -13,16 +13,32 @@
 
 <div>
   <h2>In Progress</h2>
-  {% for ticket in progress %}
-  {{ticket}}
-  {% endfor %}
+  <table>
+    {% for ticket in progress %}
+    <tr>
+      {% for key,value in ticket.items() %}
+      <td>
+	{{value}}
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 
 <div>
   <h2>Pending</h2>
+  <table border="1px">
   {% for ticket in pending %}
-  {{ticket}}
+  <tr>
+    {% for key,value in ticket.items() %}
+    <td>
+      {{value}}
+    </td>
+    {% endfor %}
+  </tr>
   {% endfor %}
+  </table>
 </div>
 
 <div>
