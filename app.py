@@ -139,11 +139,11 @@ def guest_tickets():
 
 @app.route("/ticket/<tid>")
 def ticket(tid):
-    info = get_ticket(tid)
+    info = tix.get_ticket(tid)
     if request.method == 'GET':
         if info == 'Ticket doesn\'t exist':
             return 'Ticket doesn\'t exist'
-        return render_template('ticket.html',techAccess=(session['level'] == 2),ticketInfo=info,message=None) #differentiates between being able to edit the ticket
+        return render_template('ticket.html',techAccess=('username' in session and session['level'] == 2),ticketInfo=info,message=None) #differentiates between being able to edit the ticket
     
     #tech = request.form['techName']  #auto-filled to tech name if present
     #status = request.form['status']
@@ -213,7 +213,17 @@ def admin_promote():
     if not 'username' in session or session['level'] != 0:
         return redirect('/')
 
-    return
+    if request.method == 'GET':
+        return render_template('promote.html')
+    
+    #u_name = request.form['username']
+    #action = request.form['action']
+
+    #if action == 'promote':
+    #promote
+    #else:
+    #revoke
+    return render_template('promote.html')
 
 
 #------------------
