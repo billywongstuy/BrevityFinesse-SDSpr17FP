@@ -22,12 +22,17 @@ on {{info.date_of_ticket}} </br>
 Room {{info.room_num}} </br>
 Problem: {{info.tix_subject}} </br>
 Additional Information/Comments: {{info.tix_body}} </br>
+
+{% if info.tech_name is not none %}
 Respondent (Tech): {{info.tech_name}} </br>
+{% endif %}
 
 {% if not techAccess %}
 
+{% if info.tech_name is not none %}
 Urgency (1-10): {{info.urgency}} </br>
 Status: {{info.status}} {{info.when}}</br>
+{% endif %}
 
 {% else %}
 
