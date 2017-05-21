@@ -28,7 +28,7 @@ def home():
         return render_template('index.html')
     
     if session['level'] == 0: #superadmin
-        return render_template('superadmin-dashboard.html')#'superadmin<br><a href=\"logout\">Logout</a>' #DASHBOARD
+        return render_template('superadmin-dashboard.html') #DASHBOARD
     
     elif session['level'] == 1: #admin
         return render_template('admin-dashboard.html')
@@ -103,7 +103,7 @@ def submit():
     if room <= 100 or room >= 1050:
         return render_template('submit.html', isLogged=('username' in session), error='Invalid room number')
     
-    subj = request.form['subject']
+    subj = int(request.form['subject'])
     desc = request.form['desc']
     date = str(datetime.datetime.now())
     date = date[0:date.find('.')]

@@ -4,9 +4,18 @@ from os import urandom
 import random,string,time
 
 f = "data/tix.db"
-statuses = {0:'Pending', 1:'Resolved', 2:'Coming at', 3: 'Deferred to'}
 
+statuses = {0:'Pending', 1:'Resolved', 2:'Coming at', 3: 'Deferred to'}
 time_pattern = '%Y-%m-%dT%H:%M'
+
+issues = {
+    0: 'Out of Toner',
+    1: 'Printer Issues (paper jam, does not print, printer error, etc)',
+    2: 'Laptop Issues',
+    3: 'Smartboard/Projector Issues(screen, display, volume, etc)',
+    4: 'Need item/equipment (please describe)',
+    5: 'Other (please describe)'
+}
 
 #-----------------------------
 # Teacher create request
@@ -18,10 +27,10 @@ def add_ticket(username,teacher,date,room,subject,body=None):
     try:
         c.execute("SELECT * FROM tickets")
     except:
-        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject TEXT, tix_body TEXT, tech_name TEXT, urgency INT, status INT, time_until INT)")
+        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject INTEGER, tix_body TEXT, tech_name TEXT, urgency INT, status INT, resp_time INT)")
 
     #create ticket entry with given info
-    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status,time_until) VALUES (?,?,?,?,?,?,?,?)")
+    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status,resp_time) VALUES (?,?,?,?,?,?,?,?)")
     c.execute(query,(username,teacher,date,room,subject,body,0,None,))
     db.commit()
     db.close()
@@ -33,7 +42,7 @@ def add_ticket(username,teacher,date,room,subject,body=None):
 def update_ticket(key,tech,urgency,status,when):
     db = connect(f)
     c = db.cursor()
-    query = ("UPDATE tickets SET tech_name=?, urgency=?, status=?, time_until=? WHERE primary_key=?")
+    query = ("UPDATE tickets SET tech_name=?, urgency=?, status=?, resp_time=? WHERE primary_key=?")
     c.execute(query,(tech,urgency,status,when,key,))
     db.commit()
     db.close()
@@ -59,7 +68,7 @@ def get_ticket(key):
         ticket_info['teacher_name'] = record[2]
         ticket_info['date_of_ticket'] = record[3]
         ticket_info['room_num'] = record[4]
-        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
@@ -97,7 +106,7 @@ def all_tickets():
         ticket_info['teacher_name'] = record[2]
         ticket_info['date_of_ticket'] = record[3]
         ticket_info['room_num'] = record[4]
-        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
@@ -138,7 +147,7 @@ def all_tickets_with(status):
         ticket_info['teacher_name'] = record[2]
         ticket_info['date_of_ticket'] = record[3]
         ticket_info['room_num'] = record[4]
-        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
@@ -179,7 +188,7 @@ def all_tickets_from(username,status):
         ticket_info['teacher_name'] = record[2]
         ticket_info['date_of_ticket'] = record[3]
         ticket_info['room_num'] = record[4]
-        ticket_info['tix_subject'] = record[5]
+        ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
         ticket_info['urgency'] = record[8]
