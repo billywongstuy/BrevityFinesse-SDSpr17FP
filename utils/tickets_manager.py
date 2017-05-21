@@ -25,7 +25,7 @@ def add_ticket(username,teacher,date,room,subject,body=None):
     c.execute(query,(username,teacher,date,room,subject,body,0,None,))
     db.commit()
     db.close()
-    return "Ticket created!"
+    return c.lastrowid
 
 #------------------------------
 # Tech accepts/updates ticket

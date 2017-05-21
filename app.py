@@ -117,12 +117,9 @@ def submit():
         u_name = session['username']
         t_name = auth.get_name(u_name)
         
-    tix.add_ticket(u_name,t_name,date,room,subj,desc)
-    return redirect("/")
+    key = tix.add_ticket(u_name,t_name,date,room,subj,desc)
+    return redirect("/ticket/%d" % (int(key)))
     
-#Functions to receive pending requests and old requests should be endpoints returning raw JSON data which will be displayed on a central profile page using JavaScript
-#	- Julian
-
 
 #-------------------------
 # GUEST TICKET VIEWING
