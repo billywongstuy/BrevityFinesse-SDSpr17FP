@@ -124,7 +124,7 @@ def submit():
     return redirect("/ticket/%d" % (int(key)))
     
 #-------------------------
-# GUEST TICKET VIEWING
+# TICKET VIEWING
 #-------------------------
 
 @app.route('/guest_tickets', methods=['GET','POST'])
@@ -135,6 +135,26 @@ def guest_tickets():
     done = tix.all_tickets_from('guest',1)   
     return render_template('tickets-guest.html',pending=pending,progress=progress,done=done)
 
+
+@app.route("/all_tickets", methods=['POST','GET'])
+def all_tickets():
+
+    if 'username' not in session:
+        pending = tix.all_tickets_from('guest',0)
+        progress = tix.all_tickets_from('guest',2)
+        done = tix.all_tickets_from('guest',1)   
+    elif session['level'] == 3:
+        pending = tix.all_tickets_from(session['username'],0)
+        progress = tix.all_tickets_from(session['username'],2)
+        done = tix.all_tickets_from(session['username'],1)
+    elif session['level'] <= 2:
+        pending = tix.all_tickets_with(0)
+        progress = tix.all_tickets_with(2)
+        done = tix.all_tickets_with(1)
+    else:
+        return 'Error?'
+
+    return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn='username' in session)
 
 #-----------------------------
 # INDIVIDUAL TICKET PAGES
@@ -194,15 +214,6 @@ def ticket_reload(tid):
 #--------------------------
 
 admin_access = [0,1]
-
-@app.route("/all_tickets", methods=['POST','GET'])
-def all_tickets():
-    if not 'username' in session or not session['level'] in admin_access:
-        return redirect('/')
-    pending = tix.all_tickets_with(0)
-    progress = tix.all_tickets_with(2)
-    done = tix.all_tickets_with(1)
-    return render_template('tickets-all.html',pending=pending,progress=progress,done=done)
 
 @app.route("/create_account", methods=['POST','GET'])
 def create_account():
