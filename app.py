@@ -26,12 +26,14 @@ statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 def home():
     if 'username' not in session:
         return render_template('index.html')
+
+    guest_allow = (auth.get_level('guest') == 4)
     
     if session['level'] == 0: #superadmin
-        return render_template('superadmin-dashboard.html') #DASHBOARD
+        return render_template('superadmin-dashboard.html', guest_allow=guest_allow) #DASHBOARD
     
     elif session['level'] == 1: #admin
-        return render_template('admin-dashboard.html')
+        return render_template('admin-dashboard.html', guest_allow=guest_allow)
 
     elif session['level'] == 2: #tech
         pending = tix.all_tickets_with(0)
@@ -243,7 +245,13 @@ def create_account():
 
 @app.route("/guest_toggle", methods=['POST'])
 def guest_toggle():
-    #do toggling stuff here guest_on() guest_off()
+    guest_allow = (auth.get_level('guest') == 4)
+    choice = str(request.form['guest_choices'])
+    if choice == 'on' and not guest_allow:
+        auth.guest_on()
+    elif choice == 'off' and guest_allow:
+        auth.guest_off()
+        
     return redirect('/')
 
 #-------------------------
