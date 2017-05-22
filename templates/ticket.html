@@ -36,8 +36,6 @@ Status: {{info.status}} {{info.when}}</br>
 
 {% else %}
 
-Respondent (Tech): {{info.tech_name}} </br>
-
 <form method="POST">
   Urgency (1-10):
   <input type="number" name="urgency" min="1" max="10" {% if info.urgency != none %}value="{{info.urgency}}"{% endif %}>
