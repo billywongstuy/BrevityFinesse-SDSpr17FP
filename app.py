@@ -149,14 +149,18 @@ def ticket(tid):
             return 'Ticket doesn\'t exist'
         
         ta = 'username' in session and session['level'] <= 2
+        aa = 'username' in session and session['level'] <= 1
         loggedIn = 'username' in session
         msg = str(tixUpdateMsg)
         tixUpdateMsg = ""
         
-        return render_template('ticket.html',techAccess=ta,info=info,message=msg, loggedIn=loggedIn) 
+        return render_template('ticket.html',techAccess=ta,info=info,message=msg, loggedIn=loggedIn, adminAccess=aa) 
 
     # changing a ticket
-    tech = auth.get_name(session['username']) 
+    if session['level'] > 1: #tech
+        tech = auth.get_name(session['username'])
+    else: #admin
+        tech = request.form['tech']
     status = int(request.form['status'])
     urgency = int(request.form['urgency'])
 
