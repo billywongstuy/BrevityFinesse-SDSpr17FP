@@ -26,6 +26,7 @@
       <td>Tech Respondent</td>
       <td>Status</td>
       <td>Status Time</td>
+      <td>Urgency</td>
     </tr>
     {% endif %}
     
@@ -41,6 +42,7 @@
       <td>{% if ticket.tech_name is not none %}{{ticket.tech_name}}{% endif %}</td>
       <td>{% if ticket.status is not none %}{{ticket.status}}{% endif %}</td>
       <td>{% if ticket.when is not none %}{{ticket.when}}{% endif %}</td>
+      <td>{% if ticket.urgency is not none %}{{ticket.urgency}}{% endif %}</td>
     </tr>
     {% endfor %}
   </table>
@@ -61,6 +63,7 @@
       <td>Tech Respondent</td>
       <td>Status</td>
       <td>Status Time</td>
+      <td>Urgency</td>
     </tr>
     {% endif %}
     {% for ticket in pending %}
@@ -75,6 +78,7 @@
       <td>{% if ticket.tech_name is not none %}{{ticket.tech_name}}{% endif %}</td>
       <td>{% if ticket.status is not none %}{{ticket.status}}{% endif %}</td>
       <td>{% if ticket.when is not none %}{{ticket.when}}{% endif %}</td>
+      <td>{% if ticket.urgency is not none %}{{ticket.urgency}}{% endif %}</td>
     </tr>
     {% endfor %}
   </table>
@@ -95,6 +99,7 @@
       <td>Tech Respondent</td>
       <td>Status</td>
       <td>Status Time</td>
+      <td>Urgency</td>
     </tr>
     {% endif %}
     {% for ticket in resolved %}
@@ -109,6 +114,7 @@
       <td>{% if ticket.tech_name is not none %}{{ticket.tech_name}}{% endif %}</td>
       <td>{% if ticket.status is not none %}{{ticket.status}}{% endif %}</td>
       <td>{% if ticket.when is not none %}{{ticket.when}}{% endif %}</td>
+      <td>{% if ticket.urgency is not none %}{{ticket.urgency}}{% endif %}</td>
     </tr>
     {% endfor %}
   </table>
