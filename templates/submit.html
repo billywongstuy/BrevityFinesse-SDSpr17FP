@@ -1,4 +1,8 @@
+{% if loggedIn %}
+{% extends "baseLogged.html" %}
+{% else %}
 {% extends "base.html" %}
+{% endif %}
 
 <!-- VERIFY INPUTS WITH AJAX -->
 
