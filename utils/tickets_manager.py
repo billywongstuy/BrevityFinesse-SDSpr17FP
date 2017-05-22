@@ -6,7 +6,7 @@ import random,string,time
 f = "data/tix.db"
 
 statuses = {0:'Pending', 1:'Resolved', 2:'Coming at', 3: 'Deferred to'}
-time_pattern = '%Y-%m-%dT%H:%M'
+time_pattern = '%Y-%m-%d %H:%M'
 
 issues = {
     0: 'Out of Toner',

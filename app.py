@@ -62,12 +62,15 @@ def login():
     
     #render login page
     if request.method == 'GET':
-        return render_template('login.html')
-
+        return render_template('login.html',message='')
+    
     #validate login
     username = request.form['user']
     password = request.form['pass']
     loginMessage = auth.login(username,password)
+
+    if username == 'guest':
+        return render_template('login.html',message='Username does not exist')
     
     #loginMessage = "" if login is valid --> go to index page
     if loginMessage == "":
@@ -75,7 +78,7 @@ def login():
         session['level'] = int(auth.account_level(username))  #get account type
         return redirect('/')
 
-    return loginMessage   #return error message for invalid login
+    return render_template('login.html',message=loginMessage)   #return error message for invalid login
 
 @app.route("/logout", methods=['GET','POST'])
 def logout():
