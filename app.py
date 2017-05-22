@@ -104,7 +104,7 @@ def submit():
     
     room = int(request.form['room'])
     if room <= 100 or room >= 1050:
-        return render_template('submit.html', isLogged=('username' in session), error='Invalid room number')
+        return render_template('submit.html', loggedIn=('username' in session), error='Invalid room number')
     
     subj = int(request.form['subject'])
     desc = request.form['desc']
