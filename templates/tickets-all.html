@@ -14,7 +14,8 @@
 <div>
   <h2>In Progress</h2>
   <table border="1px">
-     <tr>
+    {% if progress|length > 0 %}
+    <tr>
       <td>Link</td>
       <td>Username</td>
       <td>Teacher Name</td>
@@ -26,6 +27,8 @@
       <td>Status</td>
       <td>Status Time</td>
     </tr>
+    {% endif %}
+    
     {% for ticket in progress %}
     <tr>
       <td><a href="/ticket/{{ticket.primary_key}}">link</a></td>
@@ -34,10 +37,10 @@
       <td>{{ticket.room_num}}</td>
       <td>{{ticket.date_of_ticket}}</td>
       <td>{{ticket.tix_subject}}</td>
-      <td>{{ticket.tix_body}}</td>
-      <td>{{ticket.tech_name}}</td>
-      <td>{{ticket.status}}</td>
-      <td>{{ticket.when}}</td>
+      <td>{% if ticket.tix_body is not none %}{{ticket.tix_body}}{% endif %}</td>
+      <td>{% if ticket.tech_name is not none %}{{ticket.tech_name}}{% endif %}</td>
+      <td>{% if ticket.status is not none %}{{ticket.status}}{% endif %}</td>
+      <td>{% if ticket.when is not none %}{{ticket.when}}{% endif %}</td>
     </tr>
     {% endfor %}
   </table>
@@ -46,6 +49,7 @@
 <div>
   <h2>Pending</h2>
   <table border="1px">
+    {% if pending|length > 0 %}
     <tr>
       <td>Link</td>
       <td>Username</td>
@@ -58,6 +62,7 @@
       <td>Status</td>
       <td>Status Time</td>
     </tr>
+    {% endif %}
     {% for ticket in pending %}
     <tr>
       <td><a href="/ticket/{{ticket.primary_key}}">link</a></td>
@@ -66,10 +71,10 @@
       <td>{{ticket.room_num}}</td>
       <td>{{ticket.date_of_ticket}}</td>
       <td>{{ticket.tix_subject}}</td>
-      <td>{{ticket.tix_body}}</td>
-      <td>{{ticket.tech_name}}</td>
-      <td>{{ticket.status}}</td>
-      <td>{{ticket.when}}</td>
+      <td>{% if ticket.tix_body is not none %}{{ticket.tix_body}}{% endif %}</td>
+      <td>{% if ticket.tech_name is not none %}{{ticket.tech_name}}{% endif %}</td>
+      <td>{% if ticket.status is not none %}{{ticket.status}}{% endif %}</td>
+      <td>{% if ticket.when is not none %}{{ticket.when}}{% endif %}</td>
     </tr>
     {% endfor %}
   </table>
@@ -77,9 +82,36 @@
 
 <div>
   <h2>Resolved</h2>
-  {% for ticket in done %}
-  {{ticket}}
-  {% endfor %}
+   <table border="1px">
+    {% if resolved|length > 0 %}
+    <tr>
+      <td>Link</td>
+      <td>Username</td>
+      <td>Teacher Name</td>
+      <td>Room Number</td>
+      <td>Date Submitted</td>
+      <td>Issue</td>
+      <td>Additional Info</td>
+      <td>Tech Respondent</td>
+      <td>Status</td>
+      <td>Status Time</td>
+    </tr>
+    {% endif %}
+    {% for ticket in resolved %}
+    <tr>
+      <td><a href="/ticket/{{ticket.primary_key}}">link</a></td>
+      <td>{{ticket.username}}</td>
+      <td>{{ticket.teacher_name}}</td>
+      <td>{{ticket.room_num}}</td>
+      <td>{{ticket.date_of_ticket}}</td>
+      <td>{{ticket.tix_subject}}</td>
+      <td>{% if ticket.tix_body is not none %}{{ticket.tix_body}}{% endif %}</td>
+      <td>{% if ticket.tech_name is not none %}{{ticket.tech_name}}{% endif %}</td>
+      <td>{% if ticket.status is not none %}{{ticket.status}}{% endif %}</td>
+      <td>{% if ticket.when is not none %}{{ticket.when}}{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 {% endblock %}
 
