@@ -13,18 +13,66 @@
 
 <div>
   <h2>In Progress</h2>
-  {% for ticket in progress %}
-  <td><a href="/ticket/{{ticket.primary_key}}">link</a></td>
-  {{ticket}}
-  {% endfor %}
+  <table border="1px">
+     <tr>
+      <td>Link</td>
+      <td>Username</td>
+      <td>Teacher Name</td>
+      <td>Room Number</td>
+      <td>Date Submitted</td>
+      <td>Issue</td>
+      <td>Additional Info</td>
+      <td>Tech Respondent</td>
+      <td>Status</td>
+      <td>Status Time</td>
+    </tr>
+    {% for ticket in progress %}
+    <tr>
+      <td><a href="/ticket/{{ticket.primary_key}}">link</a></td>
+      <td>{{ticket.username}}</td>
+      <td>{{ticket.teacher_name}}</td>
+      <td>{{ticket.room_num}}</td>
+      <td>{{ticket.date_of_ticket}}</td>
+      <td>{{ticket.tix_subject}}</td>
+      <td>{{ticket.tix_body}}</td>
+      <td>{{ticket.tech_name}}</td>
+      <td>{{ticket.status}}</td>
+      <td>{{ticket.when}}</td>
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 
 <div>
   <h2>Pending</h2>
-  {% for ticket in pending %}
-  <td><a href="/ticket/{{ticket["primary_key"]}}">link</a></td>
-  {{ticket}}
-  {% endfor %}
+  <table border="1px">
+    <tr>
+      <td>Link</td>
+      <td>Username</td>
+      <td>Teacher Name</td>
+      <td>Room Number</td>
+      <td>Date Submitted</td>
+      <td>Issue</td>
+      <td>Additional Info</td>
+      <td>Tech Respondent</td>
+      <td>Status</td>
+      <td>Status Time</td>
+    </tr>
+    {% for ticket in pending %}
+    <tr>
+      <td><a href="/ticket/{{ticket.primary_key}}">link</a></td>
+      <td>{{ticket.username}}</td>
+      <td>{{ticket.teacher_name}}</td>
+      <td>{{ticket.room_num}}</td>
+      <td>{{ticket.date_of_ticket}}</td>
+      <td>{{ticket.tix_subject}}</td>
+      <td>{{ticket.tix_body}}</td>
+      <td>{{ticket.tech_name}}</td>
+      <td>{{ticket.status}}</td>
+      <td>{{ticket.when}}</td>
+    </tr>
+    {% endfor %}
+  </table>
 </div>
 
 <div>
@@ -34,3 +82,4 @@
   {% endfor %}
 </div>
 {% endblock %}
+
