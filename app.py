@@ -100,7 +100,7 @@ def submit():
         return 'no' #render_template('guestunavail.html')
     
     if request.method == 'GET':
-        return render_template("submit.html", teacherAcc=('username' in session and session['level'] == 3))
+        return render_template("submit.html", teacherAcc=('username' in session and session['level'] == 3), loggedIn = 'username' in session)
     
     room = int(request.form['room'])
     if room <= 100 or room >= 1050:
