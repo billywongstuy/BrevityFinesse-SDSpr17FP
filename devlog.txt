@@ -105,3 +105,12 @@ billyW -- 2017-05-21 14:50
     
 billyW -- 2017-05-22 15:45
     - Added switch button for guest functionality on/off and made it work with route
+
+yukiC -- 2017-05-23 14:00
+  - Tasks:
+    1. Promote & Demote
+    2. Add email column to tickets db(automatic for teacher account, optional for guest)
+  - Demo feedback:
+    1. Smartphone friendly display
+    2. Confirm with client whether guests should be able to see all guest tickets
+    
