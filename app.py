@@ -144,7 +144,7 @@ def all_tickets():
     if 'username' not in session:
         pending = tix.all_tickets_from('guest',0)
         progress = tix.all_tickets_from('guest',2)
-        done = tix.all_tickets_from('guest',1)   
+        done = tix.all_tickets_from('guest',1)
     elif session['level'] == 3:
         pending = tix.all_tickets_from(session['username'],0)
         progress = tix.all_tickets_from(session['username'],2)
@@ -156,7 +156,7 @@ def all_tickets():
     else:
         return 'Error?'
 
-    return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn='username' in session)
+    return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn='username' in session,level=session['level'])
 
 #-----------------------------
 # INDIVIDUAL TICKET PAGES
@@ -186,13 +186,14 @@ def ticket(tid):
         tech = auth.get_name(session['username'])
     else: #admin
         tech = request.form['tech']
+     
     status = int(request.form['status'])
     urgency = int(request.form['urgency'])
 
     if status >= 2:
-        when = request.form['when'] #convert this to epoch     
+        when = request.form['when'] 
         pattern = '%Y-%m-%dT%H:%M'
-        when = int(mktime(strptime(when,pattern)))
+        when = int(mktime(strptime(when,pattern))) #epoch conversion
     else:
         when = None
 
@@ -220,17 +221,15 @@ admin_access = [0,1]
 @app.route("/create_account", methods=['POST','GET'])
 def create_account():
     if not 'username' in session or not session['level'] in admin_access:
-        return redirect('/')
-    
+        return redirect('/')    
     if request.method == 'GET':
         return render_template('register.html',message=None)
     
     user = request.form['user']
     email = request.form['email']
     email2 = request.form['emailconf']
-    
     if email != email2:
-        return render_template('register.html')
+        return render_template('register.html',message='Unmatching emails!')
     
     passw = request.form['pass']
     pass2 = request.form['passconf']
@@ -238,10 +237,10 @@ def create_account():
     phone = request.form['phone']
     f_name = request.form['firstName']
     l_name = request.form['lastName']
-    
     msg = auth.register(user,l_name,f_name,email,passw,pass2,account,phone)
 
     return render_template('register.html',message=msg)
+
 
 @app.route("/guest_toggle", methods=['POST'])
 def guest_toggle():
