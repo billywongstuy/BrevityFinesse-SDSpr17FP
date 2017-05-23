@@ -156,7 +156,9 @@ def all_tickets():
     else:
         return 'Error?'
 
-    return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn='username' in session,level=session['level'])
+    lvl = session['level'] if 'username' in session else 4
+    
+    return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn='username' in session,level=lvl)
 
 #-----------------------------
 # INDIVIDUAL TICKET PAGES
@@ -273,7 +275,6 @@ def admin_promote():
     #else:
     #revoke
     return render_template('promote.html')
-
 
 #------------------
 # ERROR HANDLERS
