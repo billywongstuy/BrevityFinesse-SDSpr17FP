@@ -235,8 +235,23 @@ def get_name(username):
     for record in account:
         last_first_name = record[2] + ", " + record[3]
         return last_first_name
-    return "username doesn't exist"
+    return None
 
+
+#-------------------------------
+# Get name (last, first)
+#-------------------------------
+def get_email(username):
+    db = connect(f)
+    c = db.cursor()
+
+    #get account with given username
+    query = ("SELECT * FROM users WHERE username=?")
+    account = c.execute(query,(username,)).fetchall()
+
+    for record in account:
+        return record[4]
+    return None
 
 #----------------------------
 # get level

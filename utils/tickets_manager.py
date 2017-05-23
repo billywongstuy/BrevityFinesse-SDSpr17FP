@@ -20,7 +20,7 @@ issues = {
 #-----------------------------
 # Teacher create request
 #-----------------------------
-def add_ticket(username,teacher,date,room,subject,body=None):
+def add_ticket(username,teacher,date,room,subject,body=None,email=None):
     db = connect(f)
     c = db.cursor()
     #select table tickets, create table tickets if doesn't exist

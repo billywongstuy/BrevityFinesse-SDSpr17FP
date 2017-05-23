@@ -84,6 +84,11 @@ def logout():
 #------------------------------------------------
 
 
+# need email funcion for the guests
+# auto fill with teacher email if logged in
+# make email field show for guests and admins
+# turn off create tickets for techs
+
 @app.route("/submit", methods=['POST','GET'])
 def submit():
     guest_allow = (auth.get_level('guest') == 4)
@@ -108,11 +113,18 @@ def submit():
         l_name = request.form['guestLastName']
         f_name = request.form['guestFirstName']
         t_name = l_name + ', ' + f_name
+        email = request.form['email']
     else:
         u_name = session['username']
         t_name = auth.get_name(u_name)
+
+    if session['level'] <= 2: # techs+
+        email = request.form['email']
+    else:
+        email = auth.get_email(session['username'])
         
     key = tix.add_ticket(u_name,t_name,date,room,subj,desc)
+    #key = tix.add_ticket(u_name,t_name,date,room,subj,desc,email)
     return redirect("/ticket/%d" % (int(key)))
     
 #-------------------------
