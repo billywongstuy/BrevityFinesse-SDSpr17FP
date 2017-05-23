@@ -39,18 +39,18 @@ def home():
         pending = tix.all_tickets_with(0)
         done = tix.all_tickets_with(1)
         progress = tix.all_tickets_with(2)
-        return render_template('tickets-all.html',pending=pending,progress=progress,done=done)
+        return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn=True)
         #return render_template('index-tech.html',pending=pending,progress=progress,done=done)
 
     elif session['level'] == 3: #teacher
         pending = tix.all_tickets_from(session['username'],0)
         progress = tix.all_tickets_from(session['username'],2)
         done = tix.all_tickets_from(session['username'],1)
-        return render_template('index-teacher.html',pending=pending,progress=progress,done=done)
+        return render_template('index-teacher.html',pending=pending,progress=progress,done=done,loggedIn=True)
 
     else:
         return 'You broke the page!'
-
+    
 #-----------------
 # LOGIN / LOGOUT
 #-----------------
