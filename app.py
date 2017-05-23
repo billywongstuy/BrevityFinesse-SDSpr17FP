@@ -6,16 +6,6 @@ from time import gmtime,strftime,mktime,strptime,sleep
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
-'''
-Statuses
-
-Pending
-In Progress
-    - Will Come Today At
-    - Deferred Until
-Done
-'''
-
 statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 
 #---------------------------
@@ -270,10 +260,11 @@ def admin_promote():
     #u_name = request.form['username']
     #action = request.form['action']
 
+    #need this functions to be written
     #if action == 'promote':
-    #promote
-    #else:
-    #revoke
+    #promote     (takes in username and new rank)
+    #elif action == 'demote':
+    #revoke/demote    (takes in username and new rank)
     return render_template('promote.html')
 
 #------------------
