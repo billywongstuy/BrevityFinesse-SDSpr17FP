@@ -8,8 +8,10 @@
 {{super()}}
 {% endblock %}
 
+	       
 
-{% block body %}
+
+{% block body %}	       
 
 <h1>All Tickets</h1>
 
@@ -30,7 +32,7 @@
   {% for ticket in progress %}
   <div class="card card-block">
     <a href="/ticket/{{ticket.primary_key}}">
-    <table>
+      <table>
       <tr>
 	<td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
       </tr>
