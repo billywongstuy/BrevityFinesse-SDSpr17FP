@@ -1,0 +1,13 @@
+.card-block a {
+  color: black;
+  text-decoration: none;
+}
+
+.card-block a:hover,
+.card-block a:focus {
+    color: black;
+    text-decoration: none;
+}
+
+
+

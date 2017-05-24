@@ -28,9 +28,8 @@
 
 <div class="collapse" id="progress">
   {% for ticket in progress %}
-  <a href="/ticket/{{ticket.primary_key}}">
   <div class="card card-block">
-    <!--<a href="/ticket/{{ticket.primary_key}}">link</a>-->
+    <a href="/ticket/{{ticket.primary_key}}">
     <table>
       <tr>
 	<td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
@@ -42,8 +41,8 @@
 	<td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
       </tr>
     </table>
+    </a>
   </div>
-  </a>
   {% endfor %}
 </div>
 
@@ -56,9 +55,8 @@
 
 <div class="collapse" id="pending">
   {% for ticket in pending %}
-  <a href="/ticket/{{ticket.primary_key}}">
   <div class="card card-block">
-    <!--<a href="/ticket/{{ticket.primary_key}}">link</a>-->
+    <a href="/ticket/{{ticket.primary_key}}">
     <table>
       <tr>
 	<td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
@@ -70,8 +68,8 @@
 	<td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
       </tr>
     </table>
+    </a>
   </div>
-  </a>
   {% endfor %}
 </div>
 
@@ -84,9 +82,9 @@
 
 <div class="collapse" id="resolved">
   {% for ticket in resolved %}
-  <a href="/ticket/{{ticket.primary_key}}">
+  
   <div class="card card-block">
-    <!--<a href="/ticket/{{ticket.primary_key}}">link</a>-->
+    <a href="/ticket/{{ticket.primary_key}}">
     <table>
       <tr>
 	<td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
@@ -98,8 +96,8 @@
 	<td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
       </tr>
     </table>
+    </a>
   </div>
-  </a>
   {% endfor %}
 </div>
 
