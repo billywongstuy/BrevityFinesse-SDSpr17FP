@@ -14,9 +14,11 @@ statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 
 @app.route("/", methods=['POST','GET'])
 def home():
+
     if 'username' not in session:
         return render_template('index.html')
 
+    guest_allow = (auth.get_level('guest') == 4)
     lvl = session['level'] if 'username' in session else 4
     
     if session['level'] == 0: #superadmin

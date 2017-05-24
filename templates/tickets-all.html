@@ -37,10 +37,10 @@
 	<td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
       </tr>
       <tr>
-	<td>Room: {{ticket.room_num}}</td><td>Teacher: {{ticket.teacher_name}}</td>
+	<td>Room: {{ticket.room_num}}</td><td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td>
       </tr>
       <tr>
-	<td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
+	<td>Teacher: {{ticket.teacher_name}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
       </tr>
     </table>
     </a>
@@ -83,7 +83,7 @@
 </p>
 
 <div class="collapse" id="resolved">
-  {% for ticket in resolved %}
+  {% for ticket in done %}
   
   <div class="card card-block">
     <a href="/ticket/{{ticket.primary_key}}">
