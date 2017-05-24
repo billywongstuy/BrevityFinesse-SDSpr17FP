@@ -17,9 +17,12 @@ issues = {
     5: 'Other (please describe)'
 }
 
-#-----------------------------
+#----------------------------------------------------------------
 # Teacher create request
-#-----------------------------
+# *** Need to specify "body=<>" and "email=<>" when using ***
+#     EX:add_ticket("usr1","teacher1","mmddyy","999",
+#                   "laptop",body=None,email="email@stuy.edu")
+#----------------------------------------------------------------
 def add_ticket(username,teacher,date,room,subject,body=None,email=None):
     db = connect(f)
     c = db.cursor()
@@ -27,11 +30,11 @@ def add_ticket(username,teacher,date,room,subject,body=None,email=None):
     try:
         c.execute("SELECT * FROM tickets")
     except:
-        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject INTEGER, tix_body TEXT, tech_name TEXT, urgency INT, status INT, resp_time INT)")
+        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject INTEGER, tix_body TEXT, tech_name TEXT, urgency INT, status INT, resp_time INT, email TEXT)")
 
     #create ticket entry with given info
-    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status,resp_time) VALUES (?,?,?,?,?,?,?,?)")
-    c.execute(query,(username,teacher,date,room,subject,body,0,None,))
+    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status,resp_time,email) VALUES (?,?,?,?,?,?,?,?,?)")
+    c.execute(query,(username,teacher,date,room,subject,body,0,None,email))
     db.commit()
     db.close()
     return c.lastrowid
@@ -74,7 +77,9 @@ def get_ticket(key):
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
-        
+        ticket_info['email'] = record[11]
+
+        #if ticket already accepted by tech, add what time tech plans to visit
         if record[9] >= 2:
             until = time.strftime(time_pattern, time.localtime(record[10]))
             ticket_info['when'] = str(until)
@@ -112,7 +117,9 @@ def all_tickets():
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
-        
+        ticket_info['email'] = record[11]
+
+        #if ticket already accepted by tech, add what time tech plans to visit
         if record[9] >= 2:
             until = time.strftime(time_pattern, time.localtime(record[10]))
             ticket_info['when'] = str(until)
@@ -153,7 +160,9 @@ def all_tickets_with(status):
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
-        
+        ticket_info['email'] = record[11]
+
+        #if ticket already accepted by tech, add what time tech plans to visit
         if record[9] >= 2:
             until = time.strftime(time_pattern, time.localtime(record[10]))
             ticket_info['when'] = str(until)
@@ -194,7 +203,9 @@ def all_tickets_from(username,status):
         ticket_info['urgency'] = record[8]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
-        
+        ticket_info['email'] = record[11]
+
+        #if ticket already accepted by tech, add what time tech plans to visit
         if record[9] >= 2:
             until = time.strftime(time_pattern, time.localtime(record[10]))
             ticket_info['when'] = str(until)
@@ -232,15 +243,14 @@ def drop():
 #--------------------
 '''
 drop()
-print add_ticket("guest","teacher2","05/17/17","110","electronic")
-print add_ticket("guest","teacher2","05/17/17","111","electronic")
-print add_ticket("guest","teacher2","05/17/17","112","electronic")
-print add_ticket("user1","teacher1","05/17/17","113","electronic")
-print accept_ticket(1,"tech2","4")
+
+print add_ticket("usr1","teacher1","mmddyy","999",1,body=None,email="email@stuy.edu")
+print add_ticket("guest","teacher2","mmddyy","110",2,body="alfjrg")
+print add_ticket("guest","teacher2","mmddyy","111",3,email="123@stuy.edu")
+print update_ticket(1,"tech2","4",1,"hhmm")
 print all_tickets_with(0)
 print
 print all_tickets_from("user1",1)
 print
 print all_tickets()
-
 '''

@@ -218,6 +218,50 @@ def guest_on():
         return change_level(key,4)
     return "No guest account."
 
+#-----------------------------------
+# Change account level to tech
+#-----------------------------------
+def promote_to_tech(username):
+    db = connect(f)
+    c = db.cursor()
+
+    #get primary_key of given username account
+    query = ("SELECT * FROM users WHERE username=?")
+    account = c.execute(query,(username,))
+    for record in account:
+        key = record[0]
+        return change_level(key,2)
+    return "Username doesn't exist."
+
+#-----------------------------------
+# Change account level to admin
+#-----------------------------------
+def promote_to_admin(username):
+    db = connect(f)
+    c = db.cursor()
+
+    #get primary_key of given username account
+    query = ("SELECT * FROM users WHERE username=?")
+    account = c.execute(query,(username,))
+    for record in account:
+        key = record[0]
+        return change_level(key,1)
+    return "Username doesn't exist."
+
+#-----------------------------------
+# Change account level to teacher
+#-----------------------------------
+def demote(username):
+    db = connect(f)
+    c = db.cursor()
+
+    #get primary_key of given username account
+    query = ("SELECT * FROM users WHERE username=?")
+    account = c.execute(query,(username,))
+    for record in account:
+        key = record[0]
+        return change_level(key,3)
+    return "Username doesn't exist."
 
 #-------------------------------
 # Get name (last, first)
@@ -321,21 +365,30 @@ def drop_users():
 #-----------------------
 # Testing area
 #-----------------------
+'''
+drop_users()
+register("user1","last","first","email@stuy.edu","password123","password123",0,"1234567890")
+register("guest","","","test@test.com","password123","password123",4,"")
+register("teacher","Frizzle","Valerie","teacher@stuy.edu","password123","password123",3,"9876543210")
+register("tech","Builder","Bob","tech@stuy.edu","password123","password123",2,"1212121212")
+register("admin","Super","Man","admin@stuy.edu","password123","password123",1,1234567890)
+print account_level("user1")
+print account_level("admin")
 
-#drop_users()
-#register("user1","last","first","email@stuy.edu","password123","password123",0,"1234567890")
-#register("guest","","","test@test.com","password123","password123",4,"")
-#register("teacher","Frizzle","Valerie","teacher@stuy.edu","password123",3,"9876543210")
-#register("tech","Builder","Bob","tech@stuy.edu","password123",2,"1212121212")
-#register("admin","Super","Man","admin@stuy.edu","password123",1,1234567890)
-#print account_level("user1")
-#print account_level("guest")
+guest_off()
+print account_level("guest")
+guest_on()
+print account_level("guest")
 
-#guest_off()
-#print account_level("guest")
-#guest_on()
-#print account_level("guest")
+print get_name("user1")
+print get_name("guest")
 
-#print get_teacher_name("user1")
-#print get_teacher_name("guest")
+print promote_to_admin("teacher")
+print account_level("teacher")
 
+print promote_to_tech("teacher")
+print account_level("teacher")
+
+print demote("teacher")
+print account_level("teacher")
+'''
