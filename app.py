@@ -119,7 +119,7 @@ def submit():
         u_name = session['username']
         t_name = auth.get_name(u_name)
 
-        if session['level'] <= 2: # techs+
+        if session['level'] == 2: # techs+
             email = request.form['email']
         else:
             email = auth.get_email(session['username'])
