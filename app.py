@@ -183,7 +183,10 @@ def ticket(tid):
         loggedIn = 'username' in session
         msg = str(tixUpdateMsg)
         tixUpdateMsg = ""
-        
+
+        if ta and info['when'] != None:
+            info['when'] = info['when'].replace(' ','T')
+            
         return render_template('ticket.html',techAccess=ta,info=info,message=msg, loggedIn=loggedIn, adminAccess=aa) 
 
     # changing a ticket
