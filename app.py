@@ -118,10 +118,10 @@ def submit():
         u_name = session['username']
         t_name = auth.get_name(u_name)
 
-    if session['level'] <= 2: # techs+
-        email = request.form['email']
-    else:
-        email = auth.get_email(session['username'])
+        if session['level'] <= 2: # techs+
+            email = request.form['email']
+        else:
+            email = auth.get_email(session['username'])
         
     key = tix.add_ticket(u_name,t_name,date,room,subj,desc)
     #key = tix.add_ticket(u_name,t_name,date,room,subj,desc,email)

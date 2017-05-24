@@ -114,3 +114,5 @@ yukiC -- 2017-05-23 14:00
     1. Smartphone friendly display
     2. Confirm with client whether guests should be able to see all guest tickets
     
+billyW -- 2017-05-23 22:46
+    - Changed ticket display to prelim collapses
