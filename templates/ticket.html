@@ -1,5 +1,5 @@
 {% if loggedIn %}
-{% extends "base2.html" %}
+{% extends "baseLogged.html" %}
 {% else %}
 {% extends "base.html" %}
 {% endif %}
@@ -38,13 +38,13 @@ Tech Respondent: <input type="text" name="tech" value="{{info.tech_name}}">
 
 {% if not techAccess %}
 
-Status: {{info.status}} {% if info.when is not none %}{{info.when}}{% endif %}</br>
+Status: {{info.status}} {{info.when if info.when}}</br>
 
 {% if info.tech_name is not none %}
 Urgency (1-10): {{info.urgency}} </br>
 {% endif %}
 
-{% else %}
+{% else %} <!-- techAccess -->
 
   Status:
   <select name="status">

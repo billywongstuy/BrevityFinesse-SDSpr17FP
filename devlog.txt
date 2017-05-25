@@ -103,3 +103,34 @@ billyW -- 2017-05-21 14:50
     - Made prelim ticket template and linked it to functional ticket route
     - Modified get ticket(s) functions to accodomate for ticket template
     
+billyW -- 2017-05-22 15:45
+    - Added switch button for guest functionality on/off and made it work with route
+
+yukiC -- 2017-05-23 14:00
+  - Tasks:
+    1. Promote & Demote
+    2. Add email column to tickets db(automatic for teacher account, optional for guest)
+  - Demo feedback:
+    1. Smartphone friendly display
+    2. Confirm with client whether guests should be able to see all guest tickets
+    
+billyW -- 2017-05-23 22:46
+    - Changed ticket display to prelim collapses
+    
+yukiC -- 2017-05-24 14:40
+  - Client Meeting Summary:
+    *** Priorities ***
+    1. Make sure website display is easy to read for users (ex: larger font)
+    2. Change urgency to "High", "Normal", and "Low" instead of rating 0-10
+    3. Work out how to send notification to tech through email
+    4. Create an archive: everyday by the end of the day, an archive csv file is generated for that day,
+                          which contains all tickets information arranged according to (1)status, (2)urgency, (3)submission time.
+                          And all resolved tickets should be removed from tickets database.
+    *** Features to consider ***
+    1. Guests and teachers able to view past tickets
+    2. Teachers able to cancel tickets
+    3. Archive display on website
+
+billyW -- 2017-05-25 11:40
+    - Added functions for emailing
+    - Added prelim email function calls to routes

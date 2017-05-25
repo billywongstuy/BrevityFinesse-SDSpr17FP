@@ -1,20 +1,10 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from utils import auth, tickets_manager as tix
+from utils import auth, tickets_manager as tix, email_handler as e_mail
 import calendar, datetime, json, os
 from time import gmtime,strftime,mktime,strptime,sleep
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
-
-'''
-Statuses
-
-Pending
-In Progress
-    - Will Come Today At
-    - Deferred Until
-Done
-'''
 
 statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 
@@ -24,31 +14,36 @@ statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 
 @app.route("/", methods=['POST','GET'])
 def home():
+
     if 'username' not in session:
         return render_template('index.html')
+
+    guest_allow = (auth.get_level('guest') == 4)
+    lvl = session['level'] if 'username' in session else 4
     
     if session['level'] == 0: #superadmin
-        return render_template('superadmin-dashboard.html') #DASHBOARD
+        return render_template('superadmin-dashboard.html', guest_allow=guest_allow) #DASHBOARD
     
     elif session['level'] == 1: #admin
-        return render_template('admin-dashboard.html')
+        return render_template('admin-dashboard.html', guest_allow=guest_allow)
 
     elif session['level'] == 2: #tech
         pending = tix.all_tickets_with(0)
         done = tix.all_tickets_with(1)
         progress = tix.all_tickets_with(2)
-        return render_template('tickets-all.html',pending=pending,progress=progress,done=done)
+        return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn=True,level=lvl)
         #return render_template('index-tech.html',pending=pending,progress=progress,done=done)
 
     elif session['level'] == 3: #teacher
         pending = tix.all_tickets_from(session['username'],0)
         progress = tix.all_tickets_from(session['username'],2)
         done = tix.all_tickets_from(session['username'],1)
-        return render_template('index-teacher.html',pending=pending,progress=progress,done=done)
+        return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn=True,level=lvl)
+        #return render_template('index-teacher.html',pending=pending,progress=progress,done=done,loggedIn=True)
 
     else:
         return 'You broke the page!'
-
+    
 #-----------------
 # LOGIN / LOGOUT
 #-----------------
@@ -92,6 +87,11 @@ def logout():
 #------------------------------------------------
 
 
+# need email funcion for the guests
+# auto fill with teacher email if logged in
+# make email field show for guests and admins
+# turn off create tickets for techs
+
 @app.route("/submit", methods=['POST','GET'])
 def submit():
     guest_allow = (auth.get_level('guest') == 4)
@@ -100,11 +100,11 @@ def submit():
         return 'no' #render_template('guestunavail.html')
     
     if request.method == 'GET':
-        return render_template("submit.html", teacherAcc=('username' in session and session['level'] == 3))
+        return render_template("submit.html", teacherAcc=('username' in session and session['level'] == 3), loggedIn = 'username' in session)
     
     room = int(request.form['room'])
     if room <= 100 or room >= 1050:
-        return render_template('submit.html', isLogged=('username' in session), error='Invalid room number')
+        return render_template('submit.html', loggedIn=('username' in session), error='Invalid room number')
     
     subj = int(request.form['subject'])
     desc = request.form['desc']
@@ -116,15 +116,22 @@ def submit():
         l_name = request.form['guestLastName']
         f_name = request.form['guestFirstName']
         t_name = l_name + ', ' + f_name
+        email = request.form['email']
     else:
         u_name = session['username']
         t_name = auth.get_name(u_name)
+
+        if session['level'] == 2: # techs+
+            email = request.form['email']
+        else:
+            email = auth.get_email(session['username'])
         
-    key = tix.add_ticket(u_name,t_name,date,room,subj,desc)
+    key = tix.add_ticket(u_name,t_name,date,room,subj,desc,email)
+    #e_mail.send_msg_multi(['me'],subj,body,techs list)
     return redirect("/ticket/%d" % (int(key)))
     
 #-------------------------
-# GUEST TICKET VIEWING
+# TICKET VIEWING
 #-------------------------
 
 @app.route('/guest_tickets', methods=['GET','POST'])
@@ -135,6 +142,28 @@ def guest_tickets():
     done = tix.all_tickets_from('guest',1)   
     return render_template('tickets-guest.html',pending=pending,progress=progress,done=done)
 
+
+@app.route("/all_tickets", methods=['POST','GET'])
+def all_tickets():
+
+    if 'username' not in session:
+        pending = tix.all_tickets_from('guest',0)
+        progress = tix.all_tickets_from('guest',2)
+        done = tix.all_tickets_from('guest',1)
+    elif session['level'] == 3:
+        pending = tix.all_tickets_from(session['username'],0)
+        progress = tix.all_tickets_from(session['username'],2)
+        done = tix.all_tickets_from(session['username'],1)
+    elif session['level'] <= 2:
+        pending = tix.all_tickets_with(0)
+        progress = tix.all_tickets_with(2)
+        done = tix.all_tickets_with(1)
+    else:
+        return 'Error?'
+
+    lvl = session['level'] if 'username' in session else 4
+    
+    return render_template('tickets-all.html',pending=pending,progress=progress,done=done,loggedIn='username' in session,level=lvl)
 
 #-----------------------------
 # INDIVIDUAL TICKET PAGES
@@ -156,7 +185,10 @@ def ticket(tid):
         loggedIn = 'username' in session
         msg = str(tixUpdateMsg)
         tixUpdateMsg = ""
-        
+
+        if ta and info['when'] != None:
+            info['when'] = info['when'].replace(' ','T')
+            
         return render_template('ticket.html',techAccess=ta,info=info,message=msg, loggedIn=loggedIn, adminAccess=aa) 
 
     # changing a ticket
@@ -164,18 +196,20 @@ def ticket(tid):
         tech = auth.get_name(session['username'])
     else: #admin
         tech = request.form['tech']
+     
     status = int(request.form['status'])
     urgency = int(request.form['urgency'])
 
     if status >= 2:
-        when = request.form['when'] #convert this to epoch     
+        when = request.form['when'] 
         pattern = '%Y-%m-%dT%H:%M'
-        when = int(mktime(strptime(when,pattern)))
+        when = int(mktime(strptime(when,pattern))) #epoch conversion
     else:
         when = None
 
     tix.update_ticket(tid,tech,urgency,status,when) # update the ticket
-
+    #e_mail.send_msg_one(ticket_email,subj,body,'me')
+    
     tixUpdateMsg = 'Ticket updated!'
     
     return redirect('/ticket_reload/%d' % (int(tid)))
@@ -195,29 +229,18 @@ def ticket_reload(tid):
 
 admin_access = [0,1]
 
-@app.route("/all_tickets", methods=['POST','GET'])
-def all_tickets():
-    if not 'username' in session or not session['level'] in admin_access:
-        return redirect('/')
-    pending = tix.all_tickets_with(0)
-    progress = tix.all_tickets_with(2)
-    done = tix.all_tickets_with(1)
-    return render_template('tickets-all.html',pending=pending,progress=progress,done=done)
-
 @app.route("/create_account", methods=['POST','GET'])
 def create_account():
     if not 'username' in session or not session['level'] in admin_access:
-        return redirect('/')
-    
+        return redirect('/')    
     if request.method == 'GET':
-        return render_template('register.html',message=None)
+        return render_template('register.html',message=None,isSuper=session['level'] == 0)
     
     user = request.form['user']
     email = request.form['email']
     email2 = request.form['emailconf']
-    
     if email != email2:
-        return render_template('register.html')
+        return render_template('register.html',message='Unmatching emails!')
     
     passw = request.form['pass']
     pass2 = request.form['passconf']
@@ -225,14 +248,20 @@ def create_account():
     phone = request.form['phone']
     f_name = request.form['firstName']
     l_name = request.form['lastName']
-    
     msg = auth.register(user,l_name,f_name,email,passw,pass2,account,phone)
 
-    return render_template('register.html',message=msg)
+    return render_template('register.html',message=msg,isSuper=session['level']==0)
+
 
 @app.route("/guest_toggle", methods=['POST'])
 def guest_toggle():
-    #do toggling stuff here guest_on() guest_off()
+    guest_allow = (auth.get_level('guest') == 4)
+    choice = str(request.form['guest_choices'])
+    if choice == 'on' and not guest_allow:
+        auth.guest_on()
+    elif choice == 'off' and guest_allow:
+        auth.guest_off()
+        
     return redirect('/')
 
 #-------------------------
@@ -250,12 +279,12 @@ def admin_promote():
     #u_name = request.form['username']
     #action = request.form['action']
 
+    #need this functions to be written
     #if action == 'promote':
-    #promote
-    #else:
-    #revoke
+    #promote     (takes in username and new rank)
+    #elif action == 'demote':
+    #revoke/demote    (takes in username and new rank)
     return render_template('promote.html')
-
 
 #------------------
 # ERROR HANDLERS
