@@ -111,6 +111,14 @@ def message_helper(sender, recipient, subj, body, serv, cc=None):
     send = send_message(serv, sender, message)
     return send
 
+
+
+'''
+#############################
+NEED TO CHECK FOR NONE RECIPIENTS
+#############################
+'''
+
 #send to one user, one cc
 #args: recipient is string, cc is string
 def send_msg_one(recipient,subj,body, cc=None):

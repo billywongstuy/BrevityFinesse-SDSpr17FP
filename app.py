@@ -234,7 +234,7 @@ def create_account():
     if not 'username' in session or not session['level'] in admin_access:
         return redirect('/')    
     if request.method == 'GET':
-        return render_template('register.html',message=None)
+        return render_template('register.html',message=None,isSuper=session['level'] == 0)
     
     user = request.form['user']
     email = request.form['email']
@@ -250,7 +250,7 @@ def create_account():
     l_name = request.form['lastName']
     msg = auth.register(user,l_name,f_name,email,passw,pass2,account,phone)
 
-    return render_template('register.html',message=msg)
+    return render_template('register.html',message=msg,isSuper=session['level']==0)
 
 
 @app.route("/guest_toggle", methods=['POST'])

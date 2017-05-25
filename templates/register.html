@@ -49,7 +49,7 @@
 	   <div class="form-group">
 	     <label for="accType">Account type</label>
 	     <select id="accType" name="account" class="form-control">
-	       <option value="1">Admin</option>
+	       {% if isSuper %}<option value="1">Admin</option>{% endif %}
 	       <option value="2">Tech</option>
 	       <option value="3">Teacher</option>
 	     </select>
