@@ -134,3 +134,6 @@ yukiC -- 2017-05-24 14:40
 billyW -- 2017-05-25 11:40
     - Added functions for emailing
     - Added prelim email function calls to routes
+
+julianA -- 2017-05-25 14:06
+Started improving formatting of tixets in all-tickets view

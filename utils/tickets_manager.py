@@ -30,6 +30,13 @@ issues = {
     5: 'Other (please describe)'
 }
 
+urgency = {
+    0 : 'Low',
+    1 : 'Medium',
+    2 : 'High',
+    None : ''
+    }
+
 #----------------------------------------------------------------
 # Teacher create request
 # *** Need to specify "body=<>" and "email=<>" when using ***
@@ -87,7 +94,7 @@ def get_ticket(key):
         ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
-        ticket_info['urgency'] = record[8]
+        ticket_info['urgency'] = urgency[record[8]]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
         ticket_info['email'] = record[11]
@@ -127,7 +134,7 @@ def all_tickets():
         ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
-        ticket_info['urgency'] = record[8]
+        ticket_info['urgency'] = urgency[record[8]]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
         ticket_info['email'] = record[11]
@@ -170,7 +177,7 @@ def all_tickets_with(status):
         ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
-        ticket_info['urgency'] = record[8]
+        ticket_info['urgency'] = urgency[record[8]]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
         ticket_info['email'] = record[11]
@@ -213,7 +220,7 @@ def all_tickets_from(username,status):
         ticket_info['tix_subject'] = issues[record[5]]
         ticket_info['tix_body'] = record[6]
         ticket_info['tech_name'] = record[7]
-        ticket_info['urgency'] = record[8]
+        ticket_info['urgency'] = urgency[record[8]]
         ticket_info['status'] = statuses[record[9]]
         ticket_info['when'] = None
         ticket_info['email'] = record[11]
@@ -283,16 +290,16 @@ def drop():
 #--------------------
 # Testing area
 #--------------------
-'''
+
 drop()
 
 print add_ticket("usr1","teacher1","mmddyy","999",1,body=None,email="email@stuy.edu")
 print add_ticket("guest","teacher2","mmddyy","110",2,body="alfjrg")
-print add_ticket("guest","teacher2","mmddyy","111",3,email="123@stuy.edu")
-print update_ticket(1,"tech2","4",1,"hhmm")
+print add_ticket("guest","teacher2","mmddyy","111",0,email="123@stuy.edu")
+print update_ticket(1,"tech2","2",1,"hhmm")
 print all_tickets_with(0)
 print
 print all_tickets_from("user1",1)
 print
 print all_tickets()
-'''
+
