@@ -130,3 +130,7 @@ yukiC -- 2017-05-24 14:40
     1. Guests and teachers able to view past tickets
     2. Teachers able to cancel tickets
     3. Archive display on website
+
+billyW -- 2017-05-25 11:40
+    - Added functions for emailing
+    - Added prelim email function calls to routes

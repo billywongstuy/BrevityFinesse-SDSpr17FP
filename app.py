@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from utils import auth, tickets_manager as tix
+from utils import auth, tickets_manager as tix, email_handler as e_mail
 import calendar, datetime, json, os
 from time import gmtime,strftime,mktime,strptime,sleep
 
@@ -126,8 +126,8 @@ def submit():
         else:
             email = auth.get_email(session['username'])
         
-    key = tix.add_ticket(u_name,t_name,date,room,subj,desc)
-    #key = tix.add_ticket(u_name,t_name,date,room,subj,desc,email)
+    key = tix.add_ticket(u_name,t_name,date,room,subj,desc,email)
+    #e_mail.send_msg_multi(['me'],subj,body,techs list)
     return redirect("/ticket/%d" % (int(key)))
     
 #-------------------------
@@ -208,7 +208,8 @@ def ticket(tid):
         when = None
 
     tix.update_ticket(tid,tech,urgency,status,when) # update the ticket
-
+    #e_mail.send_msg_one(ticket_email,subj,body,'me')
+    
     tixUpdateMsg = 'Ticket updated!'
     
     return redirect('/ticket_reload/%d' % (int(tid)))

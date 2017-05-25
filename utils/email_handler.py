@@ -60,7 +60,7 @@ def get_credentials():
     return credentials
 
 
-def create_message(sender, to, subject, message_text):
+def create_message(sender, to, subject, message_text, cc=None):
   """Create a message for an email.
 
   Args:
@@ -76,6 +76,8 @@ def create_message(sender, to, subject, message_text):
   message['to'] = to
   message['from'] = sender
   message['subject'] = subject
+  if cc != None:
+      message['cc'] = cc
   return {'raw': base64.b64encode(message.as_string())}
 
 
@@ -101,38 +103,37 @@ def send_message(service, user_id, message):
 
 
 
-
-
-me = 'me'
-rec = 'bwong5@stuy.edu'
-
-subj = 'Testing Gmail API'
-msg = '''
-This is a test email 2
-
-Goodbye!
-'''
-
-#testMessage = create_message(me, rec, subj, msg)
-#testSend = send_message(service, me, testMessage)
-
-
 credentials = get_credentials()
 service = build('gmail', 'v1', http=credentials.authorize(Http()))
 
-
-# un-tested function
-
-def messageHelper(sender, recipient, subj, body, serv):
-    message = create_message(sender, recipient, subj, body)
+def message_helper(sender, recipient, subj, body, serv, cc=None):
+    message = create_message(sender, recipient, subj, body, cc)
     send = send_message(serv, sender, message)
     return send
 
-def sendMessage(recipient,subj,body,serv):
-    return messageHelper('me',recipient,subj,body,serv)
+#send to one user, one cc
+#args: recipient is string, cc is string
+def send_msg_one(recipient,subj,body, cc=None):
+    return message_helper('me', recipient, subj, body, service, cc)
 
-subj2 = 'Hello World!'
+#send to 1+ user, 1+ cc
+#args: recipients is list, cc is list
+def send_msg_multi(recipients,subj,body,cc=None):
+    if len(recipients) > 1:
+        r = ", ".join(recipients)
+    else:
+        r = recipients[0]
+    if len(cc) > 1:
+        cc = ", ".join(cc)
+    else:
+        cc = cc[0]
+    return message_helper('me', r, subj, body, service, cc)
 
-body2 = 'Are you doing well today?\nI\'m having a fine day\n\nGoodbye!'
 
-#sendMessage(rec,subj2,body2,service)
+#me = 'me'
+#rec = ['bwong5@stuy.edu','billywong118@gmail.com']
+#subj2 = 'Hello World!'
+#body2 = 'Are you doing well today?\nI\'m having a fine day\n\nGoodbye!'
+
+#send_msg_one(rec[0],subj2,body2,rec[1])
+#send_msg_multi([rec[0]],subj2,body2,[rec[1]])
