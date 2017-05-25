@@ -100,8 +100,6 @@ def send_message(service, user_id, message):
     print ('An error occurred: %s' % error)
 
 
-credentials = get_credentials()
-service = build('gmail', 'v1', http=credentials.authorize(Http()))
 
 
 
@@ -115,12 +113,26 @@ This is a test email 2
 Goodbye!
 '''
 
-testMessage = create_message(me, rec, subj, msg)
-testSend = send_message(service, me, testMessage)
+#testMessage = create_message(me, rec, subj, msg)
+#testSend = send_message(service, me, testMessage)
+
+
+credentials = get_credentials()
+service = build('gmail', 'v1', http=credentials.authorize(Http()))
 
 
 # un-tested function
-#sender should be an account that accept the permissions
-def sendMessage(sender, recipient, subj, body, service):
+
+def messageHelper(sender, recipient, subj, body, serv):
     message = create_message(sender, recipient, subj, body)
-    send = send_message(service, sender, message)
+    send = send_message(serv, sender, message)
+    return send
+
+def sendMessage(recipient,subj,body,serv):
+    return messageHelper('me',recipient,subj,body,serv)
+
+subj2 = 'Hello World!'
+
+body2 = 'Are you doing well today?\nI\'m having a fine day\n\nGoodbye!'
+
+#sendMessage(rec,subj2,body2,service)
