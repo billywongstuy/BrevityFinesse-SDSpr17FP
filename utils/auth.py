@@ -300,7 +300,7 @@ def get_email(username):
 #---------------------------
 #Get list of tech emails
 #---------------------------
-def get_tech_email():
+def get_tech_emails():
     db = connect(f)
     c = db.cursor()
 
@@ -375,13 +375,16 @@ def drop_users():
 #-----------------------
 
 #drop_users()
+'''
 register("user1","last","first","email@stuy.edu","password123","password123",0,"1234567890")
 register("guest","","","test@test.com","password123","password123",4,"")
 register("teacher","Frizzle","Valerie","teacher@stuy.edu","password123","password123",3,"9876543210")
 register("tech","Builder","Bob","tech@stuy.edu","password123","password123",2,"1212121212")
 register("tech2","Builder2","Bob2","tech2@stuy.edu","password123","password123",2,"1212121212")
 register("admin","Super","Man","admin@stuy.edu","password123","password123",1,1234567890)
-print get_tech_email()
+print get_tech_emails()
+'''
+
 '''
 print account_level("user1")
 print account_level("admin")

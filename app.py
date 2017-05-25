@@ -127,7 +127,12 @@ def submit():
             email = auth.get_email(session['username'])
         
     key = tix.add_ticket(u_name,t_name,date,room,subj,desc,email)
-    #e_mail.send_msg_multi(['me'],subj,body,techs list)
+
+    subj = 'Ticket submitted'
+    body = 'New ticket submitted'
+
+    #cc fails
+    e_mail.send_msg_multi(['me'],subj,body,auth.get_tech_emails())
     return redirect("/ticket/%d" % (int(key)))
     
 #-------------------------
@@ -213,24 +218,14 @@ def ticket(tid):
 
     tix.update_ticket(tid,tech,urgency,status,when) # update the ticket
 
-
     # SENDING EMAIL
-    t_email = tix.get_email(int(tid))
-
     t_name = tix.get_name(int(tid))
     t_name = t_name[(t_name.find(',')+1):] + ' ' + t_name[:t_name.find(',')]
     full_status = str(statuses[status]) if when == None else str(statuses[status] + ' ' + w.replace('T',' '))
     
+    t_email = tix.get_email(int(tid))
     subj = 'StuyTix: Ticket #%d Status Changed' % (int(tid))
-        
-    #try to include name
-    body = '''
-    %s,
-
-    Your ticket status has changed to %s
-
-    The Technical Issues Department
-    ''' % (t_name, full_status)
+    body = e_mail.getUpdateBody(t_name, full_status, 1)
     
     e_mail.send_msg_one(t_email,subj,body)
     

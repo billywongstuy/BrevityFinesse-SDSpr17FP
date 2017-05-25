@@ -135,6 +135,15 @@ def send_msg_multi(recipients,subj,body,cc=None):
     return message_helper('me', r, subj, body, service, cc)
 
 
+def getUpdateBody(t_name, full_status, urgency):
+    return '''
+    %s,
+
+    Your ticket status has changed to %s
+
+    The Technical Issues Department
+    ''' % (t_name, full_status)
+
 #me = 'me'
 #rec = ['bwong5@stuy.edu','billywong118@gmail.com']
 #subj2 = 'Hello World!'
