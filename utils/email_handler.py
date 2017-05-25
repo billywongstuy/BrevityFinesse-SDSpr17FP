@@ -106,27 +106,24 @@ def send_message(service, user_id, message):
 credentials = get_credentials()
 service = build('gmail', 'v1', http=credentials.authorize(Http()))
 
+
 def message_helper(sender, recipient, subj, body, serv, cc=None):
     message = create_message(sender, recipient, subj, body, cc)
     send = send_message(serv, sender, message)
     return send
 
-
-
-'''
-#############################
-NEED TO CHECK FOR NONE RECIPIENTS
-#############################
-'''
-
 #send to one user, one cc
 #args: recipient is string, cc is string
 def send_msg_one(recipient,subj,body, cc=None):
+    if recipient == None:
+        return 'Error: Email is not valid'
     return message_helper('me', recipient, subj, body, service, cc)
 
 #send to 1+ user, 1+ cc
 #args: recipients is list, cc is list
 def send_msg_multi(recipients,subj,body,cc=None):
+    if recipients[0] == None:
+        return 'Error: Email is not valid'
     if len(recipients) > 1:
         r = ", ".join(recipients)
     else:
