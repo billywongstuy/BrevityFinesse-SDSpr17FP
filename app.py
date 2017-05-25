@@ -191,6 +191,10 @@ def ticket(tid):
             
         return render_template('ticket.html',techAccess=ta,info=info,message=msg, loggedIn=loggedIn, adminAccess=aa) 
 
+
+    if request.method == 'POST' and 'username' not in session:
+        return redirect("/.")
+    
     # changing a ticket
     if session['level'] > 1: #tech
         tech = auth.get_name(session['username'])
@@ -201,14 +205,34 @@ def ticket(tid):
     urgency = int(request.form['urgency'])
 
     if status >= 2:
-        when = request.form['when'] 
+        w = request.form['when'] 
         pattern = '%Y-%m-%dT%H:%M'
-        when = int(mktime(strptime(when,pattern))) #epoch conversion
+        when = int(mktime(strptime(w,pattern))) #epoch conversion
     else:
         when = None
 
     tix.update_ticket(tid,tech,urgency,status,when) # update the ticket
-    e_mail.send_msg_one(ticket_email,subj,body,'me')
+
+
+    # SENDING EMAIL
+    t_email = tix.get_email(int(tid))
+
+    t_name = tix.get_name(int(tid))
+    t_name = t_name[(t_name.find(',')+1):] + ' ' + t_name[:t_name.find(',')]
+    full_status = str(statuses[status]) if when == None else str(statuses[status] + ' ' + w.replace('T',' '))
+    
+    subj = 'StuyTix: Ticket #%d Status Changed' % (int(tid))
+        
+    #try to include name
+    body = '''
+    %s,
+
+    Your ticket status has changed to %s
+
+    The Technical Issues Department
+    ''' % (t_name, full_status)
+    
+    e_mail.send_msg_one(t_email,subj,body)
     
     tixUpdateMsg = 'Ticket updated!'
     

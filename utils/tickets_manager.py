@@ -228,7 +228,7 @@ def all_tickets_from(username,status):
     
 
 #-------------------------
-# Get email on ticket
+# Get functions for tickets
 #-------------------------
 def get_email(key):
     db = connect(f)
@@ -241,6 +241,20 @@ def get_email(key):
     for record in ticket:
         return record[11]
     return "Ticket doesn't exist"
+
+
+def get_name(key):
+    db = connect(f)
+    c = db.cursor()
+
+    #find ticket with given primary key
+    query = ("SELECT * FROM tickets WHERE primary_key=?")
+    ticket = c.execute(query,(key,))
+
+    for record in ticket:
+        return record[2]
+    return "Ticket doesn't exist"
+
 
 #------------------------
 # Tech closes ticket
