@@ -105,8 +105,8 @@ service = build('gmail', 'v1', http=credentials.authorize(Http()))
 
 
 
-me = 'billywong118@gmail.com'
-rec = me
+me = 'me'
+rec = 'bwong5@stuy.edu'
 
 subj = 'Testing Gmail API'
 msg = '''
