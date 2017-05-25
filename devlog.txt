@@ -123,9 +123,10 @@ yukiC -- 2017-05-24 14:40
     1. Make sure website display is easy to read for users (ex: larger font)
     2. Change urgency to "High", "Normal", and "Low" instead of rating 0-10
     3. Work out how to send notification to tech through email
-    4. Create a queue and archive: Queue shows a to do list of accepted tickets ranked according to urgency level.
-                                   Archive should be updated everyday (5:00 PM) to store resolved tickets
-    
+    4. Create an archive: everyday by the end of the day, an archive csv file is generated for that day,
+                          which contains all tickets information arranged according to (1)status, (2)urgency, (3)submission time.
+                          And all resolved tickets should be removed from tickets database.
     *** Features to consider ***
     1. Guests and teachers able to view past tickets
     2. Teachers able to cancel tickets
+    3. Archive display on website
