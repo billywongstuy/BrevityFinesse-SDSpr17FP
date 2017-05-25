@@ -116,3 +116,16 @@ yukiC -- 2017-05-23 14:00
     
 billyW -- 2017-05-23 22:46
     - Changed ticket display to prelim collapses
+    
+yukiC -- 2017-05-24 14:40
+  - Client Meeting Summary:
+    *** Priorities ***
+    1. Make sure website display is easy to read for users (ex: larger font)
+    2. Change urgency to "High", "Normal", and "Low" instead of rating 0-10
+    3. Work out how to send notification to tech through email
+    4. Create a queue and archive: Queue shows a to do list of accepted tickets ranked according to urgency level.
+                                   Archive should be updated everyday (5:00 PM) to store resolved tickets
+    
+    *** Features to consider ***
+    1. Guests and teachers able to view past tickets
+    2. Teachers able to cancel tickets
