@@ -116,7 +116,6 @@ def message_helper(sender, recipient, subj, body, serv, cc=None):
 def send_msg_one(recipient,subj,body, cc=None):
     if recipient == None:
         return 'Error: Email is not valid'
-    print ('THINGS: ',recipient, cc)
     return message_helper('me', recipient, subj, body, service, cc)
 
 #send to 1+ user, 1+ cc
@@ -151,3 +150,4 @@ def getUpdateBody(t_name, full_status, urgency):
 
 #send_msg_one(rec[0],subj2,body2,rec[1])
 #send_msg_multi([rec[0]],subj2,body2,[rec[1]])
+

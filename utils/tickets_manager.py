@@ -291,6 +291,7 @@ def drop():
 # Testing area
 #--------------------
 
+'''
 drop()
 
 print add_ticket("usr1","teacher1","mmddyy","999",1,body=None,email="email@stuy.edu")
@@ -302,4 +303,4 @@ print
 print all_tickets_from("user1",1)
 print
 print all_tickets()
-
+'''
