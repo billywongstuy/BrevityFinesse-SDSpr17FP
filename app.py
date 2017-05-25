@@ -111,7 +111,7 @@ def submit():
     date = str(datetime.datetime.now())
     date = date[0:date.find('.')]
     
-    if 'username' not in session:
+    if 'username' not in session or session['level'] != 3:
         u_name = 'guest'
         l_name = request.form['guestLastName']
         f_name = request.form['guestFirstName']
@@ -131,8 +131,8 @@ def submit():
     subj = 'Ticket submitted'
     body = 'New ticket submitted'
 
-    #cc fails
-    e_mail.send_msg_multi(['me'],subj,body,auth.get_tech_emails())
+    #cc fails tyr in future to send to self and cc to techs
+    e_mail.send_msg_multi(auth.get_tech_emails(),subj,body)
     return redirect("/ticket/%d" % (int(key)))
     
 #-------------------------
@@ -220,19 +220,19 @@ def ticket(tid):
 
     # SENDING EMAIL
     t_name = tix.get_name(int(tid))
-    t_name = t_name[(t_name.find(',')+1):] + ' ' + t_name[:t_name.find(',')]
+    t_name = t_name[(t_name.find(',')+2):] + ' ' + t_name[:t_name.find(',')]
     full_status = str(statuses[status]) if when == None else str(statuses[status] + ' ' + w.replace('T',' '))
+    urge = tix.get_urgency(int(tid))
     
     t_email = tix.get_email(int(tid))
     subj = 'StuyTix: Ticket #%d Status Changed' % (int(tid))
-    body = e_mail.getUpdateBody(t_name, full_status, 1)
-    
+    body = e_mail.get_update_body(t_name, full_status,urge)
+
     e_mail.send_msg_one(t_email,subj,body)
     
     tixUpdateMsg = 'Ticket updated!'
     
     return redirect('/ticket_reload/%d' % (int(tid)))
-
 
 #-----------------------
 # TICKET RELOAD PASS

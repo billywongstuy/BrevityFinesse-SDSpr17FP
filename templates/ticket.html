@@ -60,8 +60,12 @@ Time (use to indicated when coming or deferred to):
 
 </br>
 
-Urgency (1-10):
-<input type="number" name="urgency" min="1" max="10" {% if info.urgency != none %}value="{{info.urgency}}"{% endif %}>
+Urgency:
+<select name="urgency">
+  <option value="2" {% if info.urgency == "High" %} selected {% endif %}>High</option>
+  <option value="1" {% if info.urgency == "Medium" %} selected {% endif %}>Medium</option>
+  <option value="0" {% if info.urgency == "Low" %} selected {% endif %}>Low</option>
+</select>
 
 </br>
 

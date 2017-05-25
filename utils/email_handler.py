@@ -45,7 +45,7 @@ def get_credentials():
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir,
-                                   'gmail-quickstart.json')
+                                       'gmail-quickstart.json')
 
     store = oauth2client.file.Storage(credential_path)
     credentials = store.get()
@@ -56,59 +56,65 @@ def get_credentials():
             credentials = tools.run_flow(flow, store, flags)
         else: # Needed only for compatability with Python 2.6
             credentials = tools.run(flow, store)
-        print ('Storing credentials to ' + credential_path)
+            print ('Storing credentials to ' + credential_path)
     return credentials
 
 
 def create_message(sender, to, subject, message_text, cc=None):
-  """Create a message for an email.
+    """Create a message for an email.
 
-  Args:
-    sender: Email address of the sender.
+    Args:
+sender: Email address of the sender.
     to: Email address of the receiver.
     subject: The subject of the email message.
     message_text: The text of the email message.
 
-  Returns:
+    Returns:
     An object containing a base64 encoded email object.
-  """
-  message = MIMEText(message_text)
-  message['to'] = to
-  message['from'] = sender
-  message['subject'] = subject
-  if cc != None:
-      message['cc'] = cc
-  return {'raw': base64.b64encode(message.as_string())}
+    """
+    message = MIMEText(message_text)
+    message['to'] = to
+    message['from'] = sender
+    message['subject'] = subject
+    if cc != None:
+        message['cc'] = cc
+    return {'raw': base64.b64encode(message.as_string())}
 
 
 def send_message(service, user_id, message):
-  """Send an email message.
+    """Send an email message.
 
-  Args:
+    Args:
     service: Authorized Gmail API service instance.
     user_id: User's email address. The special value "me"
     can be used to indicate the authenticated user.
     message: Message to be sent.
 
-  Returns:
+    Returns:
     Sent Message.
-  """
-  try:
-    message = (service.users().messages().send(userId=user_id, body=message)
-               .execute())
-    print ('Message Id: %s' % message['id'])
-    return message
-  except errors.HttpError, error:
-    print ('An error occurred: %s' % error)
+    """
+    try:
+        message = (service.users().messages().send(userId=user_id, body=message)
+                 .execute())
+        print ('Message Id: %s' % message['id'])
+        return message
+    except errors.HttpError, error:
+        print ('An error occurred: %s' % error)
 
 
 
 credentials = get_credentials()
 service = build('gmail', 'v1', http=credentials.authorize(Http()))
 
+
+# CC DOESN'T WORK
+
+
 def message_helper(sender, recipient, subj, body, serv, cc=None):
     message = create_message(sender, recipient, subj, body, cc)
+    #print ('done creating')
     send = send_message(serv, sender, message)
+    #print ('done sending')
     return send
 
 #send to one user, one cc
@@ -120,7 +126,7 @@ def send_msg_one(recipient,subj,body, cc=None):
 
 #send to 1+ user, 1+ cc
 #args: recipients is list, cc is list
-def send_msg_multi(recipients,subj,body,cc=None):
+def send_msg_multi(recipients,subj,body,cc=[None]):
     if recipients[0] == None:
         return 'Error: Email is not valid'
     if len(recipients) > 1:
@@ -134,20 +140,25 @@ def send_msg_multi(recipients,subj,body,cc=None):
     return message_helper('me', r, subj, body, service, cc)
 
 
-def getUpdateBody(t_name, full_status, urgency):
+def get_update_body(t_name, full_status, urgency):
     return '''
-    %s,
+%s,
 
-    Your ticket status has changed to %s
+Your ticket status has changed to %s
+Urgency: %s
 
-    The Technical Issues Department
-    ''' % (t_name, full_status)
+The Technical Issues Department
+    ''' % (t_name, full_status, urgency)
 
-#me = 'me'
-#rec = ['bwong5@stuy.edu','billywong118@gmail.com']
-#subj2 = 'Hello World!'
-#body2 = 'Are you doing well today?\nI\'m having a fine day\n\nGoodbye!'
 
-#send_msg_one(rec[0],subj2,body2,rec[1])
-#send_msg_multi([rec[0]],subj2,body2,[rec[1]])
+'''
+Subject: New Ticket with ---(Issue)
 
+Body:
+Teacher 
+Issue
+Room
+
+'''
+def get_new_tix_body():
+    return

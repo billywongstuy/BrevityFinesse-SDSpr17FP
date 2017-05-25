@@ -263,6 +263,19 @@ def get_name(key):
     return "Ticket doesn't exist"
 
 
+def get_urgency(key):
+    db = connect(f)
+    c = db.cursor()
+
+    #find ticket with given primary key
+    query = ("SELECT * FROM tickets WHERE primary_key=?")
+    ticket = c.execute(query,(key,))
+
+    for record in ticket:
+        return urgency[record[8]]
+    return "Ticket doesn't exist"
+
+
 #------------------------
 # Tech closes ticket
 #------------------------
