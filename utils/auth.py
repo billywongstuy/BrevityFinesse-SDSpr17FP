@@ -255,17 +255,6 @@ def get_level(username):
     return "username doesn't exist"
 
 
-#----------------------
-# Drop table(debug use)
-#----------------------
-def drop():
-    db = connect(f)
-    c = db.cursor()
-    c.execute("DROP TABLE users")
-    db.commit()
-    db.close()
-    return "Table users dropped"
-
 #-------------------------------
 # NOT IN USE AT THE MOMENT
 #-------------------------------

@@ -5,9 +5,22 @@ import random,string,time
 
 f = "data/tix.db"
 
-statuses = {0:'Pending', 1:'Resolved', 2:'Coming at', 3: 'Deferred to'}
+#----------------------------
+# Status chart
+#----------------------------
+statuses = {0:'Pending',
+            1:'Resolved',
+            2:'Coming at',
+            3: 'Deferred to'}
+
+#--------------------
+# Time display
+#--------------------
 time_pattern = '%Y-%m-%d %H:%M'
 
+#------------------------
+# Ticket category chart
+#------------------------
 issues = {
     0: 'Out of Toner',
     1: 'Printer Issues (paper jam, does not print, printer error, etc)',
