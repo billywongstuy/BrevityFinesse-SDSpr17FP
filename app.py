@@ -208,7 +208,7 @@ def ticket(tid):
         when = None
 
     tix.update_ticket(tid,tech,urgency,status,when) # update the ticket
-    #e_mail.send_msg_one(ticket_email,subj,body,'me')
+    e_mail.send_msg_one(ticket_email,subj,body,'me')
     
     tixUpdateMsg = 'Ticket updated!'
     
