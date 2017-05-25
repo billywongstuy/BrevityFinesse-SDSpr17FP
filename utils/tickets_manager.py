@@ -230,7 +230,6 @@ def all_tickets_from(username,status):
 #-------------------------
 # Get email on ticket
 #-------------------------
-
 def get_email(key):
     db = connect(f)
     c = db.cursor()
