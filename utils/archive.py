@@ -85,4 +85,4 @@ def create_csv(date):
         db.close()
         return "Archive created."
 
-create_csv("2017-05-25")
+#create_csv("2017-05-25")
