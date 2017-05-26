@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from utils import auth, tickets_manager as tix, email_handler as e_mail, archive
 import calendar, datetime, json, os
 from time import gmtime,strftime,mktime,strptime,sleep
+from apscheduler.scheduler import Scheduler
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -314,11 +315,21 @@ def page_not_found(e):
     return render_template("404.html")
 
 
+
 #---------------------------
 # SCHEDULED DAILY ARCHIVE
 #--------------------------
 
 #archive.create_csv(date)   #could also replace with any name
+
+cron = Scheduler(daemon=True)
+cron.start()
+
+@cron.interval_schedule(seconds=2)
+def recur():
+    print 'hey'
+
+
 
 #--------------
 # Start

@@ -141,3 +141,4 @@ Started improving formatting of tixets in all-tickets view
 billyW -- 2017-05-25 29:33
    - Started implementing email into new tickets and update tickets (need to think of text)
    - Changed view of urgency on html to high/medium/low
+   - Basic recurring function 
