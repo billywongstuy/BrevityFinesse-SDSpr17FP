@@ -3,17 +3,14 @@ from utils import auth, tickets_manager as tix, email_handler as e_mail, archive
 import calendar, datetime, json, os
 from time import gmtime,strftime,mktime,strptime,sleep
 
-
-try:
-    from apscheduler.scheduler import Scheduler
-except:
-    from apscheduler.schedulers.background import BackgroundScheduler
-    from apscheduler.schedulers.blocking import BlockingScheduler
-    from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
+now = datetime.datetime.now()
 
 statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 
@@ -51,7 +48,7 @@ def home():
         #return render_template('index-teacher.html',pending=pending,progress=progress,done=done,loggedIn=True)
 
     else:
-        return 'You broke the page!'
+        return 'You broke the page!!!'
     
 #-----------------
 # LOGIN / LOGOUT
@@ -323,37 +320,25 @@ def page_not_found(e):
     return render_template("404.html")
 
 
-
 #---------------------------
 # SCHEDULED DAILY ARCHIVE
 #--------------------------
 
 #archive.create_csv(date)   #could also replace with any name
 
-try:
-    corn = Scheduler(daemon=True)
-except:
-    corn = BackgroundScheduler(daemon=True)
+
+corn = BlockingScheduler()
 
 def trip():
     print 'trip'
-    
-corn.start()
-corn.add_job(
-    func=trip,
-    trigger=IntervalTrigger(seconds=2),
-    id='printing_job',
-    name='Print date and time every five seconds',
-    replace_existing=True)
 
 
-#apscheduler.triggers.interval.IntervalTrigger
-#apscheduler.triggers.cron.CronTrigger
+sched = BackgroundScheduler()
+#sched.add_job(trip,'interval',seconds=2,start_date=start_archive_time)
+#sched.add_job(trip,'cron',hour=17,minute=0,second=0)
+sched.add_job(trip,'cron',hour=15,minute=17,second=0)
 
-#@corn.interval_schedule(seconds=2)
-#def recur():
-#    print 'hey'
-
+sched.start()
 
 
 #--------------
@@ -362,8 +347,7 @@ corn.add_job(
 
 def start_flask():
     print 'hellow yellow'
-    app.run(debug=True, use_reloader=False) #Set debug to False before publishing
+    app.run(debug=True, use_reloader=True) #Set debug to False before publishing
 
 if __name__ == "__main__":
     start_flask()
-
