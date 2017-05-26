@@ -30,6 +30,9 @@ issues = {
     5: 'Other (please describe)'
 }
 
+#-----------------------
+# ticket urgency chart
+#-----------------------
 urgency = {
     0 : 'Low',
     1 : 'Medium',
@@ -309,11 +312,12 @@ drop()
 
 print add_ticket("usr1","teacher1","mmddyy","999",1,body=None,email="email@stuy.edu")
 print add_ticket("guest","teacher2","mmddyy","110",2,body="alfjrg")
-print add_ticket("guest","teacher2","mmddyy","111",0,email="123@stuy.edu")
-print update_ticket(1,"tech2","2",1,"hhmm")
-print all_tickets_with(0)
-print
-print all_tickets_from("user1",1)
-print
+print add_ticket("teacher","teacher3","mmddyy","111",0,email="123@stuy.edu")
+print add_ticket("teacherrr","teacher4","mmddyy","321",4,email="123@stuy.edu")
+print add_ticket("username","teacher5","mmddyy","921",5,email="123@stuy.edu")
+print update_ticket(1,"tech2",2,1,"1495762530")
+print update_ticket(2,"tech1",0,2,"1495762530")
+print update_ticket(3,"tech3",1,1,"1495762530")
+
 print all_tickets()
 '''
