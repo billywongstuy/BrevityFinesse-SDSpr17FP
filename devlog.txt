@@ -147,3 +147,7 @@ yukiC -- 2017-05-25 22:05
   - Changed urgency level to 0-2: low, mediumm=, high
   - Create archive.py to create csv for each day with all ticket info,
     and removes resolved tickets at the end of the day
+
+henryZ -- 2017-05-26 14:00
+  App optimization:
+  - Add success message upon successful ticket submission
