@@ -2,7 +2,15 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from utils import auth, tickets_manager as tix, email_handler as e_mail, archive
 import calendar, datetime, json, os
 from time import gmtime,strftime,mktime,strptime,sleep
-from apscheduler.scheduler import Scheduler
+
+
+try:
+    from apscheduler.scheduler import Scheduler
+except:
+    from apscheduler.schedulers.background import BackgroundScheduler
+    from apscheduler.schedulers.blocking import BlockingScheduler
+    from apscheduler.triggers.interval import IntervalTrigger
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -322,18 +330,40 @@ def page_not_found(e):
 
 #archive.create_csv(date)   #could also replace with any name
 
-cron = Scheduler(daemon=True)
-cron.start()
+try:
+    corn = Scheduler(daemon=True)
+except:
+    corn = BackgroundScheduler(daemon=True)
 
-@cron.interval_schedule(seconds=2)
-def recur():
-    print 'hey'
+def trip():
+    print 'trip'
+    
+corn.start()
+corn.add_job(
+    func=trip,
+    trigger=IntervalTrigger(seconds=2),
+    id='printing_job',
+    name='Print date and time every five seconds',
+    replace_existing=True)
+
+
+#apscheduler.triggers.interval.IntervalTrigger
+#apscheduler.triggers.cron.CronTrigger
+
+#@corn.interval_schedule(seconds=2)
+#def recur():
+#    print 'hey'
 
 
 
 #--------------
 # Start
 #-------------
+
+def start_flask():
+    print 'hellow yellow'
+    app.run(debug=True, use_reloader=False) #Set debug to False before publishing
+
 if __name__ == "__main__":
-    app.debug = True  #Set to False before publishing
-    app.run()
+    start_flask()
+

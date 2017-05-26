@@ -31,7 +31,7 @@ Step 2: Install packages using pip
     pip install --upgrade google-api-python-client
 
 * Run the command to install apscheduler:
-    pip install apscheduler==2.1.2
+    pip install apscheduler
 
 
 Step 3
