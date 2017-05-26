@@ -324,29 +324,18 @@ def page_not_found(e):
 # SCHEDULED DAILY ARCHIVE
 #--------------------------
 
-#archive.create_csv(date)   #could also replace with any name
-
-
-corn = BlockingScheduler()
-
-def trip():
-    print 'trip'
-
-
+def archive_do():
+    return archive.create_csv(str(now.date()))
+    
 sched = BackgroundScheduler()
-#sched.add_job(trip,'interval',seconds=2,start_date=start_archive_time)
-#sched.add_job(trip,'cron',hour=17,minute=0,second=0)
-sched.add_job(trip,'cron',hour=15,minute=17,second=0)
-
+sched.add_job(archive_do,'cron',hour=17,minute=0,second=0)
 sched.start()
-
 
 #--------------
 # Start
 #-------------
 
 def start_flask():
-    print 'hellow yellow'
     app.run(debug=True, use_reloader=True) #Set debug to False before publishing
 
 if __name__ == "__main__":
