@@ -142,3 +142,8 @@ billyW -- 2017-05-25 29:33
    - Started implementing email into new tickets and update tickets (need to think of text)
    - Changed view of urgency on html to high/medium/low
    - Basic recurring function 
+
+yukiC -- 2017-05-25 22:05
+  - Changed urgency level to 0-2: low, mediumm=, high
+  - Create archive.py to create csv for each day with all ticket info,
+    and removes resolved tickets at the end of the day
