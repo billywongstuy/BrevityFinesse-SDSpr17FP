@@ -325,6 +325,7 @@ def page_not_found(e):
 cron = Scheduler(daemon=True)
 cron.start()
 
+#start_date=None
 @cron.interval_schedule(seconds=2)
 def recur():
     print 'hey'
