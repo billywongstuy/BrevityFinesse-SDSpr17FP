@@ -199,7 +199,7 @@ def guest_off():
     for record in guest:
         key = record[0]
         return change_level(key,5)
-    return "No guest account."
+    return "No guest account!"
 
 #---------------------
 # Turn on guest
@@ -216,12 +216,12 @@ def guest_on():
     for record in guest:
         key = record[0]
         return change_level(key,4)
-    return "No guest account."
+    return "No guest account!"
 
 #-----------------------------------
 # Change account level to tech
 #-----------------------------------
-def promote_to_tech(username):
+def change_to_tech(username):
     db = connect(f)
     c = db.cursor()
 
@@ -231,12 +231,12 @@ def promote_to_tech(username):
     for record in account:
         key = record[0]
         return change_level(key,2)
-    return "Username doesn't exist."
+    return None
 
 #-----------------------------------
 # Change account level to admin
 #-----------------------------------
-def promote_to_admin(username):
+def change_to_admin(username):
     db = connect(f)
     c = db.cursor()
 
@@ -246,12 +246,12 @@ def promote_to_admin(username):
     for record in account:
         key = record[0]
         return change_level(key,1)
-    return "Username doesn't exist."
+    return None
 
 #-----------------------------------
 # Change account level to teacher
 #-----------------------------------
-def demote(username):
+def change_to_teacher(username):
     db = connect(f)
     c = db.cursor()
 
@@ -261,7 +261,7 @@ def demote(username):
     for record in account:
         key = record[0]
         return change_level(key,3)
-    return "Username doesn't exist."
+    return None
 
 #-------------------------------
 # Get name (last, first)

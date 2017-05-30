@@ -1,0 +1,25 @@
+{% extends baseLogged.html %}
+
+<title>Change Account Permissions</title>
+
+{% block nav %}
+{{super()}}
+{% endblock %}
+
+{% block body %}
+
+<!-- success -->
+<!-- failure -->
+
+<form method="POST">
+  <input type="text" name="username" placeholder="Account username">
+  <select name="newlevel">
+    <option value="1">Admin</option>
+    <option value="2">Tech</option>
+    <option value="3">Teacher</option>
+  </select>
+
+  <button type="submit">Change Level</button>
+</form>
+
+{% endblock %}

@@ -301,15 +301,21 @@ def admin_promote():
 
     if request.method == 'GET':
         return render_template('promote.html')
+
     
     #u_name = request.form['username']
-    #action = request.form['action']
+    #new_level = int(request.form['newlevel'])
 
-    #need this functions to be written
-    #if action == 'promote':
-    #promote     (takes in username and new rank)
-    #elif action == 'demote':
-    #revoke/demote    (takes in username and new rank)
+    if new_level == 1:
+        msg = auth.change_to_admin(u_name)
+    elif new_level == 2:
+        msg = auth.change_to_tech(u_name)
+    elif new_level == 3:
+        msg = auth.change_to_teacher(u_name)
+    else:
+        msg = None
+
+    
     return render_template('promote.html')
 
 #------------------
