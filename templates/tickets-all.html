@@ -20,15 +20,6 @@
   <div class="row">
     <div class="col-3-md col-3-sm"></div>
     <div class="col-6-md col-6-sm col-12-xs">
-      <!--<div class="jumbotron">-->
-      <!--<ul style="list-style: none;">-->
-      <!--<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-	  Link with href
-	  </a>-->
-      
-      <!--<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#progress" aria-expanded="false" aria-controls="progress">
-	  In Progress
-	  </button>-->
       <div class="panel-group">
 	
 	<div class="panel panel-default">
@@ -44,23 +35,6 @@
 	      {% for ticket in progress %}
 	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}"><li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>Status: {{ticket.when if ticket.when else "N/A"}}<br>Urgency: {{ticket.urgency if ticket.urgency else "N/A"}}<br>Date Submitted: {{ticket.date_of_ticket}}</li></a>
 		<li class="list-group-item">
-	      <!--<div class="card">
-		  <div class="card-block">
-		    <a href="/ticket/{{ticket.primary_key}}">
-		      <table>
-			<tr>
-			  <td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
-			</tr>
-			<tr>
-			  <td>Room: {{ticket.room_num}}</td><td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td>
-			</tr>
-			<tr>
-			  <td>Teacher: {{ticket.teacher_name}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
-			</tr>
-		      </table>
-		    </a>
-		  </div>
-	      </div>-->
 	      {% endfor %}
 	    </ul>
 	  </div>
@@ -81,22 +55,6 @@
 	    {% for ticket in pending %}
 		
 	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}"><li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>Status: {{ticket.when if ticket.when else "N/A"}}<br>Urgency: {{ticket.urgency if ticket.urgency else "N/A"}}<br>Date Submitted: {{ticket.date_of_ticket}}</li></a>
-	    <!--<div class="card">
-		<div class="card-block">
-		  <a href="/ticket/{{ticket.primary_key}}">
-		    <table>
-		      <tr>
-			<td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
-		      </tr>
-		      <tr>
-			<td>Room: {{ticket.room_num}}</td><td>Teacher: {{ticket.teacher_name}}</td>
-		      </tr>
-		      <tr>
-			<td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
-		      </tr>
-		    </table>
-		  </a>
-		</div>-->
 	    {% endfor %}
 	    </ul>
 	  </div>
@@ -105,32 +63,17 @@
 	<div class="panel panel-default">
 	  <div class="panel-heading">
 	    <h3 class="panel-title">
-	      <a class="collapse-header" data-toggle="collapse" data-target="#resolved" aria-expanded="false" aria-controls="resolved">
+	      <a class="collapse-header" data-toggle="collapse" href="#resolved" aria-expanded="false" aria-controls="resolved">
+		<!-- <a data-toggle="collapse" href="#progress"> -->
 		Resolved
 	      </a>
 	    </h3>
 	  </div>
-
+	  
 	  <div class="panel-collapse collapse" id="resolved">
 	    <ul class="list-group">
 	    {% for ticket in done %}
 	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}"><li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>Status: {{ticket.when if ticket.when else "N/A"}}<br>Urgency: {{ticket.urgency if ticket.urgency else "N/A"}}<br>Date Submitted: {{ticket.date_of_ticket}}</li></a>
-	    <!--<div class="card">
-		<div class="card-block">
-		  <table>
-		    <tr>
-		      <td>Issue: {{ticket.tix_subject}}</td><td>Urgency: {{ticket.urgency if ticket.urgency}}</td>
-		    </tr>
-		    <tr>
-		      <td>Room: {{ticket.room_num}}</td><td>Teacher: {{ticket.teacher_name}}</td>
-		    </tr>
-		    <tr>
-		      <td>Status: {{ticket.status}} {{ticket.when if ticket.when}}</td><td>Date Submitted: {{ticket.date_of_ticket}}</td>
-		    </tr>
-		  </table>
-</a>
-</div>
-</div>-->
 	    {% endfor %}
 	    </ul>
 	  </div>
