@@ -33,6 +33,9 @@
   <a href="/all_tickets">View All Tickets</a>
   <a href="/submit">Create Ticket</a>
   <a href="/create_account">Create New Account</a>
+  {% if superadmin %}
+  <a href="/admin_promote">Add/Revoke Admins</a>
+  {% endif %}
 </div>
 
 {% endblock %}

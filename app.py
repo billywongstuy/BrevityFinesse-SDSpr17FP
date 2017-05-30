@@ -20,18 +20,19 @@ statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
 
 @app.route("/", methods=['POST','GET'])
 def home():
-
+    
     if 'username' not in session:
         return render_template('index.html')
-
+    
     guest_allow = (auth.get_level('guest') == 4)
     lvl = session['level'] if 'username' in session else 4
+    sa = session['level'] == 0
     
     if session['level'] == 0: #superadmin
-        return render_template('superadmin-dashboard.html', guest_allow=guest_allow) #DASHBOARD
+        return render_template('admin-dashboard.html', guest_allow=guest_allow, superadmin=sa) #DASHBOARD
     
     elif session['level'] == 1: #admin
-        return render_template('admin-dashboard.html', guest_allow=guest_allow)
+        return render_template('admin-dashboard.html', guest_allow=guest_allow, superadmin=sa)
 
     elif session['level'] == 2: #tech
         pending = tix.all_tickets_with(0)
