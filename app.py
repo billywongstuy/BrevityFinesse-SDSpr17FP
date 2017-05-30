@@ -303,8 +303,8 @@ def admin_promote():
         return render_template('promote.html')
 
     
-    #u_name = request.form['username']
-    #new_level = int(request.form['newlevel'])
+    u_name = request.form['username']
+    new_level = int(request.form['newlevel'])
 
     if new_level == 1:
         msg = auth.change_to_admin(u_name)
@@ -315,8 +315,10 @@ def admin_promote():
     else:
         msg = None
 
-    
-    return render_template('promote.html')
+    if msg != None:
+        msg = 'Account level of %s successfully changed!' % (u_name)
+        
+    return render_template('promote.html',msg=msg,send=True)
 
 #------------------
 # ERROR HANDLERS

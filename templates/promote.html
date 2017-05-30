@@ -1,4 +1,4 @@
-{% extends baseLogged.html %}
+{% extends "baseLogged.html" %}
 
 <title>Change Account Permissions</title>
 
@@ -8,17 +8,25 @@
 
 {% block body %}
 
-<!-- success -->
-<!-- failure -->
+{% if send %}
+{% if msg %}
+<div class="alert alert-success">{{msg}}</div>
+{% else %}
+<div class="alert alert-danger">Username does not exist!</div>
+{% endif %}
+{% endif %}
+
+<h2>Change Level of Account</h2>
 
 <form method="POST">
-  <input type="text" name="username" placeholder="Account username">
-  <select name="newlevel">
+  User: <input type="text" name="username" placeholder="Account username"> </br>
+  Current Level: [type here maybe - requires ajax] </br>
+  New Level: <select name="newlevel">
     <option value="1">Admin</option>
     <option value="2">Tech</option>
     <option value="3">Teacher</option>
   </select>
-
+  </br>
   <button type="submit">Change Level</button>
 </form>
 
