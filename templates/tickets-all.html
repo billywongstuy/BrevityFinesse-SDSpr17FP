@@ -34,7 +34,6 @@
 	    <ul class="list-group">
 	      {% for ticket in progress %}
 	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}"><li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>Status: {{ticket.when if ticket.when else "N/A"}}<br>Urgency: {{ticket.urgency if ticket.urgency else "N/A"}}<br>Date Submitted: {{ticket.date_of_ticket}}</li></a>
-		<li class="list-group-item">
 	      {% endfor %}
 	    </ul>
 	  </div>
