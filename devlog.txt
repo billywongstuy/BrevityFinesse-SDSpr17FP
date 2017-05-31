@@ -157,3 +157,6 @@ julianA -- 2017-05-26 14:06
 
 billyW -- 2017-05-26 16:33
     - Added mostly tested archiving
+
+julianA -- 2017-05-31 14:07
+  Improved styling, fixed some errors in css

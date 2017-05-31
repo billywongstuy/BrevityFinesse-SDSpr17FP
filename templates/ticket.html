@@ -13,10 +13,44 @@
 
 {% block body %}
 
+<div class="container">
+<div class="jumbotron">
+
 {% if message != "" %}
 <div class="alert alert-success">{{message}}</div>
 {% endif %}
 
+<ul class="list-group">
+  <li class="list-group-item">Teacher: {{info.teacher_name}}</li>
+  <li class="list-group-item">Date Submitted: {{info.date_of_ticket}}</li>
+  <li class="list-group-item">Room Number: {{info.room_num}}</li>
+  <li class="list-group-item">Problem: {{info.tix_subject}}</li>
+  <li class="list-group-item">Additional Information: {{info.tix_body}}</li>
+</ul>
+
+<table class="table">
+<tr>
+  <td>Teacher</td>
+  <td>{{info.teacher_name}}</td>
+</tr>
+<tr>
+  <td>Date Submitted</td>
+  <td>{{info.date_of_ticket}}</td>
+</tr>
+<tr>
+  <td>Room Number</td>
+  <td>{{info.room_num}}</td>
+</tr>
+<tr>
+  <td>Problem</td>
+  <td>{{info.tix_subject}}</td>
+</tr>
+<tr>
+  <td>Additional Information</td>
+  <td>{{info.tix_body}}</td>
+  </tr>
+  
+  </table>
 Submitted by {{info.teacher_name}} </br>
 on {{info.date_of_ticket}} </br>
 Room {{info.room_num}} </br>
@@ -75,5 +109,7 @@ Urgency:
 
 {% endif %}
 
+</div>
+</div>
 
 {% endblock %}
