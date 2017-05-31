@@ -157,3 +157,7 @@ julianA -- 2017-05-26 14:06
 
 billyW -- 2017-05-26 16:33
     - Added mostly tested archiving
+
+billyW -- 2017-05-31 14:27
+   - Worked on email messages
+   - Added function to check if superadmin exists. If not, create in terminal.
