@@ -160,5 +160,20 @@ Issue
 Room
 
 '''
-def get_new_tix_body():
-    return
+def get_new_tix_body(issue, room, teacher):
+    return '''
+Hello techs,
+
+A new ticket has been submitted!
+
+Issue: %s
+Room: %d
+Teacher: %s
+
+''' % (issue,room,teacher)
+
+
+
+'''
+Click <a href="https://google.com">here</a> to view the whole ticket
+'''

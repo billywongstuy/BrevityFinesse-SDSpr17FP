@@ -13,6 +13,16 @@ app.secret_key = os.urandom(32)
 now = datetime.datetime.now()
 
 statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
+urgencies = {0:'Low', 1:'Medium', 2:'High'}
+issues = {
+    0: 'Out of Toner',
+    1: 'Printer Issues (paper jam, does not print, printer error, etc)',
+    2: 'Laptop Issues',
+    3: 'Smartboard/Projector Issues(screen, display, volume, etc)',
+    4: 'Need item/equipment (please describe)',
+    5: 'Other (please describe)'
+}
+
 
 #---------------------------
 # ROOT (INDEX)
@@ -93,7 +103,6 @@ def logout():
 # TICKET CREATION
 #------------------------------------------------
 
-
 # need email funcion for the guests
 # auto fill with teacher email if logged in
 # make email field show for guests and admins
@@ -113,7 +122,7 @@ def submit():
     if room <= 100 or room >= 1050:
         return render_template('submit.html', loggedIn=('username' in session), error='Invalid room number')
     
-    subj = int(request.form['subject'])
+    issue = int(request.form['subject'])
     desc = request.form['desc']
     date = str(datetime.datetime.now())
     date = date[0:date.find('.')]
@@ -127,19 +136,19 @@ def submit():
     else:
         u_name = session['username']
         t_name = auth.get_name(u_name)
-
+        
         if session['level'] == 2: # techs+
             email = request.form['email']
         else:
             email = auth.get_email(session['username'])
         
-    key = tix.add_ticket(u_name,t_name,date,room,subj,desc,email)
+    key = tix.add_ticket(u_name,t_name,date,room,issue,desc,email)
 
-    subj = 'Ticket submitted'
-    body = 'New ticket submitted'
+    subject = 'New ticket submitted'
+    body = e_mail.get_new_tix_body(issues[issue],room,t_name)
+    #body = 'New ticket submitted'
 
-    #cc fails tyr in future to send to self and cc to techs
-    e_mail.send_msg_multi(auth.get_tech_emails(),subj,body)
+    e_mail.send_msg_multi(auth.get_tech_emails(),subject,body)
     return redirect("/ticket/%d" % (int(key)))
     
 #-------------------------
@@ -192,16 +201,16 @@ def ticket(tid):
         if info == 'Ticket doesn\'t exist':
             return 'Ticket doesn\'t exist'
         
-        ta = 'username' in session and session['level'] <= 2
+        techA = 'username' in session and session['level'] <= 2
         aa = 'username' in session and session['level'] <= 1
         loggedIn = 'username' in session
         msg = str(tixUpdateMsg)
         tixUpdateMsg = ""
 
-        if ta and info['when'] != None:
+        if techA and info['when'] != None:
             info['when'] = info['when'].replace(' ','T')
             
-        return render_template('ticket.html',techAccess=ta,info=info,message=msg, loggedIn=loggedIn, adminAccess=aa) 
+        return render_template('ticket.html',techAccess=techA,info=info,message=msg, loggedIn=loggedIn, adminAccess=aa) 
 
 
     if request.method == 'POST' and 'username' not in session:
@@ -229,11 +238,10 @@ def ticket(tid):
     t_name = tix.get_name(int(tid))
     t_name = t_name[(t_name.find(',')+2):] + ' ' + t_name[:t_name.find(',')]
     full_status = str(statuses[status]) if when == None else str(statuses[status] + ' ' + w.replace('T',' '))
-    urge = tix.get_urgency(int(tid))
     
     t_email = tix.get_email(int(tid))
     subj = 'StuyTix: Ticket #%d Status Changed' % (int(tid))
-    body = e_mail.get_update_body(t_name, full_status,urge)
+    body = e_mail.get_update_body(t_name, full_status, urgencies[urgency])
 
     e_mail.send_msg_one(t_email,subj,body)
     
