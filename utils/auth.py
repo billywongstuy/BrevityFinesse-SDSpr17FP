@@ -332,6 +332,18 @@ def get_level(username):
         return record[7]
     return None
 
+#-----------------------------------
+# Check to see if superadmin exists
+#------------------------------------
+
+def any_superadmin():
+    db = connect(f)
+    c = db.cursor()
+
+    query = ("SELECT * FROM users WHERE level=0")
+    check = c.execute(query).fetchall()
+
+    return len(check) > 0
 
 #-------------------------------
 # NOT IN USE AT THE MOMENT

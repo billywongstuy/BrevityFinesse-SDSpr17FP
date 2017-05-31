@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from utils import auth, tickets_manager as tix, email_handler as e_mail, archive
 import calendar, datetime, json, os
 from time import gmtime,strftime,mktime,strptime,sleep
+from sqlite3 import connect
+from getpass import getpass
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -348,11 +350,60 @@ sched = BackgroundScheduler()
 sched.add_job(archive_do,'cron',hour=17,minute=0,second=0)
 sched.start()
 
+#-----------------------------
+# CHECK IF DATABASE TABLES EXIST
+#-----------------------------
+
+def create_database():
+    f = 'data/tix.db'
+    db = connect(f)
+    c = db.cursor()
+    try:
+        c.execute('SELECT * from users')
+    except:
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, last_name TEXT, first_name TEXT, email TEXT, password TEXT, salt TEXT, level TEXT, phone_num TEXT)")
+
+    try:
+        c.execute("SELECT * FROM tickets")
+    except:
+        c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject INTEGER, tix_body TEXT, tech_name TEXT, urgency INT, status INT, resp_time INT, email TEXT)")
+        
+    db.commit()
+    db.close()
+
+
+#--------------------
+# SETUP SUPERADMIN
+#---------------------
+
+def setup_superadmin():
+    if auth.any_superadmin():
+        return
+    
+    valid = False
+    while not valid :
+        name = raw_input('Input the username for the superadmin: ')
+        email = raw_input('Enter the email for the account: ')
+        pw = getpass('Enter a password: ')
+        pw2 = getpass('Confirm your password: ')
+        if pw == pw2:
+            valid = True
+        else:
+            print 'Passwords don\'t match'
+    success = auth.register(name,'','',email,pw,pw2,0)
+    if success == 'Account created':
+        print success
+        return True
+    else:
+        setup_superadmin()
+        
 #--------------
 # Start
 #-------------
 
 def start_flask():
+    create_database()
+    setup_superadmin()
     app.run(debug=True, use_reloader=True) #Set debug to False before publishing
 
 if __name__ == "__main__":
