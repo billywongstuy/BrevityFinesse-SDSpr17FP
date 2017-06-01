@@ -72,13 +72,15 @@ sender: Email address of the sender.
     Returns:
     An object containing a base64 encoded email object.
     """
-    message = MIMEText(message_text)
+    message = MIMEText(message_text,'html')
+    #message = MIMEText(message_text)
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
     if cc != None:
         message['cc'] = cc
-    return {'raw': base64.b64encode(message.as_string())}
+    #return {'raw': base64.b64encode(message.as_string())}
+    return {'raw': base64.urlsafe_b64encode(message.as_string())}
 
 
 def send_message(service, user_id, message):
@@ -144,36 +146,33 @@ def get_update_body(t_name, full_status, urgency):
     return '''
 %s,
 
-Your ticket status has changed to %s
+<p>
+Your ticket status has changed to %s </br>
 Urgency: %s
+</p>
 
+<p>
 The Technical Issues Department
-    ''' % (t_name, full_status, urgency)
+</p>
+''' % (t_name, full_status, urgency)
 
 
-'''
-Subject: New Ticket with ---(Issue)
 
-Body:
-Teacher 
-Issue
-Room
-
-'''
 def get_new_tix_body(issue, room, teacher):
     return '''
 Hello techs,
 
+<p>
 A new ticket has been submitted!
+</p>
 
-Issue: %s
-Room: %d
+<p>
+Issue: %s </br>
+Room: %d </br>
 Teacher: %s
+</p>
 
-''' % (issue,room,teacher)
-
-
-
-'''
+<p>
 Click <a href="https://google.com">here</a> to view the whole ticket
-'''
+</p>
+''' % (issue,room,teacher)
