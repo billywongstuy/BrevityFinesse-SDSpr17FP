@@ -164,3 +164,16 @@ julianA -- 2017-05-31 14:07
 billyW -- 2017-05-31 14:27
    - Worked on email messages
    - Added function to check if superadmin exists. If not, create in terminal.
+
+yukiC 2017-06-01 14:00
+   - Client Meeting Feedbacks
+   *** Priorities *** 
+      - Testings : 1. Test website format on phone (Android & IOS)
+                   2. Flooding system with tons of tickets
+      - Create a "Delete All" function in case of prank
+      - Create a big and obvious "Create Ticket" button on teacher's side webpage
+      - Color code urgency level
+      - Allow teachers to select urgency level as well, techs still able to change urgency level as they see fit
+      - Instead of having "coming at" and "deferred to" status, just have "pending", "in progress", and "resolved". Once tech accepts a ticket, the status will change to "in progress".
+   *** Optional Features ***
+      - At the end of the day(5:00PM), send teachers whose tickets haven't been accepted an email, acknowledging them that their tickets haven't been accepted yet, and please be patient as the tech will get to them ASAP.
