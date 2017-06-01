@@ -46,7 +46,7 @@ urgency = {
 #     EX:add_ticket("usr1","teacher1","mmddyy","999",
 #                   "laptop",body=None,email="email@stuy.edu")
 #----------------------------------------------------------------
-def add_ticket(username,teacher,date,room,subject,body=None,email=None):
+def add_ticket(username,teacher,date,room,subject,urgency,body=None,email=None):
     db = connect(f)
     c = db.cursor()
     #select table tickets, create table tickets if doesn't exist
@@ -56,8 +56,8 @@ def add_ticket(username,teacher,date,room,subject,body=None,email=None):
         c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject INTEGER, tix_body TEXT, tech_name TEXT, urgency INT, status INT, resp_time INT, email TEXT)")
 
     #create ticket entry with given info
-    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,status,resp_time,email) VALUES (?,?,?,?,?,?,?,?,?)")
-    c.execute(query,(username,teacher,date,room,subject,body,0,None,email))
+    query = ("INSERT INTO tickets (username,teacher_name,date_of_ticket,room_num,tix_subject,tix_body,urgency,status,resp_time,email) VALUES (?,?,?,?,?,?,?,?,?,?)")
+    c.execute(query,(username,teacher,date,room,subject,body,urgency,0,None,email))
     db.commit()
     db.close()
     return c.lastrowid

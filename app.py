@@ -128,6 +128,7 @@ def submit():
     desc = request.form['desc']
     date = str(datetime.datetime.now())
     date = date[0:date.find('.')]
+    urgency = request.form['urgency']
     
     if 'username' not in session or session['level'] != 3:
         u_name = 'guest'
@@ -144,7 +145,7 @@ def submit():
         else:
             email = auth.get_email(session['username'])
         
-    key = tix.add_ticket(u_name,t_name,date,room,issue,desc,email)
+    key = tix.add_ticket(u_name,t_name,date,room,issue,urgency,desc,email)
 
     subject = 'New ticket submitted'
     body = e_mail.get_new_tix_body(issues[issue],room,t_name)
@@ -348,6 +349,7 @@ def archive_do():
     
 sched = BackgroundScheduler()
 sched.add_job(archive_do,'cron',hour=17,minute=0,second=0)
+#sched.add_job(archive_do,'cron',hour=13,minute=37,second=32)
 sched.start()
 
 #-----------------------------
