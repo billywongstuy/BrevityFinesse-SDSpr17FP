@@ -1,9 +1,25 @@
 .ticket-link {
     text-decoration: none;
-    transition: background-color 0.1s;    
+    transition: background-color 0.1s;
+    color: black;
 }
 
 .ticket-link:hover {
     text-decoration: none;
     background-color: #ddd;
+}
+
+.HighUrgency {
+    color: red;
+    display: inline-block;
+}
+
+.MediumUgency {
+    color: orange;
+    display: inline-block;
+}
+
+.LowUrgency {
+    color: blue;
+    display: inline;
 }

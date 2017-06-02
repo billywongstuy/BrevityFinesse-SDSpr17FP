@@ -228,23 +228,25 @@ def ticket(tid):
     status = int(request.form['status'])
     urgency = int(request.form['urgency'])
 
+    '''
     if status >= 2:
         w = request.form['when'] 
         pattern = '%Y-%m-%dT%H:%M'
         when = int(mktime(strptime(w,pattern))) #epoch conversion
     else:
         when = None
-
-    tix.update_ticket(tid,tech,urgency,status,when) # update the ticket
+    '''
+        
+    tix.update_ticket(tid,tech,urgency,status) # update the ticket
 
     # SENDING EMAIL
     t_name = tix.get_name(int(tid))
     t_name = t_name[(t_name.find(',')+2):] + ' ' + t_name[:t_name.find(',')]
-    full_status = str(statuses[status]) if when == None else str(statuses[status] + ' ' + w.replace('T',' '))
+    status = statuses[status]
     
     t_email = tix.get_email(int(tid))
     subj = 'StuyTix: Ticket #%d Status Changed' % (int(tid))
-    body = e_mail.get_update_body(t_name, full_status, urgencies[urgency])
+    body = e_mail.get_update_body(t_name, status, urgencies[urgency])
 
     e_mail.send_msg_one(t_email,subj,body)
     

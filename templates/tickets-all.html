@@ -40,10 +40,16 @@
 	  
 	  <div class="panel-collapse collapse" id="pending">
 	    <ul class="list-group">
-	    {% for ticket in pending %}
-		
-	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}"><li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>Status: {{ticket.when if ticket.when else "N/A"}}<br>Urgency: {{ticket.urgency if ticket.urgency else "N/A"}}<br>Date Submitted: {{ticket.date_of_ticket}}</li></a>
-	    {% endfor %}
+	      {% for ticket in pending %}	
+	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
+		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
+		  Status: {{ticket.status}}<br>
+		  Urgency: <div class="{{ticket.urgency}}Urgency">{{ticket.urgency if ticket.urgency else "N/A"}}</div><br>
+		  Date Submitted: {{ticket.date_of_ticket}}
+		</li>
+	      </a>
+	      {% endfor %}
 	    </ul>
 	  </div>
 	</div>
@@ -60,7 +66,14 @@
 	  <div class="panel-collapse collapse" id="progress">
 	    <ul class="list-group">
 	      {% for ticket in progress %}
-	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}"><li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>Status: {{ticket.when if ticket.when else "N/A"}}<br>Urgency: {{ticket.urgency if ticket.urgency else "N/A"}}<br>Date Submitted: {{ticket.date_of_ticket}}</li></a>
+	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
+		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
+		  Status: {{ticket.status}}<br>
+		  Urgency: <div class="{{ticket.urgency}}Urgency">{{ticket.urgency if ticket.urgency else "N/A"}}</div><br>
+		  Date Submitted: {{ticket.date_of_ticket}}
+		</li>
+	      </a>
 	      {% endfor %}
 	    </ul>
 	  </div>
@@ -78,9 +91,16 @@
 	  
 	  <div class="panel-collapse collapse" id="resolved">
 	    <ul class="list-group">
-	    {% for ticket in done %}
-	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}"><li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>Status: {{ticket.when if ticket.when else "N/A"}}<br>Urgency: {{ticket.urgency if ticket.urgency else "N/A"}}<br>Date Submitted: {{ticket.date_of_ticket}}</li></a>
-	    {% endfor %}
+	      {% for ticket in done %}
+	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
+		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
+		  Status: {{ticket.status}}<br>
+		  Urgency: <div class="{{ticket.urgency}}Urgency">{{ticket.urgency if ticket.urgency else "N/A"}}</div><br>
+		  Date Submitted: {{ticket.date_of_ticket}}
+		</li>
+	      </a>
+	      {% endfor %}
 	    </ul>
 	  </div>
 	</div>

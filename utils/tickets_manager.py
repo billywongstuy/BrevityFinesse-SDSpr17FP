@@ -10,8 +10,8 @@ f = "data/tix.db"
 #----------------------------
 statuses = {0:'Pending',
             1:'Resolved',
-            2:'Coming at',
-            3: 'Deferred to'}
+            2:'Coming ASAP',
+            3:'Deferred'}
 
 #--------------------
 # Time display
@@ -65,11 +65,11 @@ def add_ticket(username,teacher,date,room,subject,urgency,body=None,email=None):
 #------------------------------
 # Tech accepts/updates ticket
 #------------------------------
-def update_ticket(key,tech,urgency,status,when):
+def update_ticket(key,tech,urgency,status):
     db = connect(f)
     c = db.cursor()
-    query = ("UPDATE tickets SET tech_name=?, urgency=?, status=?, resp_time=? WHERE primary_key=?")
-    c.execute(query,(tech,urgency,status,when,key,))
+    query = ("UPDATE tickets SET tech_name=?, urgency=?, status=?  WHERE primary_key=?")
+    c.execute(query,(tech,urgency,status,key,))
     db.commit()
     db.close()
     return "Ticket accepted!"

@@ -147,7 +147,7 @@ def get_update_body(t_name, full_status, urgency):
 %s,
 
 <p>
-Your ticket status has changed to %s </br>
+Your ticket status has changed to %s <br>
 Urgency: %s
 </p>
 
@@ -167,8 +167,8 @@ A new ticket has been submitted!
 </p>
 
 <p>
-Issue: %s </br>
-Room: %d </br>
+Issue: %s <br>
+Room: %d <br>
 Teacher: %s
 </p>
 
