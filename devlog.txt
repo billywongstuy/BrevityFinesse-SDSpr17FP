@@ -185,3 +185,6 @@ billyW -- 2017-06-02 9:00
    - Depreceated the use of resp_time column
    - Big "Create Ticket"
    - Teachers choose urgency on form
+
+julianA -- 2017-06-02 14:05
+Fixed formatting on some pages, streamlined urgency notifier

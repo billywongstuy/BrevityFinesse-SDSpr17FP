@@ -45,7 +45,7 @@
 		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
 		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
 		  Status: {{ticket.status}}<br>
-		  Urgency: <div class="{{ticket.urgency}}Urgency">{{ticket.urgency if ticket.urgency else "N/A"}}</div><br>
+		  Urgency: <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span><br>
 		  Date Submitted: {{ticket.date_of_ticket}}
 		</li>
 	      </a>
@@ -70,7 +70,8 @@
 		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
 		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
 		  Status: {{ticket.status}}<br>
-		  Urgency: <div class="{{ticket.urgency}}Urgency">{{ticket.urgency if ticket.urgency else "N/A"}}</div><br>
+		  Urgency: 
+		  <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span><br>
 		  Date Submitted: {{ticket.date_of_ticket}}
 		</li>
 	      </a>
@@ -96,7 +97,8 @@
 		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
 		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
 		  Status: {{ticket.status}}<br>
-		  Urgency: <div class="{{ticket.urgency}}Urgency">{{ticket.urgency if ticket.urgency else "N/A"}}</div><br>
+		  Urgency: 
+		  <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span><br>
 		  Date Submitted: {{ticket.date_of_ticket}}
 		</li>
 	      </a>

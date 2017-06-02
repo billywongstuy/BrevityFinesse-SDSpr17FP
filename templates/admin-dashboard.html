@@ -8,21 +8,24 @@
 {% block body %}
 
 
+<div class="container">
+  <div class="jumbotron">
 <form action="/guest_toggle" method="POST">
 
-  GUEST FUNCTIONALITY
+  <!--GUEST FUNCTIONALITY
   {% if not guest_allow %}
   OFF
   {% else %}
   ON
-  {% endif %}
-  
+  {% endif %}-->
+
+  <h4 class="text-info">Guest Functionality</h4>
   <div class="btn-group" data-toggle="buttons" id="choiceForm">
 
-    <label class="btn btn-primary{% if guest_allow %}-active{% endif %}">
+    <label class="btn btn-primary{{ ' active' if guest_allow }}">
       <input type="radio" name="guest_choices" id="on" onchange="this.form.submit();" autocomplete="off" value="on"> On
     </label>
-    <label class="btn btn-primary{% if not guest_allow %}-active{% endif %}">
+    <label class="btn btn-primary{{ ' active' if not guest_allow }}">
       <input type="radio" name="guest_choices" id="off" onchange="this.form.submit();" autocomplete="off" value="off"> Off
     </label>
 
@@ -37,5 +40,6 @@
   <a href="/admin_promote">Add/Revoke Admins</a>
   {% endif %}
 </div>
-
+</div>
+  </div>
 {% endblock %}

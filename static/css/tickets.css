@@ -8,18 +8,3 @@
     text-decoration: none;
     background-color: #ddd;
 }
-
-.HighUrgency {
-    color: red;
-    display: inline-block;
-}
-
-.MediumUrgency {
-    color: orange;
-    display: inline-block;
-}
-
-.LowUrgency {
-    color: blue;
-    display: inline;
-}
