@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 now = datetime.datetime.now()
 
-statuses = {0:'Pending', 1:'Resolved', 2:'Coming At', 3: 'Deferred to'}
+statuses = {0:'Pending', 1:'Resolved', 2:'Coming ASAP', 3: 'Deferred'}
 urgencies = {0:'Low', 1:'Medium', 2:'High'}
 issues = {
     0: 'Out of Toner',
@@ -385,7 +385,7 @@ def setup_superadmin():
         return
     
     valid = False
-    while not valid :
+    while not valid:
         name = raw_input('Input the username for the superadmin: ')
         email = raw_input('Enter the email for the account: ')
         pw = getpass('Enter a password: ')

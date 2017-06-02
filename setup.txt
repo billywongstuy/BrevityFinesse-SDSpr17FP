@@ -8,7 +8,7 @@ Prerequisites
 
 Step 1: Turn on the Gmail API
 
-a. Use this wizard to create or select a project in the Google Developers Console and automatically turn on the API. Click Continue, then Go to credentials.
+a. Use https://console.developers.google.com/flows/enableapi?apiid=gmail to create or select a project in the Google Developers Console and automatically turn on the API. Click Continue, then Go to credentials.
 
 b. On the Add credentials to your project page, click the Cancel button.
 
