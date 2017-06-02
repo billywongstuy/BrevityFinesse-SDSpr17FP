@@ -165,7 +165,7 @@ billyW -- 2017-05-31 14:27
    - Worked on email messages
    - Added function to check if superadmin exists. If not, create in terminal.
 
-yukiC 2017-06-01 14:00
+yukiC -- 2017-06-01 14:00
    - Client Meeting Feedbacks
    *** Priorities *** 
       - Testings : 1. Test website format on phone (Android & IOS)
@@ -177,3 +177,11 @@ yukiC 2017-06-01 14:00
       - Instead of having "coming at" and "deferred to" status, just have "pending", "in progress", and "resolved". Once tech accepts a ticket, the status will change to "in progress".
    *** Optional Features ***
       - At the end of the day(5:00PM), send teachers whose tickets haven't been accepted an email, acknowledging them that their tickets haven't been accepted yet, and please be patient as the tech will get to them ASAP.
+
+
+billyW -- 2017-06-02 9:00
+   - Styling for all tickets page (added temp color to urgency)
+   - Changed status names
+   - Depreceated the use of resp_time column
+   - Big "Create Ticket"
+   - Teachers choose urgency on form
