@@ -2,9 +2,24 @@
     text-decoration: none;
     transition: background-color 0.1s;
     color: black;
+    cursor: pointer;
 }
 
 .ticket-link:hover {
     text-decoration: none;
     background-color: #ddd;
+    color: black;
+    cursor: pointer;
+}
+
+/*a > *:not(.info-prefix) {*/
+.info-text {
+    text-align: start;
+    text-indent: 175px;
+}
+
+.info-prefix {
+    width: 150px;
+    margin-right: 25px;
+    display: inline-block;
 }

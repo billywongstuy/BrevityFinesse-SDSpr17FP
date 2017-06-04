@@ -13,103 +13,114 @@
 
 {% block body %}	       
 
+<!--<div class="container">
+
+
+     {% if level == 3 %}
+     <center><button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='/submit'">Create Ticket</button></center>
+     {% endif %}-->
+
 <div class="container">
+    <h1>All Tickets</h1>
+    <br>
+    <div class="row">
+	<!-- The categories should be drop down menus -->
+	<div class="col-3-md col-3-sm"></div>
+	<div class="col-6-md col-6-sm col-12-xs">
+	    <div class="jumbotron">
+		<div class="panel-group">
 
+		    <div class="panel panel-default">
+			
+			<div class="panel-heading">
+			    <h3 class="panel-title">
+				<a class="collapse-header" data-toggle="collapse" href="#pending" aria-expanded="false" aria-controls="pending">
+				    Pending
+				</a>
+			    </h3>
+			</div>
+			
+			<div class="panel-collapse collapse" id="pending">
+			    <ul class="list-group">
+				{% for ticket in pending %}	
+				<li class="list-group-item ticket-link">
+				    <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+					<span class="info-prefix">Issue:</span><span class="info-text" > {{ticket.tix_subject}}</span><br>
+					<span class="info-prefix">Room:</span><span class="info-text" > {{ticket.room_num}}</span><br>
+					<span class="info-prefix">Teacher:</span> <span class="info-text" >{{ticket.teacher_name}}</span><br>
+					<span class="info-prefix">Status:</span> <span class="info-text" >{{ticket.status}}</span><br>
+					<span class="info-prefix">Urgency:</span><span class="info-text" > <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span></span><br>
+					<span class="info-prefix">Date Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
+				    </a>
+				</li>
+				{% endfor %}
+			    </ul>
+			</div>
+		    </div> <!-- panel-default -->
+		    
+		    
+		    <div class="panel panel-default">
+			<div class="panel-heading">
+			    <h3 class="panel-title">
+				<a data-toggle="collapse" href="#progress">
+				    In Progress
+				</a>
+			    </h3>
+			</div>
+			<div class="panel-collapse collapse" id="progress">
+			    <ul class="list-group">
+				{% for ticket in progress %}
+				<li class="list-group-item ticket-link">
+				    <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+					<span class="info-prefix">Issue:</span><span class="info-text" > {{ticket.tix_subject}}</span><br>
+					<span class="info-prefix">Room:</span><span class="info-text" > {{ticket.room_num}}</span><br>
+					<span class="info-prefix">Teacher:</span><span class="info-text" > {{ticket.teacher_name}}</span><br>
+					<span class="info-prefix">Status:</span><span class="info-text" > {{ticket.status}}</span><br>
+					<span class="info-prefix">Urgency:</span> 
+					<span class="info-text" ><span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span></span><br>
+					<span class="info-prefix">Date Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
+				    </a>
+				</li>
+				{% endfor %}
+			    </ul>
+			</div>
+		    </div> <!-- panel-default -->
 
-  {% if level == 3 %}
-  <center><button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='/submit'">Create Ticket</button></center>
-  {% endif %}
-  
-  <h1>All Tickets</h1>
-  
-  <!-- The categories should be drop down menus -->
-  <div class="row">
-    <div class="col-3-md col-3-sm"></div>
-    <div class="col-6-md col-6-sm col-12-xs">
-      <div class="panel-group">
-
-	<div class="panel panel-default">
-	  
-	  <div class="panel-heading">
-	    <h3 class="panel-title">
-	      <a class="collapse-header" data-toggle="collapse" href="#pending" aria-expanded="false" aria-controls="pending">
-		Pending
-	      </a>
-	    </h3>
-	  </div>
-	  
-	  <div class="panel-collapse collapse" id="pending">
-	    <ul class="list-group">
-	      {% for ticket in pending %}	
-	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
-		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
-		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
-		  Status: {{ticket.status}}<br>
-		  Urgency: <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span><br>
-		  Date Submitted: {{ticket.date_of_ticket}}
-		</li>
-	      </a>
-	      {% endfor %}
-	    </ul>
-	  </div>
-	</div>
-	
-	
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">
-	      <a data-toggle="collapse" href="#progress">
-		In Progress
-	      </a>
-	    </h3>
-	  </div>
-	  <div class="panel-collapse collapse" id="progress">
-	    <ul class="list-group">
-	      {% for ticket in progress %}
-	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
-		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
-		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
-		  Status: {{ticket.status}}<br>
-		  Urgency: 
-		  <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span><br>
-		  Date Submitted: {{ticket.date_of_ticket}}
-		</li>
-	      </a>
-	      {% endfor %}
-	    </ul>
-	  </div>
-	</div>
-
-	<div class="panel panel-default">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">
-	      <a class="collapse-header" data-toggle="collapse" href="#resolved" aria-expanded="false" aria-controls="resolved">
-		<!-- <a data-toggle="collapse" href="#progress"> -->
-		Resolved
-	      </a>
-	    </h3>
-	  </div>
-	  
-	  <div class="panel-collapse collapse" id="resolved">
-	    <ul class="list-group">
-	      {% for ticket in done %}
-	      <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
-		<li class="list-group-item ticket-link">Issue: {{ticket.tix_subject}}<br>
-		  Room: {{ticket.room_num}}<br>Teacher: {{ticket.teacher_name}}<br>
-		  Status: {{ticket.status}}<br>
-		  Urgency: 
-		  <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span><br>
-		  Date Submitted: {{ticket.date_of_ticket}}
-		</li>
-	      </a>
-	      {% endfor %}
-	    </ul>
-	  </div>
-	</div>
-      </div> <!-- panel-group -->
-    </div> <!--column-->
-    <div class="col-3-md col-3-sm"></div>
-  </div>
+		    <div class="panel panel-default">
+			<div class="panel-heading">
+			    <h3 class="panel-title">
+				<a class="collapse-header" data-toggle="collapse" href="#resolved" aria-expanded="false" aria-controls="resolved">
+				    <!-- <a data-toggle="collapse" href="#progress"> -->
+				    Resolved
+				</a>
+			    </h3>
+			</div>
+			
+			<div class="panel-collapse collapse" id="resolved">
+			    <ul class="list-group">
+				{% for ticket in done %}
+				<li class="list-group-item ticket-link">
+				    <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+					<span class="info-prefix">Issue:</span><span class="info-text" >{{ticket.tix_subject}}</span><br>
+					<span class="info-prefix">Room:</span><span class="info-text" > {{ticket.room_num}}</span><br>
+					<span class="info-prefix">Teacher:</span><span class="info-text" > {{ticket.teacher_name}}</span><br>
+					<span class="info-prefix">Status:</span><span class="info-text" > {{ticket.status}}</span><br>
+					<span class="info-prefix">Urgency:</span> <span class="info-text" >
+					    <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span></span><br>
+					    <span class="info-prefix">Date Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
+				    </a>
+				</li>
+				{% endfor %}
+			    </ul>
+			</div>
+			
+		    </div> <!-- panel-default -->
+		    
+		</div> <!-- panel-group -->
+	    </div> <!-- jumbotron -->
+	</div> <!-- col -->
+	<div class="col-3-md col-3-sm"></div>
+    </div>
 </div> <!-- row-->
 <!--</div>-->
 {% endblock %}
