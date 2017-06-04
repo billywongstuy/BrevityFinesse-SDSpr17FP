@@ -106,7 +106,7 @@
 		{% endif %}
 
 		
-		<li class="list-group-item"><span class="info-prefix">Additional Information:</span> <br><br> <div class="panel panel-default"><div class="panel-body">{{info.tix_body}}</div></div></li>
+		<li class="list-group-item"><span class="info-prefix">Additional Information:</span> <br><br> <div class="panel panel-default"><div class="panel-body">{{info.tix_body if info.tix_body else "N/A"}}</div></div></li>
 	    </ul>
 	    
 	</form>

@@ -194,3 +194,6 @@ julianA -- 2017-06-04 18:16
 
 julianA -- 2017-06-04 19:31
 	Improved styling on single ticket page
+
+julianA -- 2017-06-04 19:51
+	Added form validation on submit page

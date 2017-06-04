@@ -13,12 +13,14 @@
 {% endblock %}
 
 {% block body %}
+<script type="text/javascript" src="/static/js/main.js"></script>
 <div class="container">
   <h1>Submit Ticket</h1><br>
   <div class="row">
     <div class="col-3-md col-3-sm"></div>
     <div class="col-6-md col-6-sm col-12-xs">
       <div class="jumbotron">
+	<div id="alertMsg" style="display: none; opacity: 0; transition: opacity 0.5s;" class="alert alert-danger">One or more required fields were left incomplete.</div>
 	<form action="/submit" method="POST">
 	  <div class="form-group">
 	    <label for="ticketSubject">Subject</label>
@@ -35,7 +37,7 @@
 	    </select>
 	  </div>	  
 	  <div class="form-group">
-	    <label for="ticketSubject">Room</label>
+	    <label for="roomNumber">Room</label>
 	    <input type="number" class="form-control" id="roomNumber" name="room" min="100" max="1099">
 	  </div>
 
@@ -79,7 +81,8 @@
 
 	  
 	  
-	  <button type="submit" class="btn btn-primary">Submit</button>
+	  <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+	  <button type="button" class="btn btn-primary" onclick="if (allClear()) this.form.submit(); else notClear();">Submit</button>
 	</form>
       </div>
     </div>
