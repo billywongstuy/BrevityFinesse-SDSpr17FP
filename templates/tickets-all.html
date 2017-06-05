@@ -44,7 +44,7 @@
 			    <ul class="list-group">
 				{% for ticket in pending %}	
 				<li class="list-group-item ticket-link">
-				    <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+				    <a style="display: block; width: 100%; height: 100%;" class="ticket-link" href="/ticket/{{ticket.primary_key}}">
 					<span class="info-prefix">Issue:</span><span class="info-text" > {{ticket.tix_subject}}</span><br>
 					<span class="info-prefix">Room:</span><span class="info-text" > {{ticket.room_num}}</span><br>
 					<span class="info-prefix">Teacher:</span> <span class="info-text" >{{ticket.teacher_name}}</span><br>
@@ -71,7 +71,7 @@
 			    <ul class="list-group">
 				{% for ticket in progress %}
 				<li class="list-group-item ticket-link">
-				    <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+				    <a style="display: block; width: 100%; height: 100%;" class="ticket-link" href="/ticket/{{ticket.primary_key}}">
 					<span class="info-prefix">Issue:</span><span class="info-text" > {{ticket.tix_subject}}</span><br>
 					<span class="info-prefix">Room:</span><span class="info-text" > {{ticket.room_num}}</span><br>
 					<span class="info-prefix">Teacher:</span><span class="info-text" > {{ticket.teacher_name}}</span><br>
@@ -100,7 +100,7 @@
 			    <ul class="list-group">
 				{% for ticket in done %}
 				<li class="list-group-item ticket-link">
-				    <a class="ticket-link" href="/ticket/{{ticket.primary_key}}">
+				    <a style="display: block; width: 100%; height: 100%;" class="ticket-link" href="/ticket/{{ticket.primary_key}}">
 					<span class="info-prefix">Issue:</span><span class="info-text" >{{ticket.tix_subject}}</span><br>
 					<span class="info-prefix">Room:</span><span class="info-text" > {{ticket.room_num}}</span><br>
 					<span class="info-prefix">Teacher:</span><span class="info-text" > {{ticket.teacher_name}}</span><br>
