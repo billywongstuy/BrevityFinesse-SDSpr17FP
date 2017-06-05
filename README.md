@@ -20,7 +20,7 @@ Stuytix is a ticketing system created for the tech services department. With thi
 
 ## Setup
 
-Step 1: Turn on the Gmail API
+1. Turn on the Gmail API
 
 a. Use https://console.developers.google.com/flows/enableapi?apiid=gmail to create or select a project in the Google Developers Console and automatically turn on the API. Click Continue, then Go to credentials.
 
@@ -39,7 +39,7 @@ g. Click the file_download (Download JSON) button to the right of the client ID.
 h. Move this file to the root directory and rename it client_secret.json.
 
 
-Step 2: Install packages using pip
+2. Install packages using pip
 
 * Run the command to install google-api-client:
     pip install --upgrade google-api-python-client
@@ -48,7 +48,7 @@ Step 2: Install packages using pip
     pip install apscheduler
 
 
-Step 3
+3. Run the application
 
 * Run the command:
       python app.py
