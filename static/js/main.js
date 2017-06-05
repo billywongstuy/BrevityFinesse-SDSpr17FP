@@ -6,7 +6,7 @@ var allClear = function() {
     var nameLast = document.getElementById("ticketGuestLastName");
     var email = document.getElementById("emailField");
 
-    return subject.value && roomNum.value && nameFirst.value && nameLast.value && email.value
+    return subject.value && roomNum.value && nameFirst.value && nameLast.value //&& email.value
     
 };
 

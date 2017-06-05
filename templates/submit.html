@@ -4,8 +4,6 @@
 {% extends "base.html" %}
 {% endif %}
 
-<!-- VERIFY INPUTS WITH AJAX -->
-
 <title>Create Ticket</title>
 
 {% block nav %}
@@ -23,7 +21,7 @@
 	<!--<div id="alertMsg" style="display: none; opacity: 0; transition: opacity 0.5s;" class="alert alert-danger">One or more required fields were left incomplete.</div>-->
 	<form id="subForm" action="/submit" method="POST">
 	  <div class="form-group">
-	    <label for="ticketSubject">Subject</label>
+	    <label for="ticketSubject">Subject *</label>
 	    <!--<input type="textarea" class="form-control" id="ticketSubject" placeholder="Briefly outline your problem" name="subject">-->
 	    <select class="form-control" id="ticketSubject" name="subject">
 	      <option value="" disabled selected>Brief outline of your problem</option>
@@ -37,7 +35,7 @@
 	    </select>
 	  </div>	  
 	  <div class="form-group">
-	    <label for="roomNumber">Room</label>
+	    <label for="roomNumber">Room *</label>
 	    <input type="number" class="form-control" id="roomNumber" name="room" min="100" max="1099">
 	  </div>
 
@@ -54,13 +52,13 @@
 	  <div class="form-group">
 	    <!--<div class="row">
 	      <div class="col-6-xs">-->
-		<label for="ticketGuestFirstName">First Name</label>
+		<label for="ticketGuestFirstName">First Name *</label>
 		<input type="textarea" class="form-control" id="ticketGuestFirstName" placeholder="First Name" name="guestFirstName">
 		</div>
 	  <div class="form-group">
 	      <!--</div>
 	      <div class="col-6-xs">-->
-		<label for="ticketGuestLastName">Last Name</label>
+		<label for="ticketGuestLastName">Last Name *</label>
 		<input type="textarea" class="form-control" id="ticketGuestLastName" placeholder="Last Name" name="guestLastName">
 		</div>
 	  
