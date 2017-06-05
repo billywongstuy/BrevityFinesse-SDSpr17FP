@@ -15,7 +15,28 @@ var notClear = function() {
     msg.addClass("alert alert-warning");
     msg.innerHTML = "One or more required fields were left incomplete.";
     $("*/
-    document.getElementById("alertMsg").style.display = "";
-    /*document.getElementById("alertMsg").style.opacity = "1";*/
-    $("#alertMsg").css("style","1");
+    //var msg = document.getElementById("alertMsg");
+    var msg = $('<div id="alertMsg" class="alert alert-danger">One or more required fields were left incomplete.</div>');
+    //msg.fadeIn(500);
+    //$("#alertMsg").fadeIn(500);
+    //document.getElementById("alertMsg").style.visibility = "";
+    //document.getElementById("alertMsg").style.opacity = "1";
+    /*msg.css({
+	"visibility": "",
+	"height": "100%",
+	"opacity": "1"
+	});*/
+
+    msg.hide().prependTo($("#subForm")).fadeIn(500);
+    
+    //msg.style.display = "";
+    
+    /*(function() {
+	msg.style.opacity = "1";
+	})()*/
+    
+    //window.setInterval(function() {msg.style.opacity = "1";},25);
+    
+    //msg.style.opacity = "1";
+    /*$("#alertMsg").css("opacity","1");*/
 };
