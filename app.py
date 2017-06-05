@@ -209,9 +209,6 @@ def ticket(tid):
         loggedIn = 'username' in session
         msg = str(tixUpdateMsg)
         tixUpdateMsg = ""
-
-        if techA and info['when'] != None:
-            info['when'] = info['when'].replace(' ','T')
             
         return render_template('ticket.html',techAccess=techA,info=info,message=msg, loggedIn=loggedIn, adminAccess=aa) 
 
@@ -227,15 +224,6 @@ def ticket(tid):
      
     status = int(request.form['status'])
     urgency = int(request.form['urgency'])
-
-    '''
-    if status >= 2:
-        w = request.form['when'] 
-        pattern = '%Y-%m-%dT%H:%M'
-        when = int(mktime(strptime(w,pattern))) #epoch conversion
-    else:
-        when = None
-    '''
         
     tix.update_ticket(tid,tech,urgency,status) # update the ticket
 
