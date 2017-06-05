@@ -50,7 +50,7 @@
 					<span class="info-prefix">Teacher:</span> <span class="info-text" >{{ticket.teacher_name}}</span><br>
 					<span class="info-prefix">Status:</span> <span class="info-text" >{{ticket.status}}</span><br>
 					<span class="info-prefix">Urgency:</span><span class="info-text" > <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span></span><br>
-					<span class="info-prefix">Date Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
+					<span class="info-prefix">Time Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
 				    </a>
 				</li>
 				{% endfor %}
@@ -78,7 +78,7 @@
 					<span class="info-prefix">Status:</span><span class="info-text" > {{ticket.status}}</span><br>
 					<span class="info-prefix">Urgency:</span> 
 					<span class="info-text" ><span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span></span><br>
-					<span class="info-prefix">Date Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
+					<span class="info-prefix">Time Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
 				    </a>
 				</li>
 				{% endfor %}
@@ -107,7 +107,7 @@
 					<span class="info-prefix">Status:</span><span class="info-text" > {{ticket.status}}</span><br>
 					<span class="info-prefix">Urgency:</span> <span class="info-text" >
 					    <span style="color: {{ '#d9534f' if ticket.urgency == 'High' else '#f0ad4e' if ticket.urgency == 'Medium' else '#5bc0d3' }}">{{ticket.urgency if ticket.urgency else "N/A"}}</span></span><br>
-					    <span class="info-prefix">Date Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
+					    <span class="info-prefix">Time Submitted:</span><span class="info-text" > {{ticket.date_of_ticket}}</span>
 				    </a>
 				</li>
 				{% endfor %}
