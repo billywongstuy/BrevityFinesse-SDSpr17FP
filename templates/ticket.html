@@ -99,7 +99,7 @@
 		
 		{% if techAccess %}
 		<li class="list-group-item"><span class="info-prefix">Tech Respondent:</span>
-		    {% if techAccess %} <input style="display: inline;" type="text" name="tech" class="input-sm form-control" value="{{info.tech_name}}"> {% else %} {{info.tech_name}}
+		    {% if adminAccess %} <input style="display: inline;" type="text" name="tech" class="input-sm form-control" value="{{info.tech_name}}"> {% else %} {{info.tech_name}}
 		    {% endif %}
 		</li>
 		
