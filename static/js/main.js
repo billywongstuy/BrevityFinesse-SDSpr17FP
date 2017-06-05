@@ -10,13 +10,22 @@ var allClear = function() {
     
 };
 
-var notClear = function() {
+var notClear = (function() {
+
+    var isClicked = false;
+
+    return function() {
+	if (!isClicked) {
+	    isClicked = true;
+	    $('<div id="alertMsg" class="alert alert-danger">One or more required fields were left incomplete.</div>').hide().prependTo($("#subForm")).fadeIn(500);
+	}
+    }
+	//var msg = $('<div id="alertMsg" class="alert alert-danger">One or more required fields were left incomplete.</div>');
     /*var msg = document.createElement("div");
     msg.addClass("alert alert-warning");
     msg.innerHTML = "One or more required fields were left incomplete.";
     $("*/
     //var msg = document.getElementById("alertMsg");
-    var msg = $('<div id="alertMsg" class="alert alert-danger">One or more required fields were left incomplete.</div>');
     //msg.fadeIn(500);
     //$("#alertMsg").fadeIn(500);
     //document.getElementById("alertMsg").style.visibility = "";
@@ -28,7 +37,6 @@ var notClear = function() {
 	});*/
 
     msg.hide().prependTo($("#subForm")).fadeIn(500);
-    
     //msg.style.display = "";
     
     /*(function() {
@@ -39,4 +47,4 @@ var notClear = function() {
     
     //msg.style.opacity = "1";
     /*$("#alertMsg").css("opacity","1");*/
-};
+})();
