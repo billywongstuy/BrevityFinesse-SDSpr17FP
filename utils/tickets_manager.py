@@ -253,6 +253,21 @@ def get_email(key):
     return "Ticket doesn't exist"
 
 
+def get_emails():
+    db = connect(f)
+    c = db.cursor()
+
+    #find ticket with given primary key
+    query = ("SELECT * FROM tickets")
+    res = c.execute(query,(key,))
+
+    emails = []
+    for record in ticket:
+        if record[11] not in emails:
+            emails.append(record[11])
+    return emails
+
+
 def get_name(key):
     db = connect(f)
     c = db.cursor()

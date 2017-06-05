@@ -334,8 +334,26 @@ def page_not_found(e):
 # SCHEDULED DAILY ARCHIVE
 #--------------------------
 
+# Please test this later on. Based on previous calls, the emailing should work.
+
 def archive_do():
-    return archive.create_csv(str(now.date()))
+    archive.create_csv(str(now.date()))
+    subject = 'Ticket status'
+    body = '''
+Dear user,
+
+<p>
+Your ticket has been submitted, however our techs have not had the opportunity to address your issue yet. <br>
+Please wait patiently. Our techs will get to you as soon as possible.
+</p>
+
+<p>
+Sincerely,<br>
+    The Tech Services Department
+</p>
+'''
+    e_mail.send_msg_multi(tix.get_emails(),subject,body)
+    
     
 sched = BackgroundScheduler()
 sched.add_job(archive_do,'cron',hour=17,minute=0,second=0)
