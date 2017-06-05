@@ -15,7 +15,7 @@ app.secret_key = os.urandom(32)
 now = datetime.datetime.now()
 
 statuses = {0:'Pending', 1:'Resolved', 2:'Coming ASAP', 3: 'Deferred'}
-urgencies = {0:'Low', 1:'Medium', 2:'High'}
+urgencies = {0:'Low', 1:'Medium', 2:'High', None:''}
 issues = {
     0: 'Out of Toner',
     1: 'Printer Issues (paper jam, does not print, printer error, etc)',
