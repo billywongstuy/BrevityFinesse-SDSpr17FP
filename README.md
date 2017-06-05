@@ -43,10 +43,10 @@ StuyTix is a ticketing system created for the tech services department. With thi
 2. Install packages using pip
 
     * Run the command to install google-api-client:
-        pip install --upgrade google-api-python-client
+        ```pip install --upgrade google-api-python-client```
 
     * Run the command to install apscheduler:
-        pip install apscheduler
+        ```pip install apscheduler```
 
 
 3. Run the application
