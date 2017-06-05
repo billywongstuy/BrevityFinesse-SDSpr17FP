@@ -20,28 +20,32 @@
       <div class="jumbotron">
 	<!--<div id="alertMsg" style="display: none; opacity: 0; transition: opacity 0.5s;" class="alert alert-danger">One or more required fields were left incomplete.</div>-->
 	<form id="subForm" action="/submit" method="POST">
+	  
+	  <i style="font-size: 12px;">(*) indicates a required field.</i><br><br>
 	  <div class="form-group">
-	    <label for="ticketSubject">Subject *</label>
+	    <label for="ticketSubject">Subject <span style="font-weight: normal;"><i>(*)</i></span></label>
 	    <!--<input type="textarea" class="form-control" id="ticketSubject" placeholder="Briefly outline your problem" name="subject">-->
 	    <select class="form-control" id="ticketSubject" name="subject">
 	      <option value="" disabled selected>Brief outline of your problem</option>
-	      <option value="0">Out of Toner</option>
-	      <option value="1">Printer Issues (paper jam, does not print, printer error, etc)</option>
-	      <option value="2">Laptop Issues</option>
-	      <option value="3">Smartboard/Projector Issues(screen, display, volume, etc)</option>
-	      <option value="4">Need item/equipment (please describe)</option>
-	      <option value="5">Other (please describe)</option>
+	      <option value="0">Out of toner</option>
+	      <option value="1">Printer issues <i>(†)</i><!-- (paper jam, does not print, printer error, etc)--></option>
+	      <option value="2">Laptop issues <i>(†)</i></option>
+	      <option value="3">Smartboard/projector issues <i>(†)</i> <!--(screen, display, volume, etc)--></option>
+	      <option value="4">Need item/equipment <i>(†)</i><!-- (please describe)--></option>
+	      <option value="5">Other <i>(†)</i><!-- (please describe)--></option>
 	      <!--<option value="6"></option>-->
 	    </select>
+	    <i style="font-size: 12px;">(†) Please elaborate on the issue in the description field below.</i>
 	  </div>	  
 	  <div class="form-group">
-	    <label for="roomNumber">Room *</label>
+	    <label for="roomNumber">Room <span style="font-weight: normal;"><i>(*)</i></span></label>
 	    <input type="number" class="form-control" id="roomNumber" name="room" min="100" max="1099">
 	  </div>
 
 	  <div class="form-group">
 	    <label for="urgency">Urgency</label></br>
 	    <select class="form-control" name="urgency" id="urgency">
+	      <option value="" disabled selected>None Selected</option>
 	      <option value="2">High</option>
 	      <option value="1">Medium</option>
 	      <option value="0">Low</option>
@@ -52,19 +56,19 @@
 	  <div class="form-group">
 	    <!--<div class="row">
 	      <div class="col-6-xs">-->
-		<label for="ticketGuestFirstName">First Name *</label>
+		<label for="ticketGuestFirstName">First Name <span style="font-weight: normal;"><i>(*)</i></span></label>
 		<input type="textarea" class="form-control" id="ticketGuestFirstName" placeholder="First Name" name="guestFirstName">
 		</div>
 	  <div class="form-group">
 	      <!--</div>
 	      <div class="col-6-xs">-->
-		<label for="ticketGuestLastName">Last Name *</label>
+		<label for="ticketGuestLastName">Last Name <span style="font-weight: normal;"><i>(*)</i></span></label>
 		<input type="textarea" class="form-control" id="ticketGuestLastName" placeholder="Last Name" name="guestLastName">
 		</div>
 	  
 	  <div class="form-group">
 		<label for="emailField">Email</label>
-		<input type="email" class="form-control" id="emailField" name="email" placeholder="Email of Client">
+		<input type="email" class="form-control" id="emailField" name="email" placeholder="Email">
 	      <!--</div>
 	    </div>-->
 	  </div>
@@ -75,7 +79,6 @@
 	    <!--<input type="password" class="form-control" id="passInput" placeholder="Enter password" name="pass">-->
 	    <textarea class="form-control" id="ticketDesc" placeholder="Describe your problem (max. 1000 chars)" maxlength="1000" rows="5" name="desc"></textarea>
 	  </div>
-
 
 	  
 	  

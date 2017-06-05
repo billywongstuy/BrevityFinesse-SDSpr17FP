@@ -1,12 +1,31 @@
 var allClear = function() {
-    var subject = document.getElementById("ticketSubject");
+    var fields = {
+	subject: document.getElementById("ticketSubject"),
+	roomNum: document.getElementById("roomNumber"),
+	//urgency: document.getElementById("urgency"),
+	nameFirst: document.getElementById("ticketGuestFirstName"),
+	nameLast: document.getElementById("ticketGuestLastName"),
+	//email: document.getElementById("emailField")
+    };
+    /*var subject = document.getElementById("ticketSubject");
     var roomNum = document.getElementById("roomNumber");
     var urgency = document.getElementById("urgency");
     var nameFirst = document.getElementById("ticketGuestFirstName");
     var nameLast = document.getElementById("ticketGuestLastName");
-    var email = document.getElementById("emailField");
+    var email = document.getElementById("emailField");*/
 
-    return subject.value && roomNum.value && nameFirst.value && nameLast.value //&& email.value
+    var clear = true;
+    
+    for (field in fields) {
+	console.log(fields[field]);
+	if (!fields[field].value) {
+	    $(fields[field]).parent().addClass("has-error");
+	    clear = false;
+	}
+    }
+
+    //return subject.value && roomNum.value && nameFirst.value && nameLast.value //&& email.value
+    return clear;
     
 };
 
