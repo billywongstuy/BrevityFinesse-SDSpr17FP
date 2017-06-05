@@ -157,7 +157,7 @@ Click <a href="google.com">here</a> to view the whole ticket
 </p>
 
 <p>
-The Technical Issues Department
+The Tech Services Department
 </p>
 ''' % (t_name, full_status, urgency) #, key)
 
@@ -179,6 +179,10 @@ Teacher: %s
 
 <p>
 Click <a href="google.com">here</a> to view the whole ticket
+</p>
+
+<p>
+The Tech Services Department
 </p>
 ''' % (issue, room, teacher) #, key)
 
