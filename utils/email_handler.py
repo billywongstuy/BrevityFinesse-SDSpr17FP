@@ -142,7 +142,7 @@ def send_msg_multi(recipients,subj,body,cc=[None]):
     return message_helper('me', r, subj, body, service, cc)
 
 
-def get_update_body(t_name, full_status, urgency):
+def get_update_body(t_name, full_status, urgency, key):
     return '''
 %s,
 
@@ -151,14 +151,19 @@ Your ticket status has changed to %s <br>
 Urgency: %s
 </p>
 
+
+<p>
+Click <a href="google.com">here</a> to view the whole ticket
+</p>
+
 <p>
 The Technical Issues Department
 </p>
-''' % (t_name, full_status, urgency)
+''' % (t_name, full_status, urgency) #, key)
 
 
 
-def get_new_tix_body(issue, room, teacher):
+def get_new_tix_body(issue, room, teacher, key):
     return '''
 Hello techs,
 
@@ -173,6 +178,11 @@ Teacher: %s
 </p>
 
 <p>
-Click <a href="https://google.com">here</a> to view the whole ticket
+Click <a href="google.com">here</a> to view the whole ticket
 </p>
-''' % (issue,room,teacher)
+''' % (issue, room, teacher) #, key)
+
+
+
+### CHANGE THE LINK 
+## 127.0.0.1:5000/ticket/%d

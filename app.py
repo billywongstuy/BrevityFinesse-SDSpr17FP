@@ -148,7 +148,7 @@ def submit():
     key = tix.add_ticket(u_name,t_name,date,room,issue,urgency,desc,email)
 
     subject = 'New ticket submitted'
-    body = e_mail.get_new_tix_body(issues[issue],room,t_name)
+    body = e_mail.get_new_tix_body(issues[issue],room,t_name,key)
     #body = 'New ticket submitted'
 
     e_mail.send_msg_multi(auth.get_tech_emails(),subject,body)
@@ -234,8 +234,8 @@ def ticket(tid):
     
     t_email = tix.get_email(int(tid))
     subj = 'StuyTix: Ticket #%d Status Changed' % (int(tid))
-    body = e_mail.get_update_body(t_name, status, urgencies[urgency])
-
+    body = e_mail.get_update_body(t_name, status, urgencies[urgency], int(tid))
+    
     e_mail.send_msg_one(t_email,subj,body)
     
     tixUpdateMsg = 'Ticket updated!'
@@ -368,12 +368,13 @@ def create_database():
 # SETUP SUPERADMIN
 #---------------------
 
-def setup_superadmin():
+def setup_accounts():
     if auth.any_superadmin():
         return
     
     valid = False
-    while not valid:
+    success = ''
+    while not valid and success != 'Account created!':
         name = raw_input('Input the username for the superadmin: ')
         email = raw_input('Enter the email for the account: ')
         pw = getpass('Enter a password: ')
@@ -382,12 +383,13 @@ def setup_superadmin():
             valid = True
         else:
             print 'Passwords don\'t match'
-    success = auth.register(name,'','',email,pw,pw2,0)
-    if success == 'Account created':
+        success = auth.register(name,'','',email,pw,pw2,0)
         print success
-        return True
+        if success == 'Account created!':
+            auth.register("guest","","","test@test.com","password123","password123",4,"")
+            return True
     else:
-        setup_superadmin()
+        setup_accounts()
         
 #--------------
 # Start
@@ -395,7 +397,7 @@ def setup_superadmin():
 
 def start_flask():
     create_database()
-    setup_superadmin()
+    setup_accounts()
     app.run(debug=True, use_reloader=True) #Set debug to False before publishing
 
 if __name__ == "__main__":

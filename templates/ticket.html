@@ -4,8 +4,6 @@
 {% extends "base.html" %}
 {% endif %}
 
-<!-- TEMPORARY JINJA FORMATTING FOR DEMO PURPOSES-->
-
 {% block nav %}
 {{super()}}
 {% endblock %}
@@ -14,177 +12,179 @@
 {% block body %}
 
 <div class="container">
-    <div class="jumbotron">
+  <div class="jumbotron">
 
-	{% if message != "" %}
-	<div class="alert alert-success">{{message}}</div>
+    {% if message != "" %}
+    <div class="alert alert-success">{{message}}</div>
+    {% endif %}
+
+
+    <form method="POST" class="form-inline">
+      
+      <ul class="list-group">
+	<li class="list-group-item"><span class="info-prefix">Teacher:</span> {{info.teacher_name}}</li>
+	<li class="list-group-item"><span class="info-prefix">Time Submitted:</span> {{info.date_of_ticket}}</li>
+	<li class="list-group-item"><span class="info-prefix">Room Number:</span> {{info.room_num}}</li>
+	<li class="list-group-item"><span class="info-prefix">Problem:</span> {{info.tix_subject}}</li>
+
+	<li class="list-group-item"><span class="info-prefix">Urgency:</span>
+	  {% if not techAccess %}
+	  {{info.urgency}}
+	  {% else %}
+	  <select name="urgency" class="input-sm form-control">
+	    <option value="2" {% if info.urgency == "High" %} selected {% endif %}>High</option>
+	    <option value="1" {% if info.urgency == "Medium" %} selected {% endif %}>Medium</option>
+	    <option value="0" {% if info.urgency == "Low" %} selected {% endif %}>Low</option>
+	  </select>
+	  {% endif %}
+	</li>
+
+	<li class="list-group-item"><span class="info-prefix">Status: </span>
+	  {% if not techAccess %}
+	  {{info.status}}
+	  {% else %}
+	  
+	  <select name="status" class="input-sm form-control">
+	    <option value="0" {% if info.status=="Pending" %} selected="selected"{% endif %}>Pending</option>
+	    <option value="1" {% if info.status=="Resolved" %} selected="selected"{% endif %}>Resolved</option>
+	    <option value="2" {% if info.status=="Coming ASAP" %} selected="selected"{% endif %}>Coming ASAP</option>
+	    <option value="3" {% if info.status=="Deferred" %} selected="selected"{% endif %}>Deferred</option>
+	  </select>
+	  {% endif %}
+	</li>
+
+	<!--
+
+	    <td>Status</td>
+	    {% if not techAccess %}
+	<td>{{info.status}}</td>
+	{% else %}
+	<td>
+	  <select name="status" class="form-control">
+	    <option value="0" {% if info.status=="Pending" %} selected="selected"{% endif %}>Pending</option>
+	    <option value="1" {% if info.status=="Resolved" %} selected="selected"{% endif %}>Resolved</option>
+	    <option value="2" {% if info.status=="Coming ASAP" %} selected="selected"{% endif %}>Coming ASAP</option>
+	    <option value="3" {% if info.status=="Deferred" %} selected="selected"{% endif %}>Deferred</option>
+	  </select>
+	</td>
 	{% endif %}
 
 
-	<form method="POST" class="form-inline">
-	    
-	    <ul class="list-group">
-		<li class="list-group-item"><span class="info-prefix">Teacher:</span> {{info.teacher_name}}</li>
-		<li class="list-group-item"><span class="info-prefix">Time Submitted:</span> {{info.date_of_ticket}}</li>
-		<li class="list-group-item"><span class="info-prefix">Room Number:</span> {{info.room_num}}</li>
-		<li class="list-group-item"><span class="info-prefix">Problem:</span> {{info.tix_subject}}</li>
+	
+	<td>Urgency</td>
+	{% if not techAccess %}
+	<td>{{info.urgency}}</td>
+	{% else %}
+	<td>
+	  <select name="urgency" class="form-control">
+	    <option value="2" {% if info.urgency == "High" %} selected {% endif %}>High</option>
+	    <option value="1" {% if info.urgency == "Medium" %} selected {% endif %}>Medium</option>
+	    <option value="0" {% if info.urgency == "Low" %} selected {% endif %}>Low</option>
+	  </select>
+	</td>
+	{% endif %}
 
-		<li class="list-group-item"><span class="info-prefix">Urgency:</span>
-		    {% if not techAccess %}
-		    {{info.urgency}}
-		    {% else %}
-		    <select name="urgency" class="input-sm form-control">
-			<option value="2" {% if info.urgency == "High" %} selected {% endif %}>High</option>
-			<option value="1" {% if info.urgency == "Medium" %} selected {% endif %}>Medium</option>
-			<option value="0" {% if info.urgency == "Low" %} selected {% endif %}>Low</option>
-		    </select>
-		    {% endif %}
-		</li>
+	{% if techAccess %}
+	<tr>
+	  <td>Tech Respondent</td>
+	  {% if adminAccess %}
+	  <td><input type="text" name="tech" class="form-control" value="{{info.tech_name}}"></td>
+	  {% else %}
+	  <td>{{info.tech_name}}</td>
+	  {% endif %}
+	</tr>
+	{% endif %} -->
+	
+	{% if techAccess %}
+	<li class="list-group-item"><span class="info-prefix">Tech Respondent:</span>
+	  {% if adminAccess %} <input style="display: inline;" type="text" name="tech" class="input-sm form-control" value="{{info.tech_name}}"> {% else %} {{info.tech_name}}
+	  {% endif %}
+	</li>
+	
+	{% endif %}
 
-		<li class="list-group-item"><span class="info-prefix">Status: </span>
-		    {% if not techAccess %}
-		    {{info.status}}
-		    {% else %}
-		    
-		    <select name="status" class="input-sm form-control">
-			<option value="0" {% if info.status=="Pending" %} selected="selected"{% endif %}>Pending</option>
-			<option value="1" {% if info.status=="Resolved" %} selected="selected"{% endif %}>Resolved</option>
-			<option value="2" {% if info.status=="Coming ASAP" %} selected="selected"{% endif %}>Coming ASAP</option>
-			<option value="3" {% if info.status=="Deferred" %} selected="selected"{% endif %}>Deferred</option>
-		    </select>
-		    {% endif %}
-		</li>
-
-		<!--
-
-		     <td>Status</td>
-		     {% if not techAccess %}
-		     <td>{{info.status}}</td>
-		     {% else %}
-		     <td>
-		     <select name="status" class="form-control">
-		     <option value="0" {% if info.status=="Pending" %} selected="selected"{% endif %}>Pending</option>
-		     <option value="1" {% if info.status=="Resolved" %} selected="selected"{% endif %}>Resolved</option>
-		     <option value="2" {% if info.status=="Coming ASAP" %} selected="selected"{% endif %}>Coming ASAP</option>
-		     <option value="3" {% if info.status=="Deferred" %} selected="selected"{% endif %}>Deferred</option>
-		     </select>
-		     </td>
-		     {% endif %}
+	
+	<li class="list-group-item"><span class="info-prefix">Additional Information:</span> <br><br> <div class="panel panel-default"><div class="panel-body">{{info.tix_body if info.tix_body else "N/A"}}</div></div></li>
+      </ul>
 
 
-		     
-		     <td>Urgency</td>
-		     {% if not techAccess %}
-		     <td>{{info.urgency}}</td>
-		     {% else %}
-		     <td>
-		     <select name="urgency" class="form-control">
-		     <option value="2" {% if info.urgency == "High" %} selected {% endif %}>High</option>
-		     <option value="1" {% if info.urgency == "Medium" %} selected {% endif %}>Medium</option>
-		     <option value="0" {% if info.urgency == "Low" %} selected {% endif %}>Low</option>
-		     </select>
-		     </td>
-		     {% endif %}
+      {% if techAccess %}
+      <button type="submit" class="btn btn-info">Accept/Update Ticket</button>
+      {% endif %}
+      
+    </form>
 
-		     {% if techAccess %}
-		     <tr>
-		     <td>Tech Respondent</td>
-		     {% if adminAccess %}
-		     <td><input type="text" name="tech" class="form-control" value="{{info.tech_name}}"></td>
-		     {% else %}
-		     <td>{{info.tech_name}}</td>
-		     {% endif %}
-		     </tr>
-		     {% endif %} -->
-		
-		{% if techAccess %}
-		<li class="list-group-item"><span class="info-prefix">Tech Respondent:</span>
-		    {% if adminAccess %} <input style="display: inline;" type="text" name="tech" class="input-sm form-control" value="{{info.tech_name}}"> {% else %} {{info.tech_name}}
-		    {% endif %}
-		</li>
-		
-		{% endif %}
-
-		
-		<li class="list-group-item"><span class="info-prefix">Additional Information:</span> <br><br> <div class="panel panel-default"><div class="panel-body">{{info.tix_body if info.tix_body else "N/A"}}</div></div></li>
-	    </ul>
-	    
-	</form>
-
-	<!-- <form method="POST">
-	    <table class="table">
-		<tr>
-		    <td>Problem</td>
-		    <td>{{info.tix_subject}}</td>
-		</tr>
-		<tr>
-		    <td>Urgency</td>
-		    {% if not techAccess %}
-		    <td>{{info.urgency}}</td>
-		    {% else %}
-		    <td>
-			<select name="urgency" class="form-control">
-			    <option value="2" {% if info.urgency == "High" %} selected {% endif %}>High</option>
-			    <option value="1" {% if info.urgency == "Medium" %} selected {% endif %}>Medium</option>
-			    <option value="0" {% if info.urgency == "Low" %} selected {% endif %}>Low</option>
-			</select>
-		    </td>
-		    {% endif %}
-		</tr>
-		<tr>
-		    <td>Status</td>
-		    {% if not techAccess %}
-		    <td>{{info.status}}</td>
-		    {% else %}
-		    <td>
-			<select name="status" class="form-control">
-			    <option value="0" {% if info.status=="Pending" %} selected="selected"{% endif %}>Pending</option>
-			    <option value="1" {% if info.status=="Resolved" %} selected="selected"{% endif %}>Resolved</option>
-			    <option value="2" {% if info.status=="Coming ASAP" %} selected="selected"{% endif %}>Coming ASAP</option>
-			    <option value="3" {% if info.status=="Deferred" %} selected="selected"{% endif %}>Deferred</option>
-			</select>
-		    </td>
-		    {% endif %}
-		</tr>
+    <!-- <form method="POST">
+	 <table class="table">
+	   <tr>
+	     <td>Problem</td>
+	     <td>{{info.tix_subject}}</td>
+	   </tr>
+	   <tr>
+	     <td>Urgency</td>
+	     {% if not techAccess %}
+	     <td>{{info.urgency}}</td>
+	     {% else %}
+	     <td>
+	       <select name="urgency" class="form-control">
+		 <option value="2" {% if info.urgency == "High" %} selected {% endif %}>High</option>
+		 <option value="1" {% if info.urgency == "Medium" %} selected {% endif %}>Medium</option>
+		 <option value="0" {% if info.urgency == "Low" %} selected {% endif %}>Low</option>
+	       </select>
+	     </td>
+	     {% endif %}
+	   </tr>
+	   <tr>
+	     <td>Status</td>
+	     {% if not techAccess %}
+	     <td>{{info.status}}</td>
+	     {% else %}
+	     <td>
+	       <select name="status" class="form-control">
+		 <option value="0" {% if info.status=="Pending" %} selected="selected"{% endif %}>Pending</option>
+		 <option value="1" {% if info.status=="Resolved" %} selected="selected"{% endif %}>Resolved</option>
+		 <option value="2" {% if info.status=="Coming ASAP" %} selected="selected"{% endif %}>Coming ASAP</option>
+		 <option value="3" {% if info.status=="Deferred" %} selected="selected"{% endif %}>Deferred</option>
+	       </select>
+	     </td>
+	     {% endif %}
+	   </tr>
 
 
-		{% if techAccess %}
-		<tr>
-		    <td>Tech Respondent</td>
-		    {% if adminAccess %}
-		    <td><input type="text" name="tech" class="form-control" value="{{info.tech_name}}"></td>
-		    {% else %}
-		    <td>{{info.tech_name}}</td>
-		    {% endif %}
-		</tr>
-		{% endif %}
+	   {% if techAccess %}
+	   <tr>
+	     <td>Tech Respondent</td>
+	     {% if adminAccess %}
+	     <td><input type="text" name="tech" class="form-control" value="{{info.tech_name}}"></td>
+	     {% else %}
+	     <td>{{info.tech_name}}</td>
+	     {% endif %}
+	   </tr>
+	   {% endif %}
 
-		<tr>
-		    <td>Teacher</td>
-		    <td>{{info.teacher_name}}</td>
-		</tr>
-		<tr>
-		    <td>Room Number</td>
-		    <td>{{info.room_num}}</td>
-		</tr>
-		<tr>
-		    <td>Time Submitted</td>
-		    <td>{{info.date_of_ticket}}</td>
-		</tr>
-		<tr>
-		    <td>Additional Comments</td>
-		    <td>{{info.tix_body}}</td>
-		</tr>
-		
-	    </table>-->
+	   <tr>
+	     <td>Teacher</td>
+	     <td>{{info.teacher_name}}</td>
+	   </tr>
+	   <tr>
+	     <td>Room Number</td>
+	     <td>{{info.room_num}}</td>
+	   </tr>
+	   <tr>
+	     <td>Time Submitted</td>
+	     <td>{{info.date_of_ticket}}</td>
+	   </tr>
+	   <tr>
+	     <td>Additional Comments</td>
+	     <td>{{info.tix_body}}</td>
+	   </tr>
+	   
+	 </table>
+    
+    </form>
+    -->
 
-	    {% if techAccess %}
-	    <button type="submit" class="btn btn-info">Accept/Update Ticket</button>
-	    {% endif %}
-	    
-	</form>
-
-    </div>
+</div>
 </div>
 
 {% endblock %}
