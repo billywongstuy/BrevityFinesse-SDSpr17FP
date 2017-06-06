@@ -129,6 +129,8 @@ def submit():
     date = str(datetime.datetime.now())
     date = date[0:date.find('.')]
     urgency = request.form['urgency']
+    if urgency == 'None':
+        urgency == None
     
     if 'username' not in session or session['level'] != 3:
         u_name = 'guest'
