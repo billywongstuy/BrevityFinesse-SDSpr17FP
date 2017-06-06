@@ -8,26 +8,43 @@
 
 {% block body %}
 
-{% if send %}
-{% if msg %}
-<div class="alert alert-success">{{msg}}</div>
-{% else %}
-<div class="alert alert-danger">Username does not exist!</div>
-{% endif %}
-{% endif %}
+<div class="container">
+  <h1>Manage Admin Privileges</h1>
+  <div class="row">
+    <div class="col-3-md col-3-sm"></div>
+    <div class="col-6-md col-6-sm col-12-xs">
+      <div class="jumbotron">
+	{% if send %}
+	{% if msg %}
+	<div class="alert alert-success">{{msg}}</div>
+	{% else %}
+	<div class="alert alert-danger">Username does not exist!</div>
+	{% endif %}
+	{% endif %}
 
-<h2>Change Level of Account</h2>
 
-<form method="POST">
-  User: <input type="text" name="username" placeholder="Account username"> </br>
-  Current Level: [type here maybe - requires ajax] </br>
-  New Level: <select name="newlevel">
-    <option value="1">Admin</option>
-    <option value="2">Tech</option>
-    <option value="3">Teacher</option>
-  </select>
-  </br>
-  <button type="submit">Change Level</button>
-</form>
+	<form method="POST">
+	  <div class="form-group">
+	    <label for="accUsername">User</label>
+	    <input class="form-control" id="accUsername" type="text" name="username" placeholder="Account username">
+	  </div>
+	  <div class="form-group">
+	    <label for="accLevel">Permission Level</label>
+	    
+	  <!--Current Level: [type here maybe - requires ajax] </br>
+	      New Level: -->
+	  <select class="form-control" id="accLevel" name="newlevel">
+	    <option value="1">Admin</option>
+	    <option value="2">Tech</option>
+	    <option value="3">Teacher</option>
+	  </select>
+	  </div>
+	  <button class="btn btn-primary" type="submit">Change Level</button>
+	</form>
+      </div>
+    </div>
+    <div class="col-3-md col-3-sm"></div>
+  </div>
+</div>
 
 {% endblock %}

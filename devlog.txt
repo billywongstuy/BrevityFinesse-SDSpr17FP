@@ -203,3 +203,4 @@ julianA -- 2017-06-05 14:05
 
 julianA -- 2017-06-05 21:54
 	Fixed styling on admin dashboard somewhat
+	Improved styling on admin_promote
