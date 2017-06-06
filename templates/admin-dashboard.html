@@ -9,37 +9,85 @@
 
 
 <div class="container">
-  <div class="jumbotron">
-<form action="/guest_toggle" method="POST">
+  <h1>Admin Dashboard</h1>
+  <div class="row">
+    <div class="col-3-md col-3-sm"></div>
+    <div class="col-6-md col-6-sm col-12-xs">
+      <div class="jumbotron">
+	<!--<ul class="list-group">
+	    <li class="list-group-item">
+	      <h4 class="pull-left">Guest Functionality</h4>
+	      <form class="form-inline" action="/guest_toggle" method="POST">
+		<div class="btn-group pull-left" data-toggle="buttons" id="choiceForm">
+		  <label class="btn btn-primary{{ ' active' if guest_allow }}">
+		    <input type="radio" name="guest_choices" id="on" onchange="this.form.submit();" autocomplete="off" value="on"> On
+		  </label>
+		  <label class="btn btn-primary{{ ' active' if not guest_allow }}">
+		    <input type="radio" name="guest_choices" id="off" onchange="this.form.submit();" autocomplete="off" value="off"> Off
+		  </label>
 
-  <!--GUEST FUNCTIONALITY
-  {% if not guest_allow %}
-  OFF
-  {% else %}
-  ON
-  {% endif %}-->
+		</div>
+	    </li>
+	</ul>-->
 
-  <h4 class="text-info">Guest Functionality</h4>
-  <div class="btn-group" data-toggle="buttons" id="choiceForm">
+	<h4>Guest Functionality</h4>
+	<form class="form-inline" action="/guest_toggle" method="POST">
+	  <div style="margin-left: 10px;" class="btn-group pull-left" data-toggle="buttons" id="choiceForm">
+	    <label class="btn btn-primary{{ ' active' if guest_allow }}">
+	      <input type="radio" name="guest_choices" id="on" onchange="this.form.submit();" autocomplete="off" value="on"> On
+	    </label>
+	    <label class="btn btn-primary{{ ' active' if not guest_allow }}">
+	      <input type="radio" name="guest_choices" id="off" onchange="this.form.submit();" autocomplete="off" value="off"> Off
+	    </label>
 
-    <label class="btn btn-primary{{ ' active' if guest_allow }}">
-      <input type="radio" name="guest_choices" id="on" onchange="this.form.submit();" autocomplete="off" value="on"> On
-    </label>
-    <label class="btn btn-primary{{ ' active' if not guest_allow }}">
-      <input type="radio" name="guest_choices" id="off" onchange="this.form.submit();" autocomplete="off" value="off"> Off
-    </label>
+	  </div>
+	</form>
+	<br>
+	<hr>
+	<ul class="list-group">
+	  <li class="list-group-item">
+	    <a href="/all_tickets">View All Tickets</a></li>
+	  <li class="list-group-item">
+	    <a href="/submit">Create Ticket</a></li>
+	  <li class="list-group-item">
+	    <a href="/create_account">Create New Account</a></li>
+	  
+	  {% if superadmin %}
+	  <li class="list-group-item"><a href="/admin_promote">Add/Revoke Admins</a></li>
+	  {% endif %}
+	</ul>
+	<!--<form action="/guest_toggle" method="POST">
 
+	    <!--GUEST FUNCTIONALITY
+		{% if not guest_allow %}
+		OFF
+		{% else %}
+		ON
+		{% endif %}
+
+		<h4 class="text-info">Guest Functionality</h4>
+		<div class="btn-group" data-toggle="buttons" id="choiceForm">
+
+		  <label class="btn btn-primary{{ ' active' if guest_allow }}">
+		    <input type="radio" name="guest_choices" id="on" onchange="this.form.submit();" autocomplete="off" value="on"> On
+		  </label>
+		  <label class="btn btn-primary{{ ' active' if not guest_allow }}">
+		    <input type="radio" name="guest_choices" id="off" onchange="this.form.submit();" autocomplete="off" value="off"> Off
+		  </label>
+
+		</div>
+	</form>-->
+
+	    <!--<div>
+		<a href="/all_tickets">View All Tickets</a>
+		<a href="/submit">Create Ticket</a>
+		<a href="/create_account">Create New Account</a>
+		{% if superadmin %}
+		<a href="/admin_promote">Add/Revoke Admins</a>
+		{% endif %}
+	    </div>-->
+      </div>
+    </div>
   </div>
-</form>
-
-<div>
-  <a href="/all_tickets">View All Tickets</a>
-  <a href="/submit">Create Ticket</a>
-  <a href="/create_account">Create New Account</a>
-  {% if superadmin %}
-  <a href="/admin_promote">Add/Revoke Admins</a>
-  {% endif %}
 </div>
-</div>
-  </div>
 {% endblock %}
