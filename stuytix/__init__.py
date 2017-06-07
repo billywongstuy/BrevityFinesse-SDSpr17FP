@@ -35,8 +35,9 @@ def home():
     
     if 'username' not in session:
         return render_template('index.html')
-    
-    guest_allow = (auth.get_level('guest') == 4)
+
+
+    guest_allow = (int(auth.get_level('guest')) == 4)
     lvl = session['level'] if 'username' in session else 4
     sa = session['level'] == 0
     
@@ -371,7 +372,7 @@ def create_database():
     try:
         c.execute('SELECT * from users')
     except:
-        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, last_name TEXT, first_name TEXT, email TEXT, password TEXT, salt TEXT, level TEXT, phone_num TEXT)")
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, last_name TEXT, first_name TEXT, email TEXT, password TEXT, salt TEXT, level INTEGER, phone_num TEXT)")
 
     try:
         c.execute("SELECT * FROM tickets")
@@ -404,7 +405,7 @@ def setup_accounts():
         success = auth.register(name,'','',email,pw,pw2,0)
         print success
         if success == 'Account created!':
-            auth.register("guest","","","test@test.com","password123","password123",4,"")
+            auth.register_guest()
             return True
     else:
         setup_accounts()

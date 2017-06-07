@@ -17,7 +17,7 @@ def login(username, password):
     try:
         c.execute("SELECT * FROM USERS")
     except:
-        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, last_name TEXT, first_name TEXT, email TEXT, password TEXT, salt TEXT, level TEXT, phone_num TEXT)")
+        c.execute("CREATE TABLE users (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, last_name TEXT, first_name TEXT, email TEXT, password TEXT, salt TEXT, level INTEGER, phone_num TEXT)")
 
     #find account with given username
     query = ("SELECT * FROM users WHERE username=?")
@@ -106,6 +106,21 @@ def register(username,last,first,email,password,pw2,account_level,phone_num=None
     db.close()
     return reg
 
+
+def register_guest():
+    db = connect(f, timeout=10)
+    c = db.cursor()
+
+    if duplicate('guest'):
+        return False
+
+    c.execute('INSERT INTO users (username,level) VALUES ("guest",4)')
+
+    db.commit()
+    db.close()
+
+    return True
+    
 #-------------------------------
 # Validate email address
 #-------------------------------
@@ -179,6 +194,7 @@ def change_level(key,new_level):
     #change account level
     query = ("UPDATE users SET level=? WHERE primary_key=?")
     c.execute(query,(new_level,key,))
+    
     db.commit()
     db.close()
     return "Account level changed."
