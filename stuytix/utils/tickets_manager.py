@@ -307,6 +307,22 @@ def close_ticket(key):
     db.close()
     return "Ticket closed!"
 
+#---------------------------
+# Reset tickets database
+#---------------------------
+def reset_database():
+    db = connect(f)
+    c = db.cursor()
+
+    #drop table tickets
+    c.execute("DROP TABLE tickets")
+
+    #create table again
+    c.execute("CREATE TABLE tickets (primary_key INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, teacher_name TEXT, date_of_ticket TEXT, room_num INT, tix_subject INTEGER, tix_body TEXT, tech_name TEXT, urgency INT, status INT, resp_time INT, email TEXT)")
+
+    return "Reset Database!"
+
+ 
 #----------------------
 # Drop table(debug use)
 #----------------------
@@ -322,6 +338,7 @@ def drop():
 # Testing area
 #--------------------
 
+print reset_database()
 '''
 drop()
 
