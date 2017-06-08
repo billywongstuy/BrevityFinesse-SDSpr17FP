@@ -161,7 +161,7 @@ Click <a href="stuytix.stuycs.org/ticket/%d">here</a> to view the whole ticket
 <p>
 The Tech Services Department
 </p>
-''' % (t_name, full_status, urgency) #, key)
+''' % (t_name, full_status, urgency, key)
 
 
 
@@ -186,7 +186,7 @@ Click <a href="stuytix.stuycs.org/ticket/%d">here</a> to view the whole ticket
 <p>
 The Tech Services Department
 </p>
-''' % (issue, room, teacher) #, key)
+''' % (issue, room, teacher, key)
 
 
 
