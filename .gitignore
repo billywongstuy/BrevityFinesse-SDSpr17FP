@@ -9,6 +9,11 @@ __pycache__/
 # C extensions
 *.so
 
+
+# Databases
+*.db
+*.csv
+
 #jsons
 client_secret.json
 

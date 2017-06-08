@@ -129,6 +129,8 @@ def send_msg_one(recipient,subj,body, cc=None):
 #send to 1+ user, 1+ cc
 #args: recipients is list, cc is list
 def send_msg_multi(recipients,subj,body,cc=[None]):
+    if len(recipients) < 1:
+        return 'No recipients specified'
     if recipients[0] == None:
         return 'Error: Email is not valid'
     if len(recipients) > 1:

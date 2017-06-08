@@ -338,8 +338,8 @@ def drop():
 # Testing area
 #--------------------
 
-print reset_database()
 '''
+print reset_database()
 drop()
 
 print add_ticket("usr1","teacher1","mmddyy","999",1,body=None,email="email@stuy.edu")

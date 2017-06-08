@@ -204,3 +204,12 @@ julianA -- 2017-06-05 14:05
 julianA -- 2017-06-05 21:54
 	Fixed styling on admin dashboard somewhat
 	Improved styling on admin_promote
+
+
+yukiC -- 2017-06-06 20:41
+    - Added a reset database function
+
+billyW -- 2017-06-08 12:35
+    - Various changes across last few days
+    - Fixed new database with guest 'account' issue
+    - Added a reset database route

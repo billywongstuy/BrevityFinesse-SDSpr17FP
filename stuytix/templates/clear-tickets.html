@@ -1,0 +1,42 @@
+{% extends "baseLogged.html" %}
+
+{% block nav %}
+{{super()}}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+  <div class="jumbotron">
+
+
+    {% if message != "" %}
+    <div class="alert alert-success">{{message}}</div>
+    {% endif %}
+    
+    <h1>Delete All Tickets</h1>
+
+    <p>This button will delete all tickets currently in the database (but not in the csv files). Be careful when using this!!!</p>
+    
+    <form method="POST" id="clearForm">
+      
+      <button type="button" class="btn btn-danger" id="tClear">Clear Tickets</button>
+      
+    </form>
+
+  </div>
+</div>
+
+<script>
+  var tClear = document.getElementById("tClear");
+  tClear.addEventListener("click",function() {
+  var conf = confirm("Are you sure you want to delete all tickets? This cannot be undone?");
+
+  if (conf) {
+  document.getElementById("clearForm").submit();
+  }
+  
+  });
+</script>
+
+{% endblock %}

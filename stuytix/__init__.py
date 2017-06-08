@@ -322,6 +322,20 @@ def admin_promote():
         
     return render_template('promote.html',msg=msg,send=True)
 
+
+@app.route("/clear_tickets", methods=['POST','GET'])
+def clear_tickets():
+    if not 'username' in session or session['level'] != 0:
+        return redirect('/')
+
+    if request.method == 'GET':
+        return render_template('clear-tickets.html',message="")
+
+    tix.reset_database()
+
+    return render_template('clear-tickets.html',message="Tickets database cleared!")
+    
+
 #------------------
 # ERROR HANDLERS
 #------------------
