@@ -37,7 +37,7 @@ StuyTix is a ticketing system created for the tech services department. With thi
 
     g. Click the file_download (Download JSON) button to the right of the client ID.
 
-    h. Move this file to the root directory and rename it client_secret.json.
+    h. Move this file to the stuytix directory and rename it client_secret.json.
 
 
 2. Install packages using pip
