@@ -54,7 +54,7 @@ StuyTix is a ticketing system created for the tech services department. With thi
     * cd into stuytix/
 
     * Run the command:
-        python __init__.py
+        ```python __init__.py```
 
     * On your first instance of running the file on a computer:
         - A window will open, asking for Gmail sending privileges
