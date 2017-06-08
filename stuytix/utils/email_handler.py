@@ -155,7 +155,7 @@ Urgency: %s
 
 
 <p>
-Click <a href="google.com">here</a> to view the whole ticket
+Click <a href="stuytix.stuycs.org/ticket/%d">here</a> to view the whole ticket
 </p>
 
 <p>
@@ -180,7 +180,7 @@ Teacher: %s
 </p>
 
 <p>
-Click <a href="google.com">here</a> to view the whole ticket
+Click <a href="stuytix.stuycs.org/ticket/%d">here</a> to view the whole ticket
 </p>
 
 <p>
