@@ -28,7 +28,7 @@ except ImportError:
 
 SCOPES = 'https://mail.google.com/'
 CLIENT_SECRET_FILE = 'client_secret.json'
-APPLICATION_NAME = 'Gmail API Quickstart'
+APPLICATION_NAME = 'StuyTix'
 
 
 def get_credentials():
@@ -41,11 +41,12 @@ def get_credentials():
         Credentials, the obtained credential.
     """
     home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.credentials')
+    #credential_dir = os.path.join(home_dir, '.credentials')
+    credential_dir = os.path.join(os.getcwd(), '.credentials')
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir,
-                                       'gmail-quickstart.json')
+                                       'stuytix-credentials.json')
 
     store = oauth2client.file.Storage(credential_path)
     credentials = store.get()
