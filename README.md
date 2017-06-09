@@ -61,3 +61,12 @@ StuyTix is a ticketing system created for the tech services department. With thi
         - Accept the prompt with the email used in Step 1
         - In terminal, a prompt to setup a superadmin will appear
         - After creating a superadmin, the application is ready to go!!!
+        
+        
+## Possible Future Features
+
+
+* OAuth with Google
+* Upload CSV file to create multiple teacher accounts
+    * Send teachers an email with their password <b>(if not OAuth)</b>
+* Password reset and change password <b>(if not OAuth)</b>
