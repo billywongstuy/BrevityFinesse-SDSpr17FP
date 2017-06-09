@@ -29,12 +29,8 @@ except ImportError:
 SCOPES = 'https://mail.google.com/'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'StuyTix'
-
-
-
-DIR = os.path.dirname(__file__) or ‘.’
-DIR += ‘/’
-
+DIR = os.path.dirname(__file__) or '.'
+DIR += "/"
 
 def get_credentials():
     """Gets valid user credentials from storage.
@@ -45,7 +41,7 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    #home_dir = os.path.expanduser('~')
+    home_dir = os.path.expanduser('~')
     #credential_dir = os.path.join(home_dir, '.credentials')
     #credential_dir = os.path.join(os.getcwd(), '.credentials')
     credential_dir = os.path.join(DIR, '.credentials')
