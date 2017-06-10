@@ -16,6 +16,7 @@ __pycache__/
 
 #jsons
 client_secret.json
+*.json
 
 # Distribution / packaging
 .Python
