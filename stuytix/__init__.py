@@ -14,6 +14,9 @@ app = Flask(__name__)
 app.secret_key = os.urandom(32)
 now = datetime.datetime.now()
 
+DIR = os.path.dirname(__file__) or "."
+DIR += "/"
+
 statuses = {0:'Pending', 1:'Resolved', 2:'Coming ASAP', 3: 'Deferred'}
 urgencies = {0:'Low', 1:'Medium', 2:'High', None:''}
 issues = {
@@ -380,7 +383,7 @@ sched.start()
 #-----------------------------
 
 def create_database():
-    f = 'data/tix.db'
+    f = DIR + 'data/tix.db'
     db = connect(f)
     c = db.cursor()
     try:

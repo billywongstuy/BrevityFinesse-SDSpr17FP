@@ -1,7 +1,13 @@
 from sqlite3 import connect
 from hashlib import sha1
-from os import urandom
+import os
 import random,string,time
+
+
+DIR = os.path.dirname(__file__) or "."
+DIR += "/"
+
+print DIR
 
 f = "data/tix.db"
 

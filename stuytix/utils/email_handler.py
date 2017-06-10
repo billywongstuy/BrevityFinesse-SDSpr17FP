@@ -32,6 +32,7 @@ APPLICATION_NAME = 'StuyTix'
 DIR = os.path.dirname(__file__) or '.'
 DIR += "/"
 
+
 def get_credentials():
     """Gets valid user credentials from storage.
 

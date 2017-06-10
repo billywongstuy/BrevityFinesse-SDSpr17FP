@@ -1,10 +1,12 @@
 from sqlite3 import connect
 from hashlib import sha1
-from os import urandom
+import os
 import random,string
 
-f = "data/tix.db"
+DIR = os.path.dirname(__file__) or "."
+DIR += "/"
 
+f = DIR + "../data/tix.db"
 
 #-------------------------
 # Login
@@ -91,7 +93,7 @@ def register(username,last,first,email,password,pw2,account_level,phone_num=None
     reg = errorMsg(email, password)
     if reg == "":
         #Create account with given info
-        salt = urandom(10).encode('hex')
+        salt = os.urandom(10).encode('hex')
         
         query = ("INSERT INTO users (username,last_name,first_name,email,password,salt,level,phone_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
         password = sha1(password + salt).hexdigest()
