@@ -26,15 +26,16 @@ try:
 except ImportError:
     flags = None
 
-SCOPES = 'https://mail.google.com/'
-CLIENT_SECRET_FILE = 'client_secret.json'
-APPLICATION_NAME = 'StuyTix'
-
 DIR = os.path.dirname(__file__) or "."
 if not DIR==".":
     DIR += "/../"
 else:
-    DIR += "/"   
+    DIR += "/"
+
+
+SCOPES = 'https://mail.google.com/'
+CLIENT_SECRET_FILE = DIR + 'client_secret.json'
+APPLICATION_NAME = 'StuyTix'
 
 def get_credentials():
     """Gets valid user credentials from storage.
