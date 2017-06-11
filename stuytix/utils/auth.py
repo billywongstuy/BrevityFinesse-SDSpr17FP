@@ -4,9 +4,12 @@ import os
 import random,string
 
 DIR = os.path.dirname(__file__) or "."
-DIR += "/"
+if not DIR==".":
+    DIR += "/../"
+else:
+    DIR += "/"
 
-f = DIR + "../data/tix.db"
+f = DIR + "data/tix.db"
 
 #-------------------------
 # Login

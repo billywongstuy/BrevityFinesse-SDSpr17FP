@@ -5,11 +5,12 @@ import random,string,time
 
 
 DIR = os.path.dirname(__file__) or "."
-DIR += "/"
+if not DIR==".":
+    DIR += "/../"
+else:
+    DIR += "/"
 
-print DIR
-
-f = "data/tix.db"
+f = DIR + "data/tix.db"
 
 #----------------------------
 # Status chart
