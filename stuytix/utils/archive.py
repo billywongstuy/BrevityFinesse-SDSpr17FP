@@ -1,4 +1,4 @@
-import csv
+import csv, os
 from sqlite3 import connect
 
 
