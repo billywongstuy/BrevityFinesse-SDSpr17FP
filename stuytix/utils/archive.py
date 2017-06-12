@@ -3,10 +3,7 @@ from sqlite3 import connect
 
 
 DIR = os.path.dirname(__file__) or "."
-if not DIR==".":
-    DIR += "/../"
-else:
-    DIR += "/"
+DIR += "/../"
 
 f = "data/tix.db"
 

@@ -3,14 +3,13 @@ from hashlib import sha1
 import os
 import random,string
 
-DIR = os.path.dirname(__file__) or "."
-if not DIR==".":
-    DIR += "/../"
-else:
-    DIR += "/"
 
+DIR = os.path.dirname(__file__) or "."
+DIR += "/../"
+    
 f = DIR + "data/tix.db"
 
+    
 #-------------------------
 # Login
 #-------------------------

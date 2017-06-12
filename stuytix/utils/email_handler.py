@@ -27,10 +27,7 @@ except ImportError:
     flags = None
 
 DIR = os.path.dirname(__file__) or "."
-if not DIR==".":
-    DIR += "/../"
-else:
-    DIR += "/"
+DIR += "/"
 
 
 SCOPES = 'https://mail.google.com/'
