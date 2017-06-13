@@ -62,7 +62,14 @@ StuyTix is a ticketing system created for the tech services department. With thi
         - In terminal, a prompt to setup a superadmin will appear
         - After creating a superadmin, the application is ready to go!!!
         
-        
+   
+## Important Information
+
+* The web server must have write access to the data folder
+    * tix.db - to handle users and tickets
+    * create new csv files for archives
+    
+   
 ## Possible Future Features
 
 
